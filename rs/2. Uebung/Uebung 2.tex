@@ -1,0 +1,182 @@
+\documentclass{article}
+\usepackage{amsfonts,amsmath}
+\usepackage[latin1]{inputenc}
+\usepackage[parfill]{parskip}
+
+\title{RS-Übung 2}
+\author{Arne Beer (MN 6489196), \\
+Rafael Epplee (MN 6269560), \\
+Julian Polatynski (MN 6424884)}
+
+\begin{document}
+\maketitle
+
+\section{Time Stamp Counter}
+\subsection{Überlauf}
+Bei einer Größe von 64 Bit hat das Register Zahlen bis zu \(2^{64}-1\) aufnehmen.
+
+Um herauszufinden, wie lange es dauern würde, bis diese Zahl überschritten ist, teilen wir zunächst durch die Anzahl der Takte pro Sekunde, dann durch Sekunden pro Minute, Minuten pro Stunde, Stunden pro Tag, Tage pro Jahr.
+
+\[ \frac{2^{64}-1}{3,2 \cdot 10^9}\cdot s = 5,76461 \cdot 10^9s\]
+
+Es würde also erst nach ungefähr 182,6695 Jahren zum Überlauf des Registers kommen.
+
+\subsection{Eventuelle Nachteile}
+Die Taktzahl eines Prozessors bleibt nicht immer gleich. Sie wird beispielsweise heruntergefahren, um Energie zu sparen, oder auch durch den Benutzer über den Standardwert hinaus gesteigert. Bei einer Änderung der Taktrate wäre dann auch die gemessene Zeit ungültig, da sich das Verhältnis der Takte zu den Sekunden verändert hätte.
+Ein weiteres Problem bei dieser Zeitmessung ist, dass die Zeit bei unterschiedlich getakten Prozessoren unterschiedlich schnell vergeht. D.h. Bei einem Prozessor der beispielsweise mit 1,4 GHZ getaktet ist (z.B Galaxy S Plus) vergeht die Zeit etwa doppelt so langsam. 
+
+\section{Umwandlung von Dezimalzahlen}
+\subsection{53}
+\begin{tabular}{|rl|}
+\hline
+35 & hexadezimal \\
+65 & oktal \\
+110101 & binär \\
+\hline
+53 & dezimal \\
+\hline
+\end{tabular}
+
+\subsection{2012}
+
+\begin{tabular}{|rl|}
+\hline
+7DC & hexadezimal \\
+3734 & oktal \\
+11111011100 & binär \\
+\hline
+2012 & dezimal \\
+\hline
+\end{tabular}
+
+\subsection{5,5625}
+
+\begin{tabular}{|rl|}
+\hline
+5,9 & hexadezimal \\
+5,44 & oktal \\
+101,1001 & binär \\
+\hline
+5,5625 & dezimal \\
+\hline
+\end{tabular}
+
+\subsubsection{Beispielrechnung für 5,5625}
+Umwandlung in Binärsystem
+
+		$375:2 = 187		$	Rest: 1 \\
+		$187:2	= 93		$	Rest: 1 \\
+		$93:2	= 46			$	Rest: 1 \\
+		$46:2	= 23			$	Rest: 0 \\
+		$23:2	= 11			$	Rest: 1 \\
+		$11:2	= 5 			$	Rest: 1 \\
+		$5:2		= 2 		$	Rest: 1 \\
+		$2:2		= 1			$	Rest: 0 \\
+		$1:2		= 0			$	Rest: 1 \\
+		$= 101110111_2 = 375_{10} $ 
+		
+		
+		$0,375\cdot2=0,75$ Ziffer: 0 \\
+		$0,75\cdot2=1,5$	Ziffer: 1	\\
+		$0,5\cdot2=1$	Ziffer: 1	\\
+		
+		$375,375_{10}=101110111,011_2$
+			\\
+			\\
+		\\Umwandlung in Oktalsystem
+
+		$ 375:8 = 46 $ Rest: 7\\
+		$ 46 :8 = 5  $ Rest: 6 \\
+		$ 5  :8 = 0  $ Rest: 5 \\
+    $ = 567_8		 $
+
+		$0,375\cdot8=3$ Ziffer : 3\\
+		$=0,3_8$ 
+		
+		Daraus folgt: $375,375_{10}=567_8+0,3_8=567,3_8$\\
+		\\
+		Umwandlung in Hexadezimalsystem \\
+		
+		$375:16=23$	Rest:7 \\
+		$23:16=1	$	Rest:7 \\
+		$1:16=0		$	Rest:1 \\
+		$=177_{16}$
+		
+		$0,375\cdot16=6$	Ziffer: 6 \\
+	  $=0,6_{16}$
+	  
+	  $375,375_{10}=177_{16}+0,6_{16}=177,6_{16} $
+
+\subsection{375,375}
+
+\begin{tabular}{|rl|}
+\hline
+177,6 & hexadezimal \\
+567,3 & oktal \\
+101110111,011 & binär \\
+\hline
+375,375 & dezimal \\
+\hline
+\end{tabular}		
+		
+\section{Umwandlung in Dezimalzahlen } 
+	
+		
+	\[1110,1001 = 2^{3}+2^{2}+2^{1}+2^{-1}+2^{-4} = 14,5625 \]
+	\[10101,10011 = 2^{4}+2^{2}+2^{0}+2^{-1}+2^{-4}+2^{-5}	=	21,59375\]
+		
+\section{Addition im Dualsystem}
+
+	\[ 25487_{10}+15190_{10}=40677\]
+	\[ 25487_{10}=110001110001111_{2}=61617_{8}=638F_{16}\]
+	\[ 15190_{10}=11101101010110_{2}=35526_{8}=3B56_{16}\]
+
+	\begin{tabular}{r}
+		0110001110001111\\
+		+0011101101010110\\
+		\hline
+		$1001111011100101$\\
+		$=117345_{8}=9EE5_{16}$
+	\end{tabular}
+
+\section{Multiplikation im Dualsystem}
+	\begin{tabular}{r}
+    
+	  $10010011\cdot111001$\\
+	  10010011\phantom{11001}\\
+	  10010011\phantom{1001} \\
+	  10010011\phantom{001} \\
+	  00000000\phantom{01} \\
+	  00000000\phantom{1} \\
+	  10010011 \\
+	  \hline
+		111111111\phantom{00000}\\ \hline
+	  10000010111011
+    
+	\end{tabular}
+
+\section{Komplemente}
+
+$K_{10} (4,582)_{10}= 10^2-4,582 = 95,4180               $\\
+$K_{10-1} (0,1274)_{10} = 10^2-10^{-4} -0,1274 = 99,8725   $   \\          
+$K_{2} (1,011)_{2} = 2^{2-1}-1,011 =4-1,375 = 2,625 = 10,101$\\
+$K_{2-1}(100,01)_{2} = 16 - 0,125 - 4,25 = 11,625= 1011,101$\\
+
+\section{Darstellung negativer Zahlen}
+
+	1 = Ganzzahl im Dualsystem \\
+	2 = Betrag und Vorzeichen\\
+	3 = Exzess-127 Kodierung\\
+	4 = Einerkomplement\\
+	5 = Zweierkomplement\\
+
+	\begin{tabular}{|l c c c c c|} 
+		\hline
+		Binär & 1 & 2 & 3 & 4 & 5  \\ \hline
+		0000 1001 & 9 & 9 & -118 & 246 & 247\\ \hline
+		0110 0101 & 101 & 101 & -26 & 154 & 155\\ \hline
+		1000 0001 & 129 & -1 & 2 & -126 & -127\\ \hline
+		1111 1011 & 251 & -123 & 124 & -4 & -5\\ \hline 
+	\end{tabular}
+
+\end{document}

@@ -1,0 +1,52 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{alltt}
+
+\newcommand\code[1]{\begin{alltt}#1\end{alltt}}
+
+\title{RS-Übung 12}
+\author{Arne Beer \\ Rafael Epplee \\ Florian Tobergte}
+
+\begin{document}
+
+\maketitle
+
+\section*{Aufgabe 1}
+
+    \subsection*{a)}
+        \code{0x0000CAFE + 0x00000004 = 0x0000CB02}
+
+    \subsection*{b)}
+        \code{0x000000CB - 0x0000000C = 0x000000BF}
+
+    \subsection*{c)}
+        \code{0x00012300 * 0x00000020 = 0x00246000}
+
+    \subsection*{d)}
+        \code{0x00000042 + 0x00000001 = 0x00000043}
+
+    \subsection*{e)}
+        \code{0x0000000C - 0x00000001 = 0x0000000B}
+
+    \subsection*{f)}
+        \code{0x00000100 - 0x00000004 = 0x000000FC}
+
+\section*{Aufgabe 2}
+    
+    Indem man ein Register von sich selbst subtrahiert, ergibt sich immer der Wert 0:
+
+    \code{subl \%eax, \%eax}
+
+\section*{Aufgabe 3}
+
+\section*{Aufgabe 4}
+
+    \begin{alltt} 
+        pushl %ebp
+        subl $32, %ebp
+        imull $142, %ebp
+        shrl $2, %ebp
+    \end{alltt}
+
+\end{document}

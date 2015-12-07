@@ -1,0 +1,216 @@
+\documentclass{article}
+\usepackage{amsfonts}
+\usepackage[a4paper]{geometry}
+\usepackage{alltt}
+\usepackage{lmodern}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage[parfill]{parskip}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel} 
+
+\title{AD-Uebung zum 22. Oktober}
+\author{Arne Beer, MN 6489196\\
+Merve Yilmaz, MN 6414978\\
+Sascha Schulz, MN 6434677}
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+    \item[\textbf{1.}]
+        \begin{enumerate}
+            \item
+                \[ \frac{1}{n} \prec 1 \prec \log{\log{n}} \prec \log{n} \asymp \log{n^3} \prec \log{n^{log{n}}} \prec n^{0.01} 
+                \prec n^{0.5} \prec n \cdot \log{n} \prec n^8 \prec 2^n \prec 8^n \prec n! \prec n^n \]
+                
+                \[\lim\limits_{n \rightarrow \infty}{\frac{\frac{1}{n}}{1}} = \frac{1}{\infty} = 0\]
+                $$f_1 \in o(f_2)$$
+                
+                \[\lim\limits_{n \rightarrow \infty}{\frac{1}{\log{\log{n}}}} = \frac{1}{\infty} = 0\]
+                $$f_2 \in o(f_3)$$
+
+                \[\lim\limits_{n \rightarrow \infty}{\frac{\log{\log{n}}}{\log{n}}}\]
+                \[\text{Satz von l'Hospital: } \lim\limits_{n \rightarrow \infty}{\frac{1}{\log{n}}} = \frac{1}{\infty} = 0\]
+                $$f_3 \in o(f_4)$$
+                
+                \[\lim\limits_{n \rightarrow \infty}{\frac{\log{n}}{\log{n^3}}}
+                 = \frac{1}{3}\]
+                \[\lim\limits_{n \rightarrow \infty}{\frac{\log{n^3}}{\log{n}}}
+                 = 3\]
+                $$f_4 \in \Theta(f_5)$$
+                    
+                \[\lim\limits_{n \rightarrow \infty}{\frac{\log{n^3}}{\log{n^{log{n}}}}}
+                = \lim\limits_{n \rightarrow \infty}{\frac{1}{n-3} = \frac{1}{\infty} = 0}\]
+                $$f_5 \in o(f_6)$$
+
+                \[\lim\limits_{n \rightarrow \infty}{\frac{\log{n^{\log{n}}}}{n^{0.01}}}\]
+                \[\text{Satz von l'Hospital: } \lim\limits_{n \rightarrow \infty}{\frac{200 \cdot \log{n}}{n^{0.01}}}\] 
+                \[\text{Satz von l'Hospital: } \lim\limits_{n \rightarrow \infty}{20000 \cdot \frac{1}{n} \cdot n^{0.99}
+                = \lim\limits_{n \rightarrow \infty}{\frac{20000}{n^{0.01}}}} = \frac{1}{\infty} = 0\]
+                $$f_6 \in o(f_7)$$
+
+                \[\lim\limits_{n \rightarrow \infty}{\frac{n^{0.01}}{n^{0.5}}}
+                = \lim\limits_{n \rightarrow \infty}{\frac{1}{n^{0.49}}} = \frac{1}{\infty} = 0\]
+                $$f_7 \in o(f_8)$$
+
+                
+                \[\lim\limits_{n \rightarrow \infty}{\frac{n^{0.5}}{n\cdot \log{n}}}
+                = \lim\limits_{n \rightarrow \infty}{\frac{1}{\sqrt{n} \cdot \log{n}}} = \frac{1}{\infty} = 0\]
+                $$f_8 \in o(f_9)$$
+
+                \[\lim\limits_{n \rightarrow \infty}{\frac{n\cdot \log{n}}{n^8}} 
+                = \lim\limits_{n \rightarrow \infty}{\frac{\log{n}}{n^7}}\]
+                \[\text{Satz von l'Hospital: } \lim\limits_{n \rightarrow \infty}{\frac{1}{7 \cdot n^7}} 
+                = \frac{1}{\infty} = 0 \]
+                $$f_9 \in o(f_{10})$$
+
+                \[\lim\limits_{n \rightarrow \infty}{\frac{n^8}{2^n}} = \frac{1}{\infty} = 0\]
+                Eine Exponentialfunktion waechst wesentlich schneller, als eine Polynomfunktion, daher die Schlussfolgerung.
+                $$f_{10} \in o(f_{11})$$
+
+                \[\lim\limits_{n \rightarrow \infty}{\frac{2^n}{8^n}}
+                 = \lim\limits_{n \rightarrow \infty}{\frac{2^n}{(2^3)^n}
+                 = \lim\limits_{n \rightarrow \infty}{\frac{1}{(2^n)^2}}} = \frac{1}{\infty} = 0\]
+                $$f_{11} \in o(f_{12})$$
+
+                \[\lim\limits_{n \rightarrow \infty}{\frac{8^n}{n!}} = \frac{1}{\infty} = 0\]
+                Fuer $n!$ gilt $1\cdot 2 \cdot 3 \cdots (n-2) \cdot (n-1) \cdot (n)$ mit n Multiplikationen.\\
+                Fuer $8^n$ gilt $8 \cdot 8 \cdot 8 \cdots 8 \cdot 8$ mit n Multiplikationen.\\
+                Da bei $n!$ die Multiplikanden ansteigen und bei $8^n$ konstant bleiben, folgt, dass $n!$ wesentlich schneller waechst als $8^n$
+                $$f_{12} \in o(f_{13})$$
+
+                \[\lim\limits_{n \rightarrow \infty}{\frac{n!}{n^n}} = \frac{1}{\infty} = 0\]
+                Fuer $n!$ gilt $1 \cdot 2 \cdot 3 \cdots (n-1) \cdot n$, wobei $(n-1)$ Multiplikationen vorliegen.\\
+                Fuer $n^n$ gilt $n \cdot n \cdot \cdots n \cdot n$, wobei ebenfalls $(n-1)$ Multiplikationen vorliegen.\\
+                Daraus folgt, das $n^n$ schneller waechst als $n!$.
+                $$f_{13} \in o(f_{14})$$
+            \newpage
+            \item
+            
+                \begin{enumerate}
+                    \item
+                        Um die Regel zu beweisen, muss gelten $\log_b{n} \in O(\log_2{n})$ und $\log_2{n} \in O(\log_b{n})$.\\
+                        Am einfachsten ist es zu beweisen, dass es fuer alle $\log_n$ mit $n \in \mathbb{N}$, also $\log_a{n} \in \Theta (\log_b{n})$ mit $a, b \in \mathbb{N}$ gilt. 
+                        \[ \lim\limits_{n \rightarrow \infty}{\frac{log_a{n}}{log_b{n}}}\]
+                        \[\text{Satz von l'Hospital: } \lim\limits_{n \rightarrow \infty}{\frac{\ln{n}\cdot \ln{b}}{\ln{n}\cdot \ln{a}}}
+                         = \frac{\ln{b}}{\ln{a}} < \infty \]
+                         Dieses Ergebnis ist folglich immer fuer jedes $a,b \in \mathbb{N}$ ein fester Wert und somit gilt auch $\log_b{n} \in \Theta (\log_2{n})$ fuer ein $b >1$
+                    \item
+                        Sobald gilt $f \in O(g)$ ist $\lim\limits_{x \rightarrow \infty}{|\frac{f(x)}{g(x)}|} < \infty$.\\
+                        Da fuer $g \in \omega(f)$ jedoch $\lim\limits_{x \rightarrow \infty}{|\frac{f(x)}{g(x)}|} = 0$ gelten muss, 
+                        kann man nicht von $f \in O(g)$ auf $g \in \omega(f)$ schlussfolgern. 
+
+                    \item
+                        Fuer die Summe $f_c(n) := \sum_{i=0}^n c^i $ gilt mit c = 1, dass $f_c(n) := \sum_{i=0}^n 1^i $.\\
+                        Fuer jeden Ausdruck der Form $1^n$ mit $n \in \mathbb{R}$ gilt $1^n = 1$. Daher laesst sich die Summe 
+                        $f_c(n) := \sum_{i=0}^n c^i $ fuer $c=1$ zusammenfassen als $f_c(n) := \sum_{i=0}^n c^i = n$.\\
+                        Also muss fuer $f_c(n) \in \Theta(n)$ mit $c=1$ gelten, dass $f_c(n) \in O(n)$ und $n \in O(f_c)$
+                        Dies ist erfuellt, da $\lim\limits_{n \rightarrow \infty}{\frac{n}{n}} = 1 < \infty $
+            
+                        Um den Beweis in die entgegengesetze Richtung durchzufuehren, muss abgesichert sein, dass die Summe linear waechst, sodass $f_c(n) \in \Theta(n)$ gilt.
+                        Dies ist nur gewaehrleistet, wenn $c^i$ weder gegen 0 noch gegen $\infty$ strebt, was wiederum nur gilt, falls $c=1$. Dementsprechend gilt die gegenseitige Beziehung $f_c(n) \in \Theta(n) \Leftrightarrow c=1$
+                \end{enumerate}
+        \end{enumerate}
+    
+    \item[\textbf{2.}]
+        \begin{enumerate}
+            \item
+                Es Soll bewiesen werden, dass fuer alle $F_n \geq 2^{0.5n}$ fuer alle $n \geq 6$
+
+                Induktionsannahme: 
+                    \[F_n \geq 2^{0.5n} \text{ fuer alle } n \geq 6\]
+                Induktionsanfang: 
+                    \[ F_6 = 8 \geq 2^{3} = 8 \ \text{wahre Aussage}  \]
+                Induktionsschritt:
+                    \[ F_{n+1} \geq 2^{0.5 \cdot (n+1)} \]
+                    \[ \Leftrightarrow F_{n} + F_{n-1} \geq 2^{0.5 \cdot (n+1)} = 2^{0.5n} \cdot \sqrt{2}\] \\
+                Durch Anwendung der Induktionsannahme folgt:
+                    \[ \Leftrightarrow F_{n} + F_{n-1} \geq 2^{0.5n} + 2^{0.5 \cdot (n-1)} \]
+                Es gilt:
+                Wenn $a \geq c$\\
+                und $b \geq d$\\
+                dann ist $a+b \geq c+d$
+
+                $F_n \geq 2^{0.5n}$ ist durch die Induktionsannahme bewiesen.
+                Nun wird eine weiter vollstaendige Induktion fuer den zweiten Ausdruck durchgefuehrt.
+
+                Induktionsannahme: 
+                    \[F_{n-1} \geq 2^{0.5n-1} \text{ fuer alle } n \geq 7\]
+                Induktionsanfang: 
+                    \[ F_{7-1} = 8 \geq 2^{0.5\cdot(7-1)} = 8 \ \text{wahre Aussage}  \]
+                Induktionsschritt:
+                    \[ F_{n} \geq 2^{0.5 \cdot (n)} \]
+                Durch Anwendung der Induktionsannahme des ersten Beweises ist die Aussage wahr und bewiesen. \\
+                Somit gilt:
+                \[F_{n} + F_{n-1} \geq 2^{0.5n} + 2^{0.5 \cdot (n-1)} \]
+
+            \item
+                Es Soll bewiesen werden, dass fuer alle $F_n \leq 2^{n}$ fuer alle $n \geq 0$
+
+                Induktionsannahme: 
+                    \[F_n \leq 2^{n} \text{ fuer alle } n \geq 0\]
+                Induktionsanfang: 
+                    \[ F_0 = 0 \leq 2^{1} = 1 \ \text{wahre Aussage}  \]
+                Induktionsschritt:
+                    \[ F_{n+1} \leq 2^{n+1} \]
+                    \[ \Leftrightarrow F_{n} + F_{n-1} \leq 2^{n+1} = 2^{n} \cdot 2\] \\
+                Durch Anwendung der Induktionsannahme folgt:
+                    \[ \Leftrightarrow F_{n} + F_{n-1} \leq 2^{n} + 2^{n-1} \]
+                    Es gilt:
+                    \[ F_{n+1} \leq 2^n \cdot 2 \]
+                    \[ \Leftrightarrow F_{n+1} \leq 2^n + 2^n \]
+                    \[ 2^{n} + 2^{n-1} \leq 2^n + 2^n \]
+                    daher gilt, dass Die Fibonnaci-Reihe immer kleiner als $2^n$ ist. 
+
+        \end{enumerate}
+
+    \item[\textbf{3.}]
+        \begin{enumerate}
+            \item
+                Es soll bewiesen werden, dass die Fibonacci-Reihe sich durch die folgende Matrizen-Multiplikation berrechnen laesst:
+                    \[ \begin{pmatrix}F_n \\ F_{n+1} \end{pmatrix} 
+                    = \begin{pmatrix} 0&1 \\ 1&1 \end{pmatrix}^n
+                    \cdot \begin{pmatrix} 0 \\ 1 \end{pmatrix}\]
+                \[M = \begin{pmatrix} 0&1 \\ 1&1 \end{pmatrix}^n\]
+                Daraus laesst sich schlussfolgern, dass das Ergebnis der Matrix die an den Stellen $M_{1,0}$ und $M_{1,1}$ equivalent zu $F_n$ und $F_{n+1}$ sein muessen. 
+
+                Wenn man sich die Zwischenergebnisse der Matrix M ansieht, erkennt man folgendes Muster:
+                    \[\begin{pmatrix} 0&1 \\ 1&1 \end{pmatrix}^n
+                    = \begin{pmatrix} F_{n-1} & F_n \\ F_n & F_{n+1} \end{pmatrix} \]
+
+                Induktionsannahme:
+                    \[\begin{pmatrix} 0&1 \\ 1&1 \end{pmatrix}^n
+                    = \begin{pmatrix} F_{n-1} & F_n \\ F_n & F_{n+1} \end{pmatrix} \]
+                Induktionsanfang: $n=2$
+                    \[\begin{pmatrix} 0&1 \\ 1&1 \end{pmatrix} \cdot \begin{pmatrix} 0&1 \\ 1&1 \end{pmatrix}
+                    = \begin{pmatrix} 1 & 1 \\ 1 & 2 \end{pmatrix}
+                    = \begin{pmatrix} F_1 & F_2 \\ F_2 & F_3 \end{pmatrix}\]
+                Aussage stimmt.
+
+                Induktionsschritt:
+                    \[\begin{pmatrix} 0&1 \\ 1&1 \end{pmatrix}^{n+1}
+                    = \begin{pmatrix} F_{n} & F_{n+1} \\ F_{n+1} & F_{n+2} \end{pmatrix} \]
+                    \[ \begin{pmatrix} 0&1 \\ 1&1 \end{pmatrix}^{n} \cdot \begin{pmatrix} 0&1 \\ 1&1 \end{pmatrix} 
+                    = \begin{pmatrix} F_{n} & F_{n+1} \\ F_{n+1} & F_{n+2} \end{pmatrix} \]
+                Einsetzen der Induktionsannahme:
+                    \[ \begin{pmatrix} 0&1 \\ 1&1 \end{pmatrix}^{n} \cdot \begin{pmatrix} 0&1 \\ 1&1 \end{pmatrix} 
+                    = \begin{pmatrix} F_{n-1} & F_n \\ F_n & F_{n+1} \end{pmatrix} \cdot \begin{pmatrix} 0&1 \\ 1&1 \end{pmatrix} \]
+                    \[ \Leftrightarrow \begin{pmatrix} F_n & F_n + F_{n-1} \\ F_{n+1} & F_{n+1} + F_n \end{pmatrix} 
+                    \Leftrightarrow \begin{pmatrix} F_{n} & F_{n+1} \\ F_{n+1} & F_{n+2} \end{pmatrix} \]
+
+                Somit ist bewiesen, dass die Aussage fuer alle $n \geq 0$ gilt.
+            \item
+                Fuer jedes $X^n$ mit $n \geq 4$ laesst sich $n$ in Primfaktoren zerlegen, sodass sich $X^n$ als $(X^{\frac{n}{a}})^a$. Dieses Vorgehen laesst sich fuer jeden weiteren Primfaktor wiederholen, sodass die Laufzeit im besten Falle lediglich $\log_2{n}$ betraegt.
+            \item
+                Fuer eine Multiplikation zweier 2x2 Matrizen werden 8 Multiplikationen und 4 Additionen benoetigt. Fuer $A^n$ werden nach dem vorherigen Verfahren ledigliche $\log{n}$ Multiplikationen benoetigt. Dementsprechend betraegt die Laufzeit $\log(n) \cdot 8 \cdot O(l^{1.59}) \cdot 4 \cdot O(l)$. Fuer die Berrechnung mithilfe eines Arrays benoetigen wir eine ungefaehre Laufzeit von $n^2 \cdot O(l)$.
+                Wenn man sich bitweise Addition von zwei Zahlen betrachtet, ist der maximale Zuwachs an Bits der groessten Zahl gleich eins. Da insgesamt n Additionen stattfinden und die Startzahl 1 Bit hat, ist die theoretisch maximal erreichbare Zahl $(n+1)$. In der Praxis wird diese Zahl natuerlich nicht erreicht.
+                Dementsprechend kann man mit $\log(n) \cdot 8 \cdot O((n+1b)^{1.59})s \cdot 4 \cdot O(n+1)$ und $n^{2} \cdot O(n+1)$ als schlechtesten Fall rechnen. Die Matrizenmultiplikation ist folglich die performanteste, da sie im Gegenzug zur Array-Berrechnung lediglich von $log(n)$, anstatt von $n^2$ abhaengig ist. 
+        \end{enumerate}
+    \end{enumerate}
+\end{document}  

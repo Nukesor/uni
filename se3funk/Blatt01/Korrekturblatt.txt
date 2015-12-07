@@ -1,0 +1,27 @@
+1.1: Bitte keine unnötigen Lambda-Ausdrücke; Funktionen möglichst nach
+Vorgabe benennen; 2pi/360 lässt sich zu pi/180 vereinfachen.
+-> 3 von 4
+
+1.2: Abstruse Fallentscheidung ohne Erklärung :o
+-> 1 von 3
+
+1.3: 1 von 1
+
+2.1: Sehr unschön formatiert, nicht kommentiert, ansonsten okay (dG
+könnte man mit let auslagern)
+-> 8 von 11
+
+2.2: Liefert völlig falsche Ergebnisse, bspw. von SanFran nach Honolulu:
+20553.43304662618; an einigen Stellen verwechselt ihr dG und distanzAB;
+leider nicht kommentiert und schwer nachvollziehbar (sehr lange Zeilen)
+-> 0 von 4
+
+2.3: cardinaldir liefert immer "N" für Werte bis 359, für größere Werte
+gar kein Ergebnis; cardtodegree funktioniert, Stringvergleiche sind aber
+sehr unelegant
+-> 2 von 6
+
++1 für Crypto
+
+=========
+16 von 25

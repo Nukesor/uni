@@ -1,0 +1,140 @@
+\documentclass{article}
+\usepackage{amsfonts, amsmath,amssymb}
+\usepackage[ngerman]{babel}
+\usepackage[parfill]{parskip}
+\usepackage[latin1]{inputenc}
+
+\title{Mathematik Hausaufgaben zum 15./16. November}
+\author{Arne Beer, MN 6489196 \\
+ Tim Overath, MN 6440863}
+
+\begin{document}
+\maketitle
+
+\section*{1.}
+\subsection*{a)}
+Es existieren $7^5$ Abbildungen $ g: X \rightarrow Y $ \\
+Davon sind $\frac{7!}{2!}=2520  $ injektiv \\
+Es gibt $ 7 \cdot 7 \cdot 7\cdot 6 \cdot 5 \cdot =10290$ für $ g: X \rightarrow Y $ bei denen g(2), g(3) und g(4) drei verschiedene Elemente sind. 
+\subsection*{b)}
+Es gibt $\left( \begin{array}{c} 49 \\ 6 \end{array} \right) = 13983816 $ Tips bei Lotto "`6 aus 49 " 
+
+\subsection*{c)}
+Es werden die Anzahl der Möglichkeiten der Teilmeingen 997-1000 berrechnet, da nach mindestens 997 Teilmengen gefragt wird.
+
+\[\binom {1000}{997}+\binom {1000}{998}+\binom {1000}{999}+\binom {1000}{1000}=166667501\]
+
+
+
+\section*{2.}
+
+\subsection*{a)}
+
+\[x^5 y^{11} in (x+y)^{16} \rightarrow \binom{16}{5}  \]
+
+\[x^3y^5z^2 in (x+y+z)^{10} \rightarrow \frac{10!}{3!\cdot 5! \cdot 2!}\]
+
+
+\subsection*{b)}
+
+CAPPUCINO:
+$ \frac{10!}{3!\cdot 2!} = 302400 $ Möglichkeiten
+
+MANGOLASSI:
+$ \frac{10!}{2! \cdot 2!} = 907200 $ Möglichkeiten
+
+SELTERWASSER:
+$ \frac{12}{3! \cdot 3! \cdot 2!}  = 6652800$ Möglichkeiten
+
+
+\subsection*{c)}
+Es handelt sich hierbei um ein Ziehen mit Zurücklegen und ohne Reihenfolge
+Demnach gilt: 
+\[ \binom{6+10-1}{6}=\binom{15}{6} = 720 \]
+Es gibt 720 Möglichkeiten eine Kiste mit 6 Flaschen zusammenzustellen.
+
+\section*{3.}
+\subsection*{a)}
+Induktionsannahme für ein $ n\geq $ 3:
+\[ \sum_{i=3}^{n} \left( \begin{array}{c} i \\ i-3 \end{array}  \right) = \left( \begin{array}{c} n+1 \\ 4 \end{array}  \right) \] \\
+Induktionsanfang mit n=3: 
+\[ \sum_{i=3}^{3} \left( \begin{array}{c} i \\ i-3 \end{array}  \right) = \left( \begin{array}{c} 4 \\ 4 \end{array}  \right) \] 
+\[ \Rightarrow  \frac{3!}{3!\cdot 0!}  = \frac{4!}{4!}\]
+\[ \Rightarrow  1=1 \text{ Wahre Aussage} \]  \\
+Induktionsschritt:
+\[ \sum_{i=3}^{n+1} \left( \begin{array}{c} i \\ i-3 \end{array}  \right) = \left( \begin{array}{c} n+2 \\ 4 \end{array}  \right) \] \\
+\[\Leftrightarrow \left( \begin{array}{c} n+2 \\ 4 \end{array} \right) = \left( \begin{array}{c} n+1 \\ 4 \end{array} \right) + \left( \begin{array}{c} n+1 \\ n+1-3 \end{array} \right) \] \\
+\[\Leftrightarrow \left( \begin{array}{c} n+2 \\ 4 \end{array} \right) = \left( \begin{array}{c} n+1 \\ 4 \end{array} \right) + \frac{(n+1)!}{3!\cdot (n-2)!} \] \\
+\[\Leftrightarrow  \left( \begin{array}{c} n+2 \\ 4 \end{array} \right) = \left( \begin{array}{c} n+1 \\ 4 \end{array} \right) + \frac{(n+1)!}{3!\cdot (n+1-3)!} \]
+\[\Leftrightarrow  \left( \begin{array}{c} n+2 \\ 4 \end{array} \right) = \left( \begin{array}{c} n+1 \\ 4 \end{array} \right) + \left( \begin{array}{c} n+1 \\ 3 \end{array} \right) \]
+
+Die Aussage ist durch die uns bekannte Rekursionsformel bewiesen. Die Behauptung stimmt demnach.
+
+\section*{4.}
+
+ \subsection*{a)}
+
+Anzahl derjenigen $ k \in \mathbb{N} (1\leq k \leq 2000)$, die weder durch 3,5 oder 7 teilbar sind: \\
+Es sei $S={k \in \mathbb{N}:1\leq k\leq 1000} \text{ und } N=|S|=2000$
+
+$A_1=\{k\in S : 3 \mid k\}  \Rightarrow |A_1|=\lfloor \frac{2000}{3}  \rfloor = 666$
+
+$A_2=\{k\in S : 5 \mid k\}  \Rightarrow |A_2|=\lfloor \frac{2000}{5}  \rfloor = 400$
+
+$A_3=\{k\in S : 7 \mid k\}  \Rightarrow |A_3|=\lfloor \frac{2000}{7}  \rfloor = 285$
+
+$A_1\cup A_2=\{k\in S : 15 \mid k\}  \Rightarrow |A_1\cup A_2|=\lfloor \frac{2000}{15}  \rfloor = 133$
+
+$A_2\cup A_3=\{k\in S : 35 \mid k\}  \Rightarrow |A_2\cup A_3|=\lfloor \frac{2000}{35}  \rfloor = 57$
+
+$A_3\cup A_1=\{k\in S : 21 \mid k\}  \Rightarrow |A_3\cup A_1|=\lfloor \frac{2000}{21}  \rfloor = 95$
+
+$A_1\cup A_2 \cup A_3=\{k \in S : 105 \mid k\}  \Rightarrow |A_1|=\lfloor \frac{2000}{105}  \rfloor = 19$
+
+Insgesamt erhält man:\\
+$ |S\ (A_1\cap A_2 \cap A_3)| = 2000 -(666+400+285)+133+95+57-19=915 $
+
+\subsection*{b)}
+
+Anzahl derjenigen $ k \in \mathbb{N} (1\leq k \leq 1000)$, die weder durch 3, 5, 7 oder 11 teilbar sind: \\
+Es sei $S={k \in \mathbb{N}:1\leq k\leq 1000} \text{ und } N=|S|=1000$
+
+$A_1=\{k\in S : 3 \mid k\}  \Rightarrow |A_1|=\lfloor \frac{1000}{3}  \rfloor = 333$
+
+$A_2=\{k\in S : 5 \mid k\}  \Rightarrow |A_2|=\lfloor \frac{1000}{5}  \rfloor = 200$
+
+$A_3=\{k\in S : 7 \mid k\}  \Rightarrow |A_3|=\lfloor \frac{1000}{7}  \rfloor = 142 $
+
+$A_4=\{k\in S : 11 \mid k\}  \Rightarrow |A_3|=\lfloor \frac{1000}{11}  \rfloor = 90 $
+
+$A_1\cup A_2=\{k\in S : 15 \mid k\}  \Rightarrow |A_1\cup A_2|=\lfloor \frac{1000}{15}  \rfloor = 66 $
+
+$A_1\cup A_3=\{k\in S : 21 \mid k\}  \Rightarrow |A_1\cup A_2|=\lfloor \frac{1000}{21}  \rfloor = 47$
+
+$A_1\cup A_4=\{k\in S : 33 \mid k\}  \Rightarrow |A_1\cup A_2|=\lfloor \frac{1000}{33}  \rfloor = 30$
+
+$A_2\cup A_3=\{k\in S : 35 \mid k\}  \Rightarrow |A_1\cup A_2|=\lfloor \frac{1000}{35}  \rfloor = 28$
+
+$A_2\cup A_4=\{k\in S : 55 \mid k\}  \Rightarrow |A_1\cup A_2|=\lfloor \frac{1000}{55}  \rfloor = 18$
+
+$A_3\cup A_4=\{k\in S : 77 \mid k\}  \Rightarrow |A_1\cup A_2|=\lfloor \frac{1000}{77}  \rfloor = 12$
+
+
+$A_1\cup A_2 \cup A_3=\{k\in S : 105 \mid k\}  \Rightarrow |A_1|=\lfloor \frac{1000}{105}  \rfloor = 9$
+
+$A_1\cup A_2 \cup A_4=\{k\in S : 165 \mid k\}  \Rightarrow |A_1|=\lfloor \frac{1000}{165}  \rfloor = 6$
+
+$A_1\cup A_3 \cup A_4=\{k\in S : 231 \mid k\}  \Rightarrow |A_1|=\lfloor \frac{1000}{231}  \rfloor = 4$
+
+$A_2\cup A_3 \cup A_4=\{k\in S : 385 \mid k\}  \Rightarrow |A_1|=\lfloor \frac{1000}{385}  \rfloor = 2$
+
+$A_1\cup A_2 \cup A_3 \cup A_3=\{k\in S : 1155 \mid k\}  \Rightarrow |A_1|=\lfloor \frac{1000}{1155}  \rfloor = 0$
+
+Insgesamt erhält man:\\
+$ |S\ (A_1\cap A_2 \cap A_3 \cap A_4)| = 1000 -(333+200+142+90)+66+47+30+28+18+12-(9+6+4+2)+0=415
+ $
+
+
+
+
+\end{document}

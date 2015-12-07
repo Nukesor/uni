@@ -1,0 +1,181 @@
+\documentclass[11pt]{article}
+%Gummi|065|=)
+\usepackage[utf8]{inputenc}
+\usepackage{setspace}
+\title{\textbf{SE3-LP Übungsblatt 01}}
+\author{Arne Beer\\
+		Anne-Victoria Meyer}
+\date{}
+\begin{document}
+
+\maketitle
+\flushleft
+\onehalfspacing
+\section{}
+\subsection{}
+
+\verb|[familie].| \\
+ Der Ausdruck gibt "true" zurück, da das Einbinden der File erfolgreich war. Die Ausdrücke sind vom Effekt her zueinander äquivalent. [] deklariert in in Prolog eine Liste. Mit dem . Operator wird nun jedes Element dieser Liste wie ein Befehl ausgeführt. Wenn man allerdings einen Pfad angibt [/dir/file] sucht er in dem momentenan Directory nach der File /dir/file, welche natuerlich nicht existiert. Daher muss der der Ausdruck in '' gesetzt werden, damit er im Pfad sucht. 
+\\
+
+\subsection{} 
+\verb|listing.| \\
+Dieser Befehl gibt alle Prädikate, welche in der momentanen Datenbank vorhanden sind, mit Klauseln und Fakten aus.
+\\
+
+\verb|listing(mutter_von).| \\
+Gibt alle Prädikate vom Typen mutter\_von mit ihren Klauseln und Fakten aus.
+\\
+
+\subsection{}
+\verb|assert(mutter_von(marie, tom)).| \\
+assert ist deprecated und soll daher nicht benutzt werden. Stattdessen soll assertz benutzt werden. \\ 
+\verb|assertz(mutter_von(marie, rom)).| \\
+\verb|asserta(mutter_von(marie, fom)).| \\
+
+asserta sorgt dafür, dass die Klausel am Anfang der Klauseln des entsprechenden Prädikats steht. assertz hingegen hängt die Klausel an das Ende der Klauseln des entsprechenden Prädikats.
+\\
+
+\verb| listing(mutter_von).| \\
+
+\section{}
+\subsection{}
+\subsubsection*{a}
+\verb|Vater_von(johannes, andrea).| \\
+\verb|true.| \\
+Johannes ist also der Vater von Andrea.
+\\
+
+\subsubsection*{b}
+\verb|mutter_von(helga, charlotte).| \\
+\verb|false| \\
+Nein, die Mutter von Charlotte heisst nicht Helga.
+\\
+
+\subsubsection*{c}
+\verb|vater_von(Vater, magdalena).| \\
+\verb|Vater = walter.| \\
+Der Vater von Magdalena heisst also Walter. Vater ist hier eine Variable.
+Die einzige Belegung für die "vater\_von(Vater, magdalena)." true ist,
+ist also wenn Vater=walter.
+
+\subsubsection*{d}
+\verb|vater_von(Vater, walter).| \\
+\verb|false| \\
+Es gibt keine Möglichkeit für den Ausdruck, wahr zu werden.
+Laut Datenbank hat Walter also keinen Vater.
+\\
+
+\subsubsection*{e}
+\verb|vater_von(otto, Kind).| \\
+\verb|Kind = hans ;| \\
+\verb|Kind = helga.| \\
+Ottos Kinder heissen Hans und Helga.
+\\
+
+\subsubsection*{f}
+\verb|vater_von(V, K).|\\
+\verb|V = otto,|\\
+\verb|K = hans ;|\\
+\verb|V = otto,|\\
+\verb|K = helga ;|\\
+\verb|V = gerd,|\\
+\verb|K = otto ;|\\
+\verb|V = johannes,|\\
+\verb|K = klaus ;|\\
+\verb|V = johannes,|\\
+\verb|K = andrea ;|\\
+\verb|V = walter,|\\
+\verb|K = barbara ;|\\
+\verb|V = walter,|\\
+\verb|K = magdalena.|\\
+
+\verb|mutter_von(M, K).|\\
+\verb|M = marie,|\\
+\verb|K = hans ;|\\
+\verb|M = marie,|\\
+\verb|K = helga ;|\\
+\verb|M = julia,|\\
+\verb|K = otto ;|\\
+\verb|M = barbara,|\\
+\verb|K = klaus ;|\\
+\verb|M = barbara,|\\
+\verb|K = andrea ;|\\
+\verb|M = charlotte,|\\
+\verb|K = barbara ;|\\
+\verb|M = charlotte,|\\
+\verb|K = magdalena.|\\
+
+Alle möglichen Belegungen (die true liefern würden) werden angezeigt.
+So ist z.B. Otto der Vater von Hans:\\
+\verb|V = otto,|\\
+\verb|K = hans ;|\\
+Semikola separieren die unterschiedlichen Belegungen wobei sie oder-Verknüpfungen sind.
+Die Kommata separieren die jeweiligen Variablenwerte, sind also und-Verknüpfungen.
+
+\subsubsection*{g}
+\verb|\+ vater_von(klaus, Kind).|\\
+\verb|true.|\\
+Klaus hat also keine Kinder.
+Es gibt keine wahre Belegungen für diese Klausel,
+daher würde false ausgegeben werden.
+Das wird hier jedoch noch negiert also erhalten wir true.
+
+\subsubsection*{h}
+\verb|\+ vater_von(otto, Kind).|\\
+\verb|false.|
+Otto hat also Kinder.
+Auch wenn die Klausel vater\_von(otto, Kind). die wahren Belegungen
+zurück geben würde, wird bei der Negation lediglich ein boolscher Wert ausgegeben.
+
+\subsubsection*{i}
+\verb|\+ \+ vater_von(otto, Kind).|\\
+\verb|true.|\\
+Durch die Negation erhalten wir einen Wahrheitswert,
+durch doppelte den gewünschten.
+
+\subsection{}
+
+\verb|mutter_von(charlotte, Kind), (mutter_von(Kind, EnkelKind1);| \verb|vater_von(Kind, EnkelKind2)).|\\
+\verb|Kind = barbara,|\\
+\verb|EnkelKind1 = klaus ;|\\
+\verb|Kind = barbara,|\\
+\verb|EnkelKind1 = andrea ;|\\
+\verb|false.|\\
+
+Wir suchen eine Belegung für das Kind von Charlotte, so dass dieses Kind ebenfalls eines hat.
+Da es kein kind\_von Praediakt gibt müssen vater\_von und mutter\_von verodert werden.
+Wir haben die Klauseln geklammert, um die Operationen in der richtigen Reihenfolge durchzuführen.
+Die logischen Verknüpfungen sind die folgenden:\\
+; = oder\\
+, = und\\
+
+Am Ende der Ausgabe steht ein false, da zunächst die beiden möglichen Belegungen für eine wahre
+Auswertung aufgelistet werden. Und dann alle anderen, die alle auf false auswerten.
+
+\subsection{}
+
+Anders als im Skript werden nur die erfolgreichen Belegungen auch tatsächlich aufgelistet,
+es sei denn es gibt keine erfolgreichen.
+
+\verb|vater_von(Vater, walter).|\\
+\verb|Call: (6) vater\_von(\_G1814, walter) ? creep|\\
+\verb|Fail: (6) vater-\_von(\_G1814, walter) ? creep|\\
+\verb|false.|\\
+
+In dieser trace ist also keine wahre Belegung gefunden worden.\\
+
+\verb|vater_von(otto, Kind).|\\
+\verb|Call: (6) vater\_von(otto, \_G1815) ? creep|\\
+\verb|Exit: (6) vater\_von(otto, hans) ? creep|\\
+\verb|Kind = hans ;|\\
+\verb|Redo: (6) vater\_von(otto, \_G1815) ? creep|\\
+\verb|Exit: (6) vater\_von(otto, helga) ? creep|\\
+\verb|Kind = helga.|\\
+
+In dieser trace ist eine wahre Belegung gefunden worden,
+danach wird jedoch weiter probiert.
+Dabei wird offensichtlich ähnlich wie in der Vorlesung nach einem Baumschema vorgegangen.
+Die Misserfolge werden nicht angezeigt.
+
+\end{document}

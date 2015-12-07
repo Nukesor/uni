@@ -1,0 +1,73 @@
+\documentclass{article}
+\usepackage{amsfonts}
+\usepackage[a4paper]{geometry}
+\usepackage{alltt}
+\usepackage{lmodern}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage[parfill]{parskip}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel} 
+
+\title{SE3 Logik Zusammenfassung}
+\author{Arne Beer, MN 6489196}
+
+\begin{document}
+\maketitle
+\section*{Rueckblick Funktionen, Relationen}
+    \begin{itemize}
+        \item[Funktion(en)] 
+            \begin{itemize}
+                \item Injektiv
+                \item Surjektiv
+                \item Bijektiv
+                \item $R \leq A x B$ 
+            \end{itemize}
+
+        \item[Relation(en)]
+            \begin{itemize}
+                \item Transitiv $r(x,y)$, $r(y, z)$ $\Longrightarrow r(x,z)$
+                \item Reflexiv $r(x,x)$
+                \item Symmetrisch $r(y,x)$ ; $r(y,x)$
+                \item Aequivalenzrelation, Ordnungsrelation
+            \end{itemize}
+    \end{itemize}
+\section*{Eigenschaften von Prolog}
+    \begin{itemize}
+        \item . Wird benutzt um einen Befehl zu beenden (equivalent zu ;)
+        \item = als Vergleichsoperator
+        \item a Kleinbuchstaben sind Konstanten
+        \item A Grossbuchstaben sind Variablen
+        \item Bei Prolog kann man den Scope einer Variable nicht einschraenken
+        \item Sobald eine Variable nicht mehr benoetigt wird, wird sie gekillt.\\
+              Dementsprechend gibt es kein globalen Variablen, welche ueber die komplette Programmlaufzeit vorhanden seien koennen.
+        \item 'A' von einem ' eingeschlosse Begriffe werden als konstanten interpretiert.
+        \item - + werden als Strukturen interpretiert. Also wird aus $4/2$ der Ausdruck $(4,2)$, also die Relation auf 4 und 2. \\
+                Dementsprechend ist $/(A,2) = /(5,B)$ wahr, falls $A=5$ und $B=2$.
+        \item $=:=$ Dieser Operator beruecksichtigt arithmetische Operationen. Hierdurch koennen normale Rechenoperationen durchgefuehrt werden.
+        \item , als logischer UND Operator.
+        \item < > werden weiterhin als groesser, kleiner Operator interpretiert. Also liefert $2<3$ ein true.
+        \item @< oder @> ueberpruefen die Ordnungrelation zwischen Strukturen. Es gilt Variablen < Zahlen < Konstanten.\\
+                Dementsprechend gilt A @< a true.
+    \end{itemize}
+
+\section*{Syntaktische Eigenschaften von Prolog}
+    \begin{itemize}
+        \item Klausel = Fakt | Ziel |
+        \item Fakt = Struktur
+        \item Fakt = Struktur
+        \item Struktur = Name [ ’(’ Term {’,’ Term} ’)’ ]
+        \item Term = Konstante | Variable | Strukturen | List
+        \item Konstante = Zahl | Name | quoted Name
+        \item Name = Kleinbuchstabe gefolgt von beliebig vielen alpha-nums
+        \item Quoted Name = beliebiger Name in '' einfachem Apostroph eingeschlossen
+        \item Variable = Benannte oder unbenannte Variable sein.
+        \item unbenannte Variable = \_name ist eine anonyme Variable
+        \item benannte Variable = Name 
+    \end{itemize}
+\end{document}

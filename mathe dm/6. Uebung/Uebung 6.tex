@@ -1,0 +1,107 @@
+\documentclass{article}
+\usepackage{amsfonts}
+\usepackage[ngerman]{babel}
+\usepackage[a4paper]{geometry}
+\usepackage{amsfonts}
+\usepackage{alltt}
+\usepackage{amsmath,amssymb}
+\usepackage[parfill]{parskip}
+\usepackage[latin1]{inputenc}
+
+\title{Mathematik Hausaufgaben zum 30. November}
+\author{Arne Beer, MN 6489196 \\
+ Tim Overath, MN 6440863}
+
+\begin{document}
+\maketitle
+
+\section*{6.1}
+
+\subsection*{a)}
+\( A = \begin{pmatrix} 2&0&1 \\ 1&0&-1 \\7&6&3 \\ -1&2&4 \end{pmatrix}
+    ,B=\begin{pmatrix} 3&2&-1 \\ 1&0&2 \\1&1&0 \end{pmatrix} 
+    ,C= \begin{pmatrix} 1 &2&-2 \end{pmatrix}
+    ,D= \begin{pmatrix} 2\\3\\-2 \end{pmatrix} \)
+    
+Folgende der aufgelisteten Produkte sin definierbar. AB, AD, BB, CD, DC
+
+\[AB= \begin{pmatrix} 7&5&-2 \\ 2& 1&-1 \\30&17&5 \\ 3&2&5& \end{pmatrix}, AD= \begin{pmatrix} 
+ 2\\4\\26\\-4 \end{pmatrix}, BB= \begin{pmatrix} 10&5&1\\5&4&-1\\4&2&1 \end{pmatrix}, CD = \begin{pmatrix} 12 \end{pmatrix}, DC= \begin{pmatrix} 3&4&-4 \\3&6&-6 \\-2&-4&4 \end{pmatrix}\]
+
+
+\section*{b)}
+
+$ AB_{3;2}=15 $ \\
+Die vierte Spalte von AB lautet: $ \begin{pmatrix} 13\\8\\3\\23 \end{pmatrix} $
+
+\section*{6.2}
+
+Damit die Gültigkeit des Distributivgesetztes mit den vorliegenden Matrizen bewiesen wird muss gelten:
+$A(B_1+B_2)=AB_1+AB_2$ \\
+
+\[A\cdot (B_1+B_2)=A\cdot \begin{pmatrix} 2&0 \\ 6&8 \end{pmatrix} = \begin{pmatrix} 52&56\\12&-8\\28&16 \end{pmatrix} \]
+
+\[AB_1\cdot AB_2 = \begin{pmatrix} 26&52\\6&12\\14&28 \end{pmatrix}+\begin{pmatrix} 16&4\\6&-20\\14&-12 \end{pmatrix}=\begin{pmatrix} 52&56\\12&-8\\28&16 \end{pmatrix}\]
+Die Gültigkeit der ursprünglichen Aussage ist somit auf diese Matrizen bezogen bewiesen. 
+
+
+\subsection*{b)}
+
+Bestätigen der Gleichung $(AB)^T=B^TA^T$ anhand der vorliegenden Matrizen
+
+\[A^T =\begin{pmatrix} 1&2\\3&6 \end{pmatrix} B^T= \begin{pmatrix} 2&3\\-1&2\\5&4 \end{pmatrix}\]
+
+\[B^T\cdot A^T = \begin{pmatrix} 11&22\\5&10\\17&34 \end{pmatrix}\]
+
+\[(AB)^T =  \begin{pmatrix} 11&5&17\\22&10&34 \end{pmatrix}^T = \begin{pmatrix} 11&22\\5&10\\17&34 \end{pmatrix}\]
+
+\subsection*{c)}
+
+Wie man anhand der Umgeformten Matrizen $ A^T \text{ und } B^T $ erkennen kann, ist eine Multiplikation hier nicht mehr möglich. Aus dem ursprünglichen Aufbau $ A =m \times n \text{ und } B=n\times p $ wird $ A^T =n \times m \text{ und } B^T = p\times n $, wodurch die Multiplikation nicht mehr möglich ist. Ein Ausnahmefall ist hier, wenn 2 quadratische Matrizen miteinander multipliziert werden, da sie ihre ursprüngliche Form beibehalten. 
+
+\section*{6.3}
+A sei eine $m \times n$ - Matrix, $B_2$ und $B_2$ seien $n \times p$ - Matrizen. Beweisen Sie die Gültigkeit des
+Distributivgesetzes $A(B_1+ B_2) = AB_1+ AB_2$
+
+\[ A=(a_{ij})_{\substack {i=1,\cdots,m \\ j=1,\cdots,n}},
+	B_1=(b_{jk})_{\substack{j=1,\cdots,n \\ k=1,\cdots,p}},
+	B_2=(b'_{jk})_{\substack{j=1,\cdots,n \\ k=1,\cdots,p}} \]
+	
+\[ B_1+B_2= (b_{jk}+b'_{jk})_{\substack{i=1,\cdots,m \\ j=1,\cdots,n}} \]
+
+\[A(B_1+B_2)=\left(\sum_{j=1}^{n}
+		a_{ij}\cdot (b_{jk}+b'_{jk})\right)_
+				{\substack{i=1,\cdots,m \\ k=1,\cdots,p}}\]
+
+\[A(B_1+B_2)=\left(\sum_{j=1}^{n}
+		(a_{ij}\cdot b_{jk}+a_{ij} \cdot b'_{jk})\right)_
+				{\substack{i=1,\cdots,m \\ k=1,\cdots,p}}\]
+
+\[A(B_1+B_2)=\left(\sum_{j=1}^{n}
+		a_{ij}\cdot b_{jk} + \sum_{j=1}^{n}
+		a_{ij}\cdot b'_{jk} \right)_
+				{\substack{i=1,\cdots,m \\ k=1,\cdots,p}}\]
+				
+\[A(B_1+B_2) = \left(\sum_{j=1}^{n}
+		a_{ij}\cdot b_{jk}\right)_
+				{\substack{i=1,\cdots,m \\ k=1,\cdots,p}}
++ \left(\sum_{j=1}^{n}
+		a_{ij}\cdot b'_{jk}\right)_
+				{\substack{i=1,\cdots,m \\ k=1,\cdots,p}} \]
+				
+\[A(B_1+B_2) = AB_1+AB_2\]
+				
+				
+
+\section*{6.4}
+
+\subsection*{a)}
+Zu beweisende Aussage: Für jede Abbildung \\
+$ f: A \rightarrow B $ und jedes $ B \subseteq B' $ gilt $ f(f^{-1}(B')) \subseteq B' $
+
+Es ist zu zeigen das für ein beliebiges $x \in f(f^-1(B')) $ gilt $x \in B'$ .  \\
+Es gilt $x \in B'$, $x' \in f^-1(B')$. Es gibt ein y für das gilt $f(y)\subseteq B'$
+
+
+
+\end{document}	

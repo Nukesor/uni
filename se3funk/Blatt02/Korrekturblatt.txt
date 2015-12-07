@@ -1,0 +1,22 @@
+1: Bekommt plueschi bei 2. direkt den Wert 'Katze zugewiesen oder wird
+plueschi an miau gebunden? Bei 8. klingt eure Antwort ein bisschen nach
+Zufall, in Wahrheit funktioniert so etwas aber nie; 9. cdddr liefert
+allgemein nicht die letzten beiden Elemente einer Liste; Unterschied
+zwischen 10. und 11. wird nicht klar; 12. liefert kein Symbol, sondern
+eine Zahl; bei 13. wird genau andersherum ausgewertet; 14. ist Quatsch
+-> 4 von 9
+
+2.1: 2 von 2
+
+2.2: 3 von 3
+
+2.3: 6 von 6
+
+2.4: Was bewirkt n? Wie berechne ich die ersten drei Stellen? Kommentare
+fehlen, zudem pi/4 statt pi approximiert
+-> 1 von 4
+
+3: 5 von 5
+
+=========
+21 von 25

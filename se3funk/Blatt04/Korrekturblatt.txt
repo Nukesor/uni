@@ -1,0 +1,17 @@
+1: 6 von 6
+
+2.1: Oh mein Gott, wir sinken, zu Hilfe! Ich sende den Träger -- :P
+-> 3 von 4
+
+2.2: 7 von 7
+
+2.3: 3 von 3
+
+3: Begründung für 3.3 reicht mir nicht; warum wäre ein echtes if jetzt
+besser?
+-> 6 von 10
+
+-1, weil kein [SE3]-Mailpräfix
+
+=========
+24 von 30

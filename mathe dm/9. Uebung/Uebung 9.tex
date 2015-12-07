@@ -1,0 +1,126 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage{amsfonts}
+\usepackage{alltt}
+\usepackage{amsmath,amssymb}        % Mathpack für Formeln jeder Art
+\usepackage[parfill]{parskip}       % Autoamtisch Newline, wenn Zeilenumbruch im Quelltext.
+\usepackage[utf8]{inputenc}         % UTF8 Zeichensatz. 
+\usepackage{xstring}				% Gebraucht für Circuitikz
+\usepackage{tikz}                   % Wichtig für Zeichnungen aller Art
+\input{kvmacros}                    % Kv Diagramme
+\usepackage[siunitx]{circuitikz}    % Diagramme und Schaltungen
+\usepackage{pgffor}					
+\usepackage{fancyhdr}				
+\usepackage{array}		
+
+
+\tikzstyle{n}=[fill,circle,radius=0.4cm,font=\huge,inner sep=0,minimum size=0.5em]
+
+
+\title{Mathematik Hausaufgaben zum 14. Dezember}
+\author{Arne Beer, MN 6489196 \\
+ Tim Overath, MN 6440863\\
+ Paul Bienkowski}
+
+\begin{document}
+\maketitle
+
+\section*{Aufgabe 1}
+
+	\subsection*{a)}
+
+
+
+	\subsection*{b)}
+
+	$\begin{pmatrix} 4&3 \\ 0&1 \end{pmatrix}$
+
+	\subsection*{c)}
+
+		Ordnung B = 3\\
+		Ordnung C = 6\\
+		Ordnung D = 7\\
+
+	\subsection*{d)}
+
+	Es gibt ein Element der Ordnung 2:
+
+	$ \begin{pmatrix} 1&7 \\ 0&1 	\end{pmatrix}$
+
+\section*{Aufgabe 2}
+
+	\subsection*{a)}
+
+	$s*x=z$\\
+	$x*r=y$\\
+	$r*t=i$\\
+
+	Das Element mal das zugehörige Inverse muss die Identität ergeben:
+	\[i*i=i\]
+	\[t*r=i \]
+	\[ s*s=i\]
+	\[r*t=i \]
+	\[w*w=i \]
+	\[x*x*=i \]
+	\[y*y=i \]
+	\[z*z=i \]
+
+	\subsection*{b)}
+
+	Damit eine Gruppe zyklisch ist, müsste es ein Element geben, deren Ordnung der Anzahl der Elemente der Menge entspricht. G ist somit nicht zyklisch. 
+
+	Damit eine Gruppe kommutativ ist , muss für alle Elemente $a*b=b*a$ gelten. 
+	Da allerdings $x*r\neq r*x$, ist bewiesen, dass die Gruppe nicht kommutativ ist.
+	$x*r=y$
+	$r*x=z$
+
+
+	Ordnung i = 2\\
+	Ordnung r = 4\\
+	Ordnung s = 2\\
+	Ordnung t = 4\\
+	Ordnung w = 2\\
+	Ordnung x = 2\\
+	Ordnung y = 2\\
+	Ordnung z = 2\\
+
+
+	\subsection*{c)}
+
+
+
+\section*{Aufgabe 3}
+
+	\subsection*{a)}
+
+	Ausgerechnet ergibt sich:
+	\[\Leftrightarrow a^{-1}db^{-1}bcc^{-1}d^{-1}c^{-1}bab^{-1}\]
+	\[\Leftrightarrow a^{-1}c^{-1}bab^{-1}\]
+
+	Im Falle dass G abelsch wäre, würde hier das Kommutativgesetz greifen. Es wäre also erlaubt die Elemente zu vertauschen:
+
+	\[ a^{-1}c^{-1}bab^{-1} \]
+	\[\Leftrightarrow c^{-1}\]
+
+	\subsection*{b)}
+
+	In einer zyklischen Gruppe kann jedes Element durch eine Potenz mindestens eines Elements $ a \in G $ dargestellt werden. Folglich könnten alle Elemente als $a^x$ dargestellt werden. 
+	Der umgeformte Ausdruck hätte also die Form $a^{x_1+\cdots +x_{n}}$. Folglich kann die ursprüngliche Form kommutativ umgeformt werden.
+
+	\subsection*{c)}
+
+		 \subsubsection*{i}
+
+		 	Für jedes $n \in \mathbb{N}$ existiert eine zyklische Gruppe der Ordnung n. 
+		 	Man kann sich n als n-Eck vorstellen, bei dem jede Ecke eine Zahl verkörpert. Wenn wir nun die Operation Rotate anwenden, erhalten wir mit jeder Anwendung von Rotate ein anderes Element. Sodurch lässt sich jedes Element als eine Potenz von Rotat darstellen, ist somit also zyklisch
+		 
+		 \subsubsection*{ii}
+
+		 
+		 
+
+\section*{Aufgabe 4}
+
+
+
+\end{document}

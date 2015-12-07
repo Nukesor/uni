@@ -1,0 +1,104 @@
+% Commands
+
+\newcommand{\authorinfo}{Arne Struck, Tronje Krabbe}
+\newcommand{\titleinfo}{FGI 2 [HA], 28. 10. 2013}
+\newcommand{\qed}{\ \square}
+
+% ------------------------------------------------------
+
+% Packages & Stuff
+
+\documentclass[a4paper,11pt,fleqn]{scrartcl}
+\usepackage[german,ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{pgfplots}
+\usepackage{multicol}
+\usepackage{pst-node}
+\usetikzlibrary{calc}
+\usetikzlibrary{patterns}
+\usetikzlibrary{arrows,automata}
+
+% ------------------------------------------------------
+
+% Title & Pages
+
+\title{\titleinfo}
+\author{\authorinfo}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\authorinfo}
+\fancyhead[R]{\titleinfo}
+\fancyfoot[C]{\thepage}
+
+\begin{document}
+\maketitle
+	\begin{enumerate}
+	\item[\textbf{2.3.}]
+		\begin{enumerate}
+		\item[1.]\quad \\
+        	\(
+        	\begin{array}{lcl}
+        		L(A_{2.3}) &=& (a^+ + b(cd)^* (c+e))\\
+        		L^\omega(A_{2.3}) &=& (a)^{\omega} + b(cd)^{\omega}\\
+        		\big(L(A_{2.3})\big)^\omega &=& (a^+ + b(cd)^* (c+e))^{\omega}
+	        \end{array}
+        	\)
+        \item[2.]\quad \\
+        	$L^\omega(A_{2.3})$ bezieht sich auf auf den Automaten $A_{2.3}$ und verändert die Akzeptierte 
+        	Sprache, während $\big(L(A_{2.3})\big)^\omega$ die akzeptierte Sprache in eine neue 
+        	$\omega$-Sprache verwandelt. \\ \\
+ 			\(
+ 			\begin{array}{lcl}
+ 				L^\omega(A_{2.3}) &:& (a)^\omega\\
+ 					&&b(cd)^\omega \\
+	 			\big(L(A_{2.3})\big)^\omega &:& (be)^\omega \\
+	 				&& (bc)^\omega
+ 			\end{array}
+ 			\)       	
+        \item[3.]\quad \\
+        \begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm]
+					%nodes
+					\node[initial,state] 	(S)    			   {$q_1$};					
+					\node[state,accepting]	(A) [below of = S] {$q_0$};
+					\node[state]			(B) [right of = S] {$q_2$};
+					\node[state,accepting]	(C) [above of = B] {$q_3$};
+					\node[state,accepting]	(D) [below of = B] {$q_4$};
+					
+					%initial graph
+					\path[->]				(S) edge [bend right]	node{a}				(A);
+					\path[->]				(A) edge [loop left]	node{a}				(A);
+					\path[->]				(S) edge 				node{b}				(B);
+					\path[->]				(B) edge [bend right]	node{c}				(C);
+					\path[->]				(C) edge [bend right]	node{d}				(B);
+					\path[->]				(B) edge 				node{e}				(D);
+					
+					%epsilon edges
+					\path[->]				(A) edge [bend right]	node{$\epsilon$}	(S);
+					\path[->]				(D) edge 				node{$\epsilon$}	(S);
+					\path[->]				(C) edge 				node{$\epsilon$}	(S);
+				\end{tikzpicture} \\
+	Die Korrektheit des Automaten wird in Aufgabe 2.4 beschrieben, denn er wurde mit dem dort beschriebenen Verfahren konstruiert.
+        \end{enumerate}
+    \item[\textbf{2.4.}]
+	    \begin{enumerate}
+    	\item[1.]\quad \\
+        	Wenn U eine reguläre Menge ist, dann ist $U^\omega$ die Menge aller abzählbar unendlichen Konkatenationen von Worten aus U. \\
+        	Es soll ein Verfahren gefunden werden, das aus einem beliebigen NFA, der U akzeptiert, einen Büchi-Automaten erstellt, der $U^\omega$ akzeptiert.
+        \newpage
+    	\item[2.]\quad \\
+        	Wenn der NFA, der U akzeptiert, mehrere Startzustände hat, mache diese zu normalen Zuständen, und füge einen neuen Startzustand hinzu, der mit $\epsilon$-Kanten zu jedem der originalen Startzuständen führt. \\
+        	An jeden Endzustand des NFA wird nun eine $\epsilon$-Kante zurück zu dem Startzustand hinzugefügt.
+    	\item[3.]\quad \\
+        	Mit dem Verfahren aus 2. kann mit einem $\omega$-Wort, das aus einer unendlichen Konkatenation aus Worten aus U besteht, mindestens ein Endzustand unendlich oft durchlaufen werden, was die Akzeptanzbedingung eines Büchi-Automaten ist.
+    	\item[4.]\quad \\
+        	Aufgabe 2.3.3. wurde mit dem hier beschriebenen Verfahren gelöst.
+   		\end{enumerate}
+    \end{enumerate}
+\end{document}

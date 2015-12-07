@@ -1,0 +1,100 @@
+\documentclass{article}
+\usepackage{amsfonts}
+\usepackage[ngerman]{babel}
+\usepackage[a4paper]{geometry}
+\usepackage{amsfonts}
+\usepackage{alltt}
+\usepackage{amsmath,amssymb}
+\usepackage[parfill]{parskip}
+\usepackage[latin1]{inputenc}
+
+\title{Mathematik Hausaufgaben zum 7. Dezember}
+\author{Arne Beer, MN 6489196 \\
+ Tim Overath, MN 6440863}
+
+\begin{document}
+\maketitle
+
+\section*{7.1}
+\subsection*{a)}
+Zuerst wird überprüft ob 473 und 2413 teilerfremd sind. Hierfür muss gelten \\ $ggT(2413,473)=1$
+\[
+
+2413=473\cdot5+48 \\
+473=48\cdot9+41 \\
+48=41+7 \\
+41=7\cdot5+6 \\
+7=6\cdot1+1\]
+
+Hiermit ist bewiesen dass 2413 und 473 Teilerfremd sind. 
+
+Das Inverse wird durch rückwärtiges Einsetzen in den Euklidischen Algorithmus errechnen.
+\[
+
+1=7-6\cdot1\\
+1=6\cdot7-41\\
+1=7 - 6 \cdot 1
+1=7 - (41 - 7 \cdot 5)\\
+1=6 \cdot 7 - 41\\
+1=6 \cdot (48 - 41 \cdot 1) - 41\\
+1=6 \cdot 48 - 7 \cdot 41\\
+1=6 \cdot 48 - 7 \cdot (473 - 48 \cdot 9)
+1=69 \cdot 48 - 7 \cdot 473\\
+1=69 \cdot (2413 - 473 \cdot 5) - 7 \cdot 473\\
+1=-352 \cdot 473+69 \cdot 2413\\
+\]
+
+\subsection*{b)}
+
+Zuerst wird überprüft ob 473 und 2413 teilerfremd sind. Hierfür muss gelten \\
+$ggT(2413,1672)=1$
+\[
+
+2413=1672\cdot1+741\\
+1672=741\cdot2+190\\
+741=190\cdot3+171\\
+190=171\cdot1+19\\
+171=19\cdot9+0\\
+\]
+Es gilt ggT(2413,1672) = 19, woraus folgt, dass 1672 nicht invertierbar ist.
+
+\section*{7.2}
+
+Der Satz von Fermat besagt dass für eine Primzahl p und eine natürliche Zahl n, bei der  $p\nmid n$, die Aussage $n^{p-1}\equiv 1$ gilt. 
+Man kann also annehmen dass in $\mathbb{Z}_{19}$ 
+$3^{18}=1$ gilt.
+Nun kann man $3^{1000}$ so umformen, dass ein möglichst großer Teil durch Umformung in 1 wegfällt. 
+
+$3^{1000}=(3^{18})^{55}\cdot 3^{10}=3^{10}$
+
+$\Leftrightarrow 3\cdot (3^3)^3=3\cdot(8)^3 $
+
+$\Leftrightarrow3\cdot(8)^3=16$
+
+\section*{7.3}
+
+\begin{itemize}
+
+\item a) $\pi = (1,7,6)(2,10,8,5,11,13)(3,4)(9,12)$
+
+\item b) $\pi = (1,6) \circ (1,7) \circ (2,12) \circ (2,11) \circ (2,5) \circ (2,8) \circ (2,10) \circ (3,4) \circ (9,12)$
+
+\item c) sign $\pi = -1$ (ungerade)
+
+
+\end{itemize}
+
+\section*{7.4}
+
+\subsection*{a)}
+Da die Berrechnung der Elemente der Berrechnung aller geordneter Möglichkeiten gleicht, kann man die Anzahl der Elemente einfach über die Multiplikation der einzelnen Mengengrößen errechnen. 
+
+$3\cdot 5 \cdot 2= 30$
+
+\subsection*{b)}
+
+Die Anzahl der möglichen ternären Relationen errechnet man, indem man die Anordnungsmöglichkeiten der Kreuzprodukte untereinander berrechnet. Bei 3 Mengen wären es folglich 3!=6 mögliche Anordnungsmöglichkeiten, solange gilt, dass keine Menge doppelt vorkommt, also \\
+$A\neq B\neq C$. Wenn jedoch jede Menge beliebig oft vorkommen darf, lassen sich $3^3$ mögliche ternäre Relationen bilden. 
+
+
+\end{document}

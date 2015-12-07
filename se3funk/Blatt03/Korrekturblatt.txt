@@ -1,0 +1,36 @@
+1.1: Statt Strings hättet ihr auch Symbole nehmen können, Mut zum Symbol!
+-> 4 von 4
+
+1.2: Testet ihr euren Code denn gar nicht, bevor ihr ihn abschickt?
+buchstabiertafel ist nicht definiert; char->name_ hättet ihr _unbedingt_
+mit letrec definieren sollen; warum überhaupt eine Rekursion, wenn ihr
+sowieso schon Assoziativlisten verwendet? Warum nicht einfach assoc?!
+-> 1 von 4
+
+1.3: Aufgabenstellung verfehlt
+-> 0 von 5
+
+1.4: Nicht ausführbar, da eine schließende Klammer fehlt (wtf?!);
+weiterhin nicht ausführbar, weil die Funktion char->upper nicht
+existiert; was bewirkt überhaupt die Funktion char->iname? Ich habe
+wirklich keine Lust, euren Code zu debuggen
+-> 0 von 8
+
+2.1: Nette Idee, nach Häufigkeit zu sortieren; wenn es einem zum
+Performanz geht, möchte man natürlich sowieso eine andere Datenstruktur
+verwenden; die Flaggenbuchstaben hättet ihr gar nicht erst als Symbol
+speichern müssen, z.B. via quasiquote; was meint ihr damit, dass die
+leere Liste kein Problem darstellt?
+-> 3 von 3
+
+2.2: Ihr habt oben fast das Gleiche implementieren müssen, warum benutzt
+ihr nicht einfach die Funktionen von oben? Oder oben die von unten? Wenn
+man ein unbekanntes Zeichen (bspw. #\.) kodieren möchte, wäre eine
+sinnvolle Fehlermeldung oder ein #f als Rückgabe schön; bitte
+kennzeichnen, wann die nächste Aufgabe anfängt!
+-> 2 von 3
+
+2.3: 8 von 8
+
+=========
+18 von 30

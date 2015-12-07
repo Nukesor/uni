@@ -1,0 +1,18 @@
+1: Ist pimento praktisch keine FHO? Was bedeutet "eine keine"? "Es wird
+immer der Init-Wert mit dem linken Element der Liste und dem festen Wert
+2 multipliziert", warum wird dann nicht in jedem Schritt das gleiche
+gerechnet? Bei 4. finde ich es wirklich ehrenwert, dass ihr das nicht
+einfach ausprobiert habt, aber leider habt ihr bei 2 und 3 falsch geraten :/
+-> 7 von 10
+
+2: (if ... #t #f), echt jetzt? Ihr solltet allg. gar keine Funktionen
+definieren, sondern Ausdrücke angeben; wer sagt denn, dass bei der
+Extraaufgabe eine Liste von Listen zurückgegeben werden soll?
+-> 5
+
+3: Vor die Wahl zwischen FHO und amb gestellt, entscheidet ihr euch für
+for/list?! Nicht gerade die Mutter der funktionalen Programmierung :o
+-> 20
+
+=========
+32 von 40

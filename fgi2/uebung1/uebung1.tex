@@ -1,0 +1,169 @@
+\documentclass{article}
+\usepackage{amsfonts}
+\usepackage[a4paper]{geometry}
+\usepackage{alltt}
+\usepackage{lmodern}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage[parfill]{parskip}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel} 
+\usepackage[siunitx]{circuitikz}    % Diagramme und Schaltungen
+\usepackage{pgffor}
+\usepackage{fancyhdr}
+\usepackage{xstring}                % Gebraucht für Circuitikz
+\usepackage{tikz}                   % Wichtig für Zeichnungen aller Art
+
+\usetikzlibrary{arrows,automata}
+
+\tikzstyle{help lines}=[blue!50,very thin]
+\tikzstyle{help lines}+=[dashed]
+\tikzstyle{Kreis}= [circle,draw]
+
+\title{FGI2 Uebung zum 21. Oktober}
+\author{Arne Beer, MN 6489196}
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+    \item[\textbf{1.3}]
+        \begin{enumerate}
+            \item
+                Die Sprache L(A) laesst sich nicht durch einen regulaeren Ausdruck beschreiben. Der Ausdruck der der Sprache am naechsten kommen wuerde waere: $a^{x\{0,n-1\}}c b^{x\{0,n-1\}}$, wobei hier jedoch nicht sichergestellt ist, dass a und b in gleicher Anzahl wiederholt werden.
+            \item
+                $L(A_n)=\{a^x c b^x| x < n\}$
+            \item
+                Anhand der Struktur des uns vorgelegten Automaten kann man erkennen, dass der Automat $2n$ Zustaende besitzt, wobei die geraden Zustaende durch die Relation $\delta(q_a, a) = q_{a+2}$ verbunden sind und die ungeraden Zustaende durch die Relation $\delta(q_a, b) = q_{a+2}$. Zudem ist jeder gerade Zustand durch die Relation $\delta(q_a, c) = q_{a+1}$ mit einem ungeraden Zustand verbunden. 
+                Der Automat laesst sich also durch folgende Gramatik beschreiben:\\ 
+                \[S \longrightarrow aSb | c\]
+            \item
+                Die vorherige Grammatik $S \longrightarrow aSb | c$ laesst sich nicht als rechts oder linkslineare Grammatik beschreiben und ist dementsprechend keine regulaere Grammatik, was wiederrum eine Vorraussetzung fuer eine regulaere Sprache ist. 
+                Jede Umformung der Grammatik wuerde zu einer Form der folgenden Art fuehren. 
+                \[S \longrightarrow aX | c\]
+                \[X \longrightarrow Sb\]
+                Da diese Grammatik weder links noch rechtslinear ist, ist die Grammatik und somit die Sprache nicht regulaer.
+            \item
+
+
+        \end{enumerate}
+
+\newpage    
+
+    \item[\textbf{1.4}]
+        \begin{enumerate}
+            \item
+                Man definiert fuer jede Kante $q_1 \overset{a}{\longrightarrow} q_2$ mit $a \in \Sigma$ einen Zwischenzustand $q_1 \overset{a}{\longrightarrow} q_z, q_z \overset{a}{\longrightarrow} q_2$. Somit ist abgesichert, dass der Automat jedes gedoppelte Wort der Sprache L(A) aktzeptiert.\\
+                Der Automat ist nun zwar nicht mehr vollstaendig, aber es war lediglich vorrausgesetzt, dass der Automat deterministisch ist. 
+            \item
+                Es muss abgesichert werden, von jedem Zustand mit dem Eingabewort $abb$ ein Endzustand, in diesem Falle $p_3$ erreicht werden kann.\\
+                Fuer den Zustand $p_0$:
+                $p_0 \overset{a}{\longrightarrow} p_1$, $p_1 \overset{b}{\longrightarrow} p_2$, $p_2 \overset{b}{\longrightarrow} p_3$\\
+                Fuer den Zustand $p_1$
+                $p_1 \overset{a}{\longrightarrow} p_1$, $p_1 \overset{b}{\longrightarrow} p_2$, $p_2 \overset{b}{\longrightarrow} p_3$\\
+                Fuer den Zustand $p_2$
+                $p_2 \overset{a}{\longrightarrow} p_1$, $p_1 \overset{b}{\longrightarrow} p_2$, $p_2 \overset{b}{\longrightarrow} p_3$\\
+                Fuer den Zustand $p_2$
+                $p_3 \overset{a}{\longrightarrow} p_3$, $p_3 \overset{b}{\longrightarrow} p_3$, $p_3 \overset{b}{\longrightarrow} p_3$\\
+
+                Es ist also bewiesen, dass von jedem Zustand mit dem Eingabewort $abb$ ein Endzustand erreicht werden kann.
+            \item
+                Die vom Automaten beschrieben Sprache laesst sich folgend als regulaerer Ausdruck beschreiben.
+                $L(A)=b^*a^+b(ab)^*ba^*b^*$
+            \item
+                Zunaechst wird jede Schleife innerhalb des Automaten, durch einen Zwischenzustand ersetzt.
+
+                \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm, semithick]
+                \tikzstyle{every state}=[circle split, draw]
+
+                      \node[Kreis]         (A)                    {$p_1$};
+                      \node[Kreis]         (B) [above of=A]       {$p_2$};
+                      \node[Kreis]         (D) [right of=A]       {$p_3$};
+                      \node[Kreis]         (E) [above of=D]       {$p_4$};
+                      \node[Kreis]         (H) [right of=D]       {$p_5$};
+                      \node[Kreis]         (J) [right of=H]       {$p_{6}$};
+                      \node[Kreis]         (K) [above of=J]       {$p_{7}$};
+                      \node[Kreis]         (L) [below of=J]       {$p_{8}$}; 
+
+
+
+                      \path (A) edge [bend left]  node {$b$} (B)
+                            (B) edge [bend left]  node {$b$} (A)
+
+                            (A) edge [bend right] node {$a$} (D)
+
+                            (D) edge [bend left]  node {$a$} (E)
+                            (E) edge [bend left]  node {$a$} (D)
+
+                            (H) edge [bend left]  node {$a$} (D)
+                            (D) edge [bend left]  node {$b$} (H)
+
+                            (H) edge [bend left]  node {$b$} (J)
+
+                            (J) edge [bend left]  node {$b$} (K)
+                            (K) edge [bend left]  node {$b$} (J)
+
+                            (J) edge [bend left]  node {$a$} (L)
+                            (L) edge [bend left]  node {$a$} (J)
+                         ;
+                \end{tikzpicture}
+
+                Nun werden alle Uebergaenge von einem Zustand in einen anderen Zustand mit einem Zwischenzustand versehen.
+
+                \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm, semithick]
+                \tikzstyle{every state}=[circle split, draw]
+
+                      \node[Kreis]         (A)                    {$p_1$};
+                      \node[Kreis]         (B) [above of=A]       {$p_2$};
+                      \node[Kreis]         (C) [above right of=A] {$p_3$};
+                      \node[Kreis]         (D) [below right of=C] {$p_4$};
+                      \node[Kreis]         (E) [above of=D]       {$p_5$};
+                      \node[Kreis]         (F) [above right of=D] {$p_6$};
+                      \node[Kreis]         (G) [below right of=D] {$p_7$};          
+                      \node[Kreis]         (H) [below right of=F] {$p_8$};
+                      \node[Kreis]         (I) [below right of=H] {$p_9$};           
+                      \node[Kreis]         (J) [above right of=I] {$p_{10}$};
+                      \node[Kreis]         (K) [above of=J]       {$p_{11}$};
+                      \node[Kreis]         (L) [below of=J]       {$p_{12}$}; 
+
+
+
+                      \path (A) edge [bend left]  node {$b$} (B)
+                            (B) edge [bend left]  node {$b$} (A)
+
+                            (A) edge [bend right] node {$a$} (C)
+                            (C) edge [bend right] node {$a$} (D)
+
+                            (D) edge [bend left]  node {$a$} (E)
+                            (E) edge [bend left]  node {$a$} (D)
+
+                            (D) edge [bend right]  node {$b$} (F)
+                            (F) edge [bend right]  node {$b$} (H)
+
+                            (H) edge [bend right]  node {$a$} (G)
+                            (G) edge [bend right]  node {$a$} (D)
+
+                            (H) edge [bend left]  node {$b$} (I)
+                            (I) edge [bend left]  node {$b$} (J)
+
+                            (J) edge [bend left]  node {$b$} (K)
+                            (K) edge [bend left]  node {$b$} (J)
+
+                            (J) edge [bend left]  node {$a$} (L)
+                            (L) edge [bend left]  node {$a$} (J)
+                         ;
+        \end{tikzpicture}
+
+                Dies ist der fertig konstruierte Automat, der die gedoppelten Woerter von L(A) aktzeptiert.
+            \item
+                Die vom Automaten aktzeptierte Sprache laesst sich folgend beschreiben:
+                \[L(A) = (bb)^* (aa)^+ bb(aabb)^*bb(aa)^*(bb)^*\]
+                Wie man sieht, ist der regulaere Ausdruck equivalent zu dem des urspruenglichen Automaten, bis auf das jeder Buchstabe des Alphabets verdoppelt wurde. Somit ist abgesichert, dass er exakt die gedoppelten Worte von $L(A)$ aktzeptiert
+        \end{enumerate}
+    \end{enumerate}
+\end{document}  

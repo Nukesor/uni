@@ -1,0 +1,16 @@
+1: 9
+
+2.1: 7
+
+2.2: [ctrl-i]!!!1elf; (equal? element #t) geht kürzer, (and (<= 0 n) (>=
+9 n)) ebenso, solltet ihr eigentlich wissen
+-> 5 von 6
+
+2.3: Es sollen alle Zahlen durchlaufen werden, nicht nur 0-4
+-> 2 von 3
+
+2.4: Bisschen hässlich ohne Trennung, aber ansonsten interessante Lösung
+-> 10 von 10
+
+=========
+33 von 35
