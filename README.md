@@ -1,4 +1,6 @@
-uni
+University
 ===
 
-A repo for all my uni-projects.
+A repository for all my university projects/modules.
+
+This repository will be squashed once in a while, to prevent overly large size. 
