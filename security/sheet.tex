@@ -218,8 +218,28 @@ Dementsprechend ist der letzte Byte $CC$:
 
 \centerline{00 B4 08 1F 40 00 4E BC 00 CC}
 
+Nach diesem Beispiel sollte ersichtlich sein, dass es relativ einfach ist CAN-Bus Paket zu erstellen.
+Da alle Geräte am selben Bus sitzen und jedes Gerät an alle ECU's sendet, ergibt sich daraus eine relativ drastische Problematik.
+Für den Fall, dass es einem Angreifer gelingt Zugang zu einem der ECU's am Bus zu bekommen, ist er in der Lage Befehle an alle Geräte am Bus zu senden, eingeschlossen kritische Systeme, wie Bremsen, Motor oder Fahrhilfe.
+
+Im folgenden Abschnitt wird auf die Schwachstellen und die Unsicherheit des CAN-Busses eingegangen.
+
 \subsection{(Un-)Sicherheit}
-%Arne
+Wie bereits im vorherigen Abschnitt erläutert, stellt die Kommunikation am CAN-Bus das größte Sicherheitsproblem dar.
+Bei den meisten Autos ist die Kommunikation auf dem Bus vollkommen unverschlüsselt. \\
+ECU's kommunizieren ohne jegliche Authentifizierung. Dieser Umstand ermöglichte es ohne Hindernisse schadhafte Pakete an ECU's zu senden.
+Das Fehlen einer Kontrollinstanz bei einer derartig wichtigen Komponente eines Autos lässt sich durchaus als grob fahrlässig bezeichnen.
+Alle am Bus hängenden Geräte werden als vollkommen glaubwürdig angesehen.
+
+Durch die unverschlüsselte Kommunikation, tritt ein weiteres, wenn nicht sogar drastischeres Problem auf. \\
+Die Protokolle, mit denen die ECU's kommunizieren sind nicht öffentlich einsehbar und nur dem Hersteller bekannt.
+Ohne die Dokumentation der API der jewelige ECUs ist es um ein vielfaches schwerer Pakete zu designen, welche von den ECUs als valid angesehen werden.
+Da Pakete auf einem CAN-Bus jedoch an alle verbundenen Geräte gesendet werden, kann ein Angreifer diese ohne Probleme mitschneiden.
+Selbstverständlich braucht man hierfür Zugriff auf den Bus, aber dies kann z.B. an einem baugleichen Modell geschehen, welches der Angreifer besitzt.
+Da der Traffic auf dem Bus unverschlüsselt ist, kann der Mittschnit nun benutzt werden benutzt werden um die API der ECUs zu rekonstruieren.
+Hierfür muss lediglich nach Mustern im Paketstrom gesucht werden, welche in Abhängigkeit zu dem Zustand des Auto stehen.
+Durch dieses Verfahren wurde z.B. die vorher gezeigte API des Geschwindigkeitstachos rekonstruiert.
+
 
 \section{Geräte am CAN-Bus}
 %Hier anreißen, welche Geräte es allgemein gibt (ABS, ..), mit Verweis, dass auf manche wichtige im folgenden genauer eingegangen wird.
