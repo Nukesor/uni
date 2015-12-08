@@ -172,7 +172,51 @@ Ein hoher Grad an Vernetzung macht es immer leichter extern Zugriff auf das Auto
 \chapter{Hauptteil}
 \section{CAN-Bus}
 \subsection{Funktion und Aufbau}
-%Arne
+Die Wurzel allen Übels befindet sich in der Zentralen Kommunikationsschnittstelle eines Autos, dem sogenannten CAN-Bus.\\
+Der Controller Area Network Bus ist ein klassisches Binary Unit System, welches die meisten Systeme eines PKW's miteinander verbindet. Hierbei ist anzumerken, dass in vielen Autos mehrere CAN-Busse verbaut sind, welche unabhängig voneinander agieren können.\\
+Die angebundenen Systeme an einem CAN-Bus werden Electronic Control Units genannt, kurz ECUs.\\
+Im Folgenden möchte ich die typische Funktionsweise eines CAN-Busses erörtern, wie zum Beispiel beim Toyota Prius.\\
+ECU's kommunizieren untereindander über den Bus, wobei jedes gesendete Paket an jede andere ECU am selben Bus gesendet wird.
+Die ECU's selbst entscheiden anschließend anhand der Struktur des Paketes, ob die Information für sie bestimmt sind und verarbeiten diese, falls dies zutrifft.\\
+Ein Paket auf einem CAN-Bus hat Beispielsweise diese Form in hexadezimaler Schreibweise:
+
+\centerline{00 B4 08 00 00 00 00 3C 18 C0 FF}
+
+Dieses Paket kann wie folgt interpretiert werden:
+Die ersten 2 byte, in obiger Schreibweise durch $00 B4$ repräsentiert, definieren die ID des ECU's, für welches das Paket bestimmt ist.
+
+Die nachfolgenden 4 Bit definieren die Länge der nachfolgenden Payload, also der relevanten Daten oder dem Befehl. In diesem Falle sind es 8 Bytes, also die Sequenz (00 00 00 00 3C 18 C0 FF).
+
+Obiger Befehl hätte sich Beispielsweise auch in folgender Schreibweise darstellen lassen, auch wenn hierbei potentiell ein Informationsverlust auftritt:
+
+\centerline{00 B4 04 3C 18 C0 FF}
+
+In diesem Paket wird lediglich eine Payloadlänge von 4 definiert. Um eine korrekte Nachricht zu garantieren, wird häufig eine Checksum erstellt um das Risiko auf einen fehlerhaften Befehl zu minimieren. Die Checksum ist üblicherweise das letzte Byte der Payload und setzt sich aus einem vom jeweiligen Hersteller definierten Algorithmus zusammen.
+Im folgenden beispielhaft ein Befehl an das Geschwindigkeitstacho eines Ford Escape:
+Die Addresse ist wie vorher $00 B4$ mit einer Payloadlänge von $08$. Die Payload eines solchen Befehls hat die Struktur:
+
+\centerline{AA BB 00 00 CC DD 00 00}
+
+$AA BB$ definiert die RPM, während $CC DD$ die Geschwindigkeit angibt. Die Werte werden nach folgenden Formeln berechnet:
+
+\[\text{Speed} (mph) = 0.0065 * (CC DD) - 67\]
+\[RPM = .25 * (AA BB) - 24\]
+
+Dementsprechend würde ein Befehl mit ca. 100km/h und 2000RPM folgendermaßen aussehen.
+
+\centerline{1F 40 00 4E BC 00 00}
+
+Der komplette Befehl hätte die Form:
+
+\centerline{00 B4 08 1F 40 00 4E BC 00 00}
+
+Nehmen wir an, dass noch eine Checksum hinzugenommen wird, nach der Formel:
+
+\[\text{Checksum} = (IDH + IDL + Len + Sum(\text{Data}[0] – \text{Data}[Len-2])) \& 0xFF \]
+
+Dementsprechend ist der letzte Byte $CC$:
+
+\centerline{00 B4 08 1F 40 00 4E BC 00 CC}
 
 \subsection{(Un-)Sicherheit}
 %Arne

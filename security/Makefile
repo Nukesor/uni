@@ -10,7 +10,7 @@ pdf:
 	mv sheet.pdf $(name).pdf
 
 open: pdf clean
-	xdg-open $(name)_$(group).pdf
+	xdg-open $(name).pdf
 
 clean:
 	rm -f *.zip
