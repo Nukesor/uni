@@ -240,6 +240,13 @@ Da der Traffic auf dem Bus unverschlüsselt ist, kann der Mittschnit nun benutzt
 Hierfür muss lediglich nach Mustern im Paketstrom gesucht werden, welche in Abhängigkeit zu dem Zustand des Auto stehen.
 Durch dieses Verfahren wurde z.B. die vorher gezeigte API des Geschwindigkeitstachos rekonstruiert.
 
+Durch das Senden und Empfangen Aller an Alle entsteht ein weiteres Problem. Mit jedem Gerät, welches an dem Bus hängt, wird ein neuer Angriffsvektor bereitgestellt.
+Im schlechtesten Fall benötigt ein Angreifer physikalischen Zugriff um einen Empfänger am Bus zu befestigen oder die Firmware der ECU's zu manipulieren.
+Durch die zunehmende Vernetzung oder technische beabsichtigte Unsicherheiten wie Firmware-Updates per CD/USB, steigt die Kompromitierbarkeit von an dem CAN-Bus befindlichen Geräten zunehmend.
+In einem späteren Abschnitt wird näher auf mögliche Angriffsvektoren eingegangen.
+
+Dies sind alles Probleme, welche mit einer Verschlüsselung und einem gut implementieren Authorisierungssystem hätten vermieden werden können.
+
 
 \section{Geräte am CAN-Bus}
 %Hier anreißen, welche Geräte es allgemein gibt (ABS, ..), mit Verweis, dass auf manche wichtige im folgenden genauer eingegangen wird.
