@@ -9,7 +9,7 @@ pdf:
 	pdflatex sheet.tex
 	mv sheet.pdf $(name).pdf
 
-open: pdf
+open: pdf clean
 	xdg-open $(name)_$(group).pdf
 
 clean:
