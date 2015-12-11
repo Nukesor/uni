@@ -1,5 +1,6 @@
 
 %!TEX encoding = UTF-8 Unicode
+%Einleitung/Schluss: Personenspezifische-
 \documentclass[
     fontsize=12pt,
     headings=small,
@@ -152,7 +153,7 @@
 
 
 \chapter*{Zusammenfassung}
-
+%TODO
 Für den eiligen Leser sollen auf etwa einer halben, maximal einer Seite die wichtigsten Inhalte, Erkenntnisse, Neuerungen bzw. Ergebnisse der Arbeit beschrieben werden.
 
 Durch eine solche Zusammenfassung (im engl. auch Abstract genannt) am Anfang der Arbeit wird die Arbeit deutlich aufgewertet. Hier sollte vermittelt werden, warum der Leser die Arbeit lesen sollte.
@@ -161,38 +162,32 @@ Durch eine solche Zusammenfassung (im engl. auch Abstract genannt) am Anfang der
 
 \chapter{Einleitung}
 %Überarbeitete Fassung:
-Sicherheit im Auto - ein Thema, dessen Relevanz kaum geleugnet werden kann. Hunderte Millionen Automobile verkehren auf den Straßen unseres Planeten, zwangsläufig ergeben sich hierbei gefährliche Situationen. Nicht zuletzt um Autos sicherer zu gestalten, wurden in der Vergangenheit bereits zahlreiche computergestützte Systeme entwickelt, die anfangs vor allem das Ziel hatten, den Fahrer in Notsituationen bei der Handhabung des Fahrzeuges unterstützen (wie beispielsweise das 'Elektronische Stabilitätsprogramm' ESP oder Mercedes' Intelligent Drive). Angetrieben von der Digitalisierung in vielen Bereichen unseres Alltags, folgten weitere Systeme, komplexe Infotainment-Systeme, im Auto integrierte Navigationsgeräte, oder gar Einpark- und Spurhalteassistenten, die dem Nutzer vor allem höheren Komfort bieten sollen. Doch auch hier ist oftmals eine sehr enge Kopplung an sicherheitskritische Komponenten (Bremsen, Lenkung, etc.) gegeben.\par
-Betrachtet man die Kommunikation zwischen den digitalen Systemen und der physischen Hardware eines Autos, so fällt schnell auf, dass die meisten Botschaften unverschlüsselt über ein Bus-System ausgetauscht werden. Die Literatur zeigt, dass Zugriff auf den Bus häufig Zugriff auf die an den Bus angeschlossenen Komponenten bedeutet... %to be continued // Selbstfahrende Autos
+Sicherheit im Auto - ein Thema, dessen Relevanz kaum geleugnet werden kann. Hunderte Millionen Automobile verkehren auf den Straßen unseres Planeten, zwangsläufig ergeben sich hierbei gefährliche Situationen. Nicht zuletzt um Autos sicherer zu gestalten, wurden in der Vergangenheit bereits zahlreiche computergestützte Systeme entwickelt, die anfangs vor allem das Ziel hatten, den Fahrer in Notsituationen bei der Handhabung des Fahrzeuges unterstützen (wie beispielsweise das 'Elektronische Stabilitätsprogramm' ESP oder Mercedes' Intelligent Drive). Angetrieben von der Digitalisierung in vielen Bereichen unseres Alltags folgten weitere Systeme, komplexe Infotainment-Systeme, in das Auto integrierte Navigationsgeräte, oder gar Einpark- und Spurhalteassistenten, die dem Nutzer vor allem höheren Komfort bieten sollen. Doch auch hier ist oftmals eine sehr enge Kopplung an sicherheitskritische Komponenten (Bremsen, Lenkung, etc.) gegeben.\par
+Betrachtet man die Kommunikation zwischen den digitalen Systemen und der physischen Hardware eines Autos, so fällt schnell auf, dass die meisten Botschaften unverschlüsselt über ein Bus-System ausgetauscht werden. Die Literatur zeigt, dass durch den Zugriff auf den Bus häufig auch an dere Komponenten erreicht werden können und sich die meisten Komponenten eines Automobils somit von außen, oft vollkommen unbemerkt, steuern lassen können. Die Auswirkungen auf die Sicherheit der Insassen liegen auf der Hand. ... %to be continued
 
 %Ursprüngliche Fassung:
-In der heutigen Zeit befindet sich in jedem modernen Automobil eine hohe Anzahl fortgeschrittener technischer Systeme. Viele dieser Systeme sollten die Sicherheit der Insassen verbessern oder dem Fahrer assistieren, können durch enge Kopplung an sicherheitskritische Komponenten (Bremsen, Servolenkung, etc.) jedoch missbraucht werden um das Fahrzeug zu manipulieren.
+%In der heutigen Zeit befindet sich in jedem modernen Automobil eine hohe Anzahl fortgeschrittener technischer Systeme. Viele dieser Systeme sollten die Sicherheit der Insassen verbessern oder dem Fahrer assistieren, können durch enge Kopplung an sicherheitskritische Komponenten (Bremsen, Servolenkung, etc.) jedoch missbraucht werden um das Fahrzeug zu manipulieren.
 
-Ein hoher Grad an Vernetzung macht es immer leichter extern Zugriff auf das Auto zu erlangen. Daher rückt durch zunehmenenden Digitalisierung die Frage der Systemsicherheit immer mehr in den Vordergrund.
+%Ein hoher Grad an Vernetzung macht es immer leichter extern Zugriff auf das Auto zu erlangen. Daher rückt durch zunehmenenden Digitalisierung die Frage der Systemsicherheit immer mehr in den Vordergrund.
 
 \chapter{Hauptteil}
 \section{CAN-Bus}
 \subsection{Funktion und Aufbau}
-Alle im folgenden erörterten Probleme ergeben sich aus Schwachstellen in der Zentralen Kommunikationsschnittstelle eines Autos, dem sogenannten CAN-Bus.\\
-Der Controller Area Network Bus ist ein klassisches Binary Unit System, welches die meisten Systeme eines PKW's miteinander verbindet. Hierbei ist anzumerken, dass in vielen Autos mehrere CAN-Busse verbaut sind, welche unabhängig voneinander agieren können.\\
-Die angebundenen Systeme an einem CAN-Bus werden Electronic Control Units genannt, kurz ECUs.\\
-Im Folgenden möchte ich die typische Funktionsweise eines CAN-Busses erörtern, wie zum Beispiel beim Toyota Prius.\\
-ECU's kommunizieren untereindander über den Bus, wobei jedes gesendete Paket an jede andere ECU am selben Bus gesendet wird.
-Die ECU's selbst entscheiden anschließend anhand der Struktur des Paketes, ob die Information für sie bestimmt sind und verarbeiten diese, falls dies zutrifft.\\
-Ein Paket auf einem CAN-Bus hat Beispielsweise diese Form in hexadezimaler Schreibweise:
+Alle im folgenden erörterten Probleme ergeben sich aus Schwachstellen in der Zentralen Kommunikationsschnittstelle eines Autos, dem sogenannten CAN-Bus.\par
+Der Controller Area Network Bus ist ein klassisches Binary Unit System, welches die meisten Systeme eines PKWs miteinander verbindet. Hierbei ist anzumerken, dass in vielen Autos mehrere CAN-Busse verbaut sind, welche unabhängig voneinander agieren können. Die an den CAN-BUS gebundenen Systeme werden Electronic Control Units genannt, kurz ECUs.\par
+Die übliche Funktionsweise eines CAN-Busses lässt sich gut am Beispiel des Toyota Prius erklären: ECU's kommunizieren untereinander über den Bus, wobei jedes gesendete Paket an jede andere ECU am selben Bus gesendet wird ('Broadcast'). Die ECUs selbst entscheiden anschließend anhand der Struktur der Pakete, ob die Informationen für sie bestimmt sind und verarbeiten diese, falls dies der Fall ist.\par
+Hier ein Beispiel für ein Paket, das auf einem CAN-Bus kommuniziert wird, in hexadezimaler Schreibweise:
 
 \centerline{00 B4 08 00 00 00 00 3C 18 C0 FF}
 
-Dieses Paket kann wie folgt interpretiert werden:
-Die ersten 2 byte, in obiger Schreibweise durch $00\;B4$ repräsentiert, definieren die ID des ECU's, für welches das Paket bestimmt ist.
+Das Paket kann wie folgt interpretiert werden:
+Die ersten 2 byte, in obiger Schreibweise durch $00\;B4$ repräsentiert, definieren den Identifikator ('ID') der adressierten ECU. Die nachfolgenden 4 Bit definieren die Länge der nachfolgenden Payload, also der relevanten Daten oder dem Befehl. In diesem Falle sind es 8 Bytes, also die Sequenz (00 00 00 00 3C 18 C0 FF).
 
-Die nachfolgenden 4 Bit definieren die Länge der nachfolgenden Payload, also der relevanten Daten oder dem Befehl. In diesem Falle sind es 8 Bytes, also die Sequenz (00 00 00 00 3C 18 C0 FF).
-
-Obiger Befehl hätte sich Beispielsweise auch in folgender Schreibweise darstellen lassen können, auch wenn hierbei durch die fehlenden Bytes ein potentieller Informationsverlust auftritt:
+Obiger Befehl würde sich auch in folgender Schreibweise darstellen lassen können, auch wenn hierbei durch die fehlenden Bytes ein potentieller Informationsverlust auftritt:
 
 \centerline{00 B4 04 3C 18 C0 FF}
 
-In diesem Paket wird lediglich eine Payloadlänge von 4 definiert. Um eine korrekte Nachricht zu garantieren, wird häufig eine Checksum erstellt, um das Risiko auf einen fehlerhaften Befehl zu minimieren.
-Die Checksum ist üblicherweise das letzte Byte der Payload und setzt sich aus einem vom jeweiligen Hersteller definierten Algorithmus zusammen.
+In diesem Paket wird lediglich eine Payloadlänge von 4 definiert. Um Nachrichtenintegrität sicherzustellen, wird häufig eine Prüfsumme erstellt. Diese wird üblicherweise als letztes Byte der Payload an das Paket gehängt und wird durch einen vom Hersteller definierten Algorithmus generiert.
 Im folgenden beispielhaft ein Befehl an das Geschwindigkeitstacho eines Ford Escape:
 Die Addresse ist wie vorher $00\;B4$ mit einer Payloadlänge von $08$. Die Payload eines solchen Befehls hat die Struktur:
 
@@ -228,7 +223,7 @@ Im folgenden Abschnitt wird auf die Schwachstellen und die Unsicherheit des CAN-
 \subsection{(Un-)Sicherheit}
 Wie bereits im vorherigen Abschnitt erläutert, stellt die Kommunikation am CAN-Bus das größte Sicherheitsproblem dar.
 Bei den meisten Autos ist die Kommunikation auf dem Bus vollkommen unverschlüsselt. \\
-ECU's kommunizieren ohne jegliche Authentifizierung. Dieser Umstand ermöglichte es ohne Hindernisse schadhafte Pakete an ECU's zu senden.
+ECUs kommunizieren ohne jegliche Authentifizierung. Dieser Umstand ermöglichte es ohne Hindernisse schadhafte Pakete an ECU's zu senden.
 Das Fehlen einer Kontrollinstanz bei einer derartig wichtigen Komponente eines Autos lässt sich durchaus als grob fahrlässig bezeichnen.
 Alle am Bus hängenden Geräte werden als vollkommen glaubwürdig anerkannt.
 
@@ -250,7 +245,7 @@ Dies sind alles Probleme, welche mit einer Verschlüsselung und einem gut implem
 
 \section{Geräte am CAN-Bus}
 %Hier anreißen, welche Geräte es allgemein gibt (ABS, ..), mit Verweis, dass auf manche wichtige im folgenden genauer eingegangen wird.
-scasasdfasfasfa
+%Erklärung TCU, ECU und andere Begriffe
 \subsection{Eingebaute TCU}
 
 \subsection{Bluetooth}
@@ -264,12 +259,9 @@ Die Autoren des Papers (oder Artikels?etc) \textbf{Quelle: remote attack surface
 % remote attack surfaces.pdf S. 15f, 90f
 %NICHT BENÖTIGT Remote Car Hacking.pdf S. 16, 33
 
-\subsection{Media Player}
-%Joshua, Quellen außer cars-usenixsec2011 S.7?! \j
-
 \subsection{Mobilfunk}
 %Ich denke, dazu können wir auch kurz was sagen. Z.B. usenixsec2011 "Long-range wireless channels: Cellular" ab S.9 als Quelle \j
-
+Eine weitere ausgehende Verbindung der Telematikeinheit ist oftmals der Mobilfunk. Durch bspw. ein 3G-Modem kann das Automobil so mit dem Internet verbunden sein, oder im Falle eines schweren Unfalls selbständig eine SMS an Rettungskräfte senden.
 \subsection{Nachrüstbare TCUs}
 Zusätzlich zu den unterschiedlichen Medien- und Diagnosesystemen, die bereits in die Fahrzeuge durch den Hersteller integriert sind, gibt es verschiedenste nachrüstbare Gerätschaften, die dazu dienen können, den Funktionsumfang eines Automobils zu erweitern (komplexere Mediennutzung etc.) oder dem Fahrzeughalter detaillierte Informationen über den Zustand des Autos zu geben. Besonders interessant ist hierbei die Sparte der TCUs, \textit{Telematic Control Units}, die verschiedenste Funktionen und Anwendungszwecke besitzen können. \\
 Die meisten dieser TCUs verfügen dabei über einen GPS-Sensor, oft unterschiedliche Beschleunigungssensoren und eine Mobilfunk und/oder Internetanbindung, um entweder mit den externen Systemen beim Hersteller kommunizieren zu können, sei es um z.B. aufgezeichnete Daten zu Auswertungszwecken zu übertragen oder die eigene Soft- oder Firmware zu aktualisieren, oder um sich mit Endgeräten der Fahrzeuginsassen bzw. des Fahrzeughalters zu verbinden. \\
@@ -279,7 +271,7 @@ TCUs von Fremdherstellern werden üblicherweise direkt an den OBD-Port des Fahrz
 Dies ist dabei die größte Gefahr einer nachgerüsteten TCU: eine oft umfangreiche Internet- oder Mobilfunkfähigkeit und dabei theoretisch uneingeschränkter Zugriff auf sicherheitskritische Systeme bietet Angreifern eine optimale Angriffsfläche, die bei einem erfolgreichen Eindringen von außen u.U. eine volle Kontrolle über das Fahrzeug bedeutet. \\
 In <hier richtigen Verweis einfügen> haben Foster et al. anhand einer TCU zur Fahrstilanalyse für Versicherungszwecke aufgezeigt, wie ein unsicherer Entwurf des Update-Protokolls letztendlich zur Übernahme des Geräts und damit zum Zugriff auf das Fahrzeug führen konnte. Im beschriebenen Fall waren sie in der Lage, nach Herausfinden der Telefonnummer der TCU, die sie für Mobilfunkdienste besaß, selbst mit einer simplen SMS einen Update-Vorgang an einem beliebigen Server anzustoßen.
 Aufgrund einer nicht vorhandenen Authentifizierung des Servers und Signatur der Updates konnten einfach beliebige eigene Dateien auf die TCU heruntergeladen werden und mit entsprechenden Befehlen ausgeführt werden. Im Endeffekt erlangten die Angreifer so die Möglichkeit, sich mit Root-Zugriff in die TCU einzuwählen und erhielten somit freie Verfügung über das komplette System. Die Verbindung zum CAN-Bus bot dann an, selbst Nachrichten zu verschicken. In einer Proof-of-Concept-Attacke zeigten Foster et al. abschließend, dass sie u.a. in der Lage waren, die Scheibenwischer und einzelne Bremsen betätigen zu können. \\
-Ähnliche Fehler bei dem Entwurf derart sicherheitsrelevanter Systeme stellen also eine große Gefahr für den Fahrzeughalter dar. Dies wird noch dadurch verstärkt, dass der Fahrzeughersteller selbst nicht in der Lage ist, diese Fehler zu beheben, da es sich um ein fremdes System handelt, hier muss der jeweilige Hersteller selbst aktiv werden und dafür sorgen, dass alle sich im Umlauf befindenen TCUs eventuelle Updates erhalten.
+Ähnliche Fehler bei dem Entwurf derart sicherheitsrelevanter Systeme stellen also eine große Gefahr für den Fahrzeughalter dar. Dies wird noch dadurch verstärkt, dass der Fahrzeughersteller selbst nicht in der Lage ist, diese Fehler zu beheben, da es sich um fremde Systeme handelt, hier muss der jeweilige Hersteller selbst aktiv werden und dafür sorgen, dass alle sich im Umlauf befindenen TCUs eventuelle Updates erhalten.
 
 
 \subsection{weiteres Gerät}
@@ -297,24 +289,41 @@ Aufgrund einer nicht vorhandenen Authentifizierung des Servers und Signatur der 
 Im Folgenden stellen wir anhand der Forschungsergebnisse von Miller und Valasek (<hier Verweis einfügen>) dar, wie ohne direkten Zugang verschiedene Funktionen auf diversen Systemen eines konkreten Fahrzeugs, in diesem Fall eines 2014er Jeep Cherokees, ausgeführt werden können und so eine direkte Gefahr für den Straßenverkehr geschaffen werden kann. \par
 Der Jeep Cherokee besitzt einige Systeme, die für einen Angreifer von großem Interesse sein können. So ist u.a. ein adaptiver Tempomat, der von sich aus Fahrzeugbremsen auslöst, ein Kollisionswarnungssystem, welches das Fahrzeug ebenfalls zu einem kompletten Halt bringen kann, ein Spurassistent, der, wenn auch minimal, in die Lenkung eingreifen kann, und einen Einparkassistenten, welcher wiederum komplette Kontrolle über das Lenkrad erhält, integriert. Des weiteren ist ein Multimediasystem mit Wlan- und Mobilfunkverbindung eingebaut, welches gleichzeitig an beide CAN-Netzwerke im Auto angeschlossen ist. Aus genau diesem Grund ist dieses System das Hauptaugenmerk von Miller und Valaseks Arbeit, da über ein Kompromittieren der Medieneinrichtung potentiell die größte Kontrolle über das Auto erlangt werden kann. \par
 Miller und Valasek konzentrieren sich zuerst auf Schwächen der eingebauten Hotspots-Funktionalität. Sofern der Fahrzeughalter ein Abonnements beim Hersteller abschließt, bietet das Fahrzeug an, einen Wlan-Hostpot für die Fahrzeuginsassen bereitzustellen. In dieses Netzwerk einzudringen benötige im Allgemeinen ein übliches Vorgehen beim Einbrechen in Wlan-Netze, Miller und Valasek konnten aber Schwächen bei der zufälligen Generierung der Netzpasswörter entdecken; das Passwort wird stets als Funktion eines Zeitpunkts berechnet, dieser kann zusätzlich stark eingeschränkt werden, da sich das System, so lange keine Uhrzeit über GPS oder Mobilfunk empfangen wurde, auf eine Standarduhrzeit einstellt, und dies immer eine gewisse Zeit nach Systemstart benötigt, um sich zu aktualisieren. \par
-Mit Verbindung zum Wlan-Netzwerk konnten Miller und Valasek mithilfe üblicher Netzwerkanalysetools diverse offene Ports identifizieren, die sich zum Angreifen anbieten. Insbesondere der Port 6667 erwies sich als interessant, da hier nicht, wie von der Port-Nummer zu erwarten, ein IRC-Server lief, sondern eine Variante von D-Bus über IP. D-Bus ist ein Framework, welches der Interprozesskommunikation dient.
+Mit Verbindung zum Wlan-Netzwerk konnten Miller und Valasek mithilfe üblicher Netzwerkanalysetools diverse offene Ports identifizieren, die sich zum Angreifen anbieten. Insbesondere der Port 6667 erwies sich als interessant, da hier nicht, wie von der Port-Nummer zu erwarten, ein IRC-Server lief, sondern eine Variante von D-Bus über IP. D-Bus ist ein Framework, welches der Interprozesskommunikation dient, es ermöglicht Prozessen, Funktionen an anderen Prozessen aufzurufen. Zusätzlich stellte sich heraus, dass sich ein Angreifer ohne Authentifizierung mit diesem System verbinden konnte. Mithilfe der D-Bus-Bibliotheken und eines Debugging-Tools konnten Miller und Valasek ohne Probleme aufrufbare Funktionen identifizieren, darunter eine, die vom Nutzer übergebene Shell-Kommandos ausführt, eine deutliche Sicherheitslücke und der Hauptangriffspunkt des Systems. \par
+Über diese Lücke im System erwies es sich als trivial Code auszuführen, mit sehr simplen Skripten kann ein Angreifer nun u.a. GPS-Daten auslesen, um den Standort des Fahrzeugs festzustellen, er kann die Geschwindigkeit der Lüfter verändern, Lautstärke (Beispielcode s.u.) und Bass des Radios verändern, zusätzlich den Radiosender ändern, bestimmen, was auf dem integrierten Display erscheint und eigene Bilder rüberspielen. \\
+\begin{lstlisting}[caption=Beispielskript zum Ändern der Lautstärke]
+require "service"
+
+params = {}
+params.volume = tonumber(arg[1])
+x=service.invoke("com.harman.service.AudioSettings", "setVolume", params)
+\end{lstlisting}
 
 
 \section{Sicherheitsmaßnahmen}
 %Joshua
-
 % Quellen:
 % cars-usenixsec2011 S.14
 Interfaces der ECUs sind meist viel ausführlicher und offener als notwendig. Z.B. ist es unnötig, Bluetooth-Kopplungen ohne Interaktion, oder unbemerkte Datenverbindungen zum Auto zuzulassen. PassThru (Werkstätten-) Geräte sollten über verschlüsselte Verbindungen arbeiten, um das Interface intransparenter zu machen.\par
-Außerdem wurden viele Attacken erst möglich, da auf den ECUs telnetd, ftp und vi vorinstalliert waren, ohne dass sie im gewöhnlichen Betrieb notwendig wären. \par
-Außerdem müsse es mehr Sicherheitsupdates für Autos geben.
+Außerdem wurden viele Attacken erst möglich, da auf den ECUs telnetd, ftp und vi vorinstalliert waren, ohne dass sie im gewöhnlichen Betrieb notwendig wären. In der von (QUELLE 'woot15' Foster et al.) untersuchten TCU waren die Dienste ebenfalls aktiviert und das Gerät war durch eine aktive WAN-Verbindung (via 2G-Modem) sogar von Google und Shodan indiziert und somit sehr offen zugänglich.\par
 % remote attack surfaces S.90f
-% cars-oakland2010 S.13ff
-% woot15-paper-foster S.7ff
+Da sich Technik ständig ändert, wird es nie 100\% sichere Schnittstellen geben, schreiben die Autoren von (QUELLE 'remote attack surfaces') Allerdings müssen sich parallel zur Technik auch die Sicherheitsmaßnahmen, um sie zu schützen, weiterentwickeln.\par
+Man könne außerdem den CAN-Zugriff einschränken, beispielsweise bestehe kein Bedarf für das Bluetooth-Modul, Nachrichten auf den CAN-Bus zu schicken.\par
+Eine Verschlüsselung der Nachrichten auf dem CAN-Bus selbst stellt keine große Verbesserung der Sicherheit da: Die Nachrichtenschlüssel würden auf den ECUs lägen und könnten wie bisher extrahiert werden.\par
+Eine vielversprechendere Idee wäre eine grundlegende Neustrukturierung der Netzwerkarchitektur im Auto. In Modellen, bei denen die Forscher mehr Aufwand betreiben mussten, um von außen Zugriff auf sicherheitskritische Komponenten zu bekommen, sind ECUs mit ausgehenden Verbindungen meist nicht direkt mit diesen verbunden, sondern über eine Brücke. Auch die Brücke kann überwunden werden, allerdings steigt die Komplexität einer Attacke durch diese zusätzliche Hürde enorm und kann in manchen Fällen die Attacke sogar verhindern. \par
 
+% cars-oakland2010 S.13ff
+Auch die Autoren von --Quelle cars-oakland2010-- weisen auf Netzwerkbrücken als kritische Angriffskomponenten hin. In ihrem Versuchsauto konnten sie eine Methode entwickeln, um durch die Telematik-Einheit vom Niedriggeschwindigkeitsnetz des Autos das Hochgeschwindigkeitsnetz anzugreifen. Da \textit{sämtliche} ECUs direkt oder indirekt an das Hochgeschwindigkeitsnetz angeschlossen werden, könnte es schwierig werden, \textit{alle} Geräte und deren Verbindungen gegen diese Art von Angriffen zu sichern.\par
+Außerdem wird hier auf die offenen Schnittstellen der Diagnose- und Reflashing-Services eingegangen. Eine generelle Restriktion vor der Auslieferung würde die Sicherheit zunächst erhöhen, jedoch bliebe Werkstätten und Besitzern, die an ihrem Auto Komponenten nachrüsten wollen, der Zugriff ebenfalls verwehrt. Die Einführung von Zugriffskontrollen sei schwierig: Welchen Werkstätten soll Zugriff gewährt werden, welchen nicht? Und auf welcher Basis sollten jene Entscheidungen gefällt werden?\par
+Die Nachrüstung von Drittkomponenten nehme eine besondere Position in der Diskussion um IT-Sicherheit ein: Solange sich diese an den Bus verbinden lassen, könne schädliche Software jederzeit über selbstentwickelte Komponenten eingschleust werden. Ein generelles Verbot von Drittkomponenten sei unvorstellbar, daher lautet der Vorschlag hier, die Geräte über einen Filter an Bus zu schließen, das nur den Verkehr von authorisierten Paketen zulässt.
+
+Ein simple, doch umso wichtigere Maßnahme wäre ein Angreifer-\textit{Erkennungs}mechanismus im CAN-Netzwerk. Miller und Valasek schlagen folgende zwei Möglichkeiten vor: Einerseits könne man die gewöhnliche Rate der Nachrichten, die eine ECU sendet, drastisch erhöhen. Würde ein Angreifer nun über diese ECU eigene Nachrichten versenden (in der Praxis werden diese in einer noch höheren Rate als der regelmäßige Verkehr), wäre ein Angriff deutlich zu erkennen. Durch Erkennung und entsprechende Alarmsignale wird die Angriffsfläche des Automobils zwar nicht kleiner, jedoch könnte das Wissen über einen Angriff ein erster Schritt zu mehr Sicherheit sein.
+% woot15-paper-foster S.7ff
+Die Autoren von (Quelle: 'woot15-paper-foster'), die mittels der nachrüstbaren TCU und einer SMS einen modifizierten Update-Prozess starten konnten, schlagen ebenfalls diverse Maßnahmen vor, um die digitale Angriffsfläche auf Automobile zu verkleinern: Der Code für Updates sollte beispielsweise vom Hersteller signiert werden und nur dann ausgeführt werden, wenn er als authentisch anerkannt wird. Außerdem fanden die Forscher zwar eine Black- und Whitelist für SMS-Absender in der TCU vor, diese könne allerdings (z.B. durch Fälschen der Telefonnummer) leicht umgangen werden und nicht zuletzt gelang es den Forschern ebenfalls, diese Listen zu bearbeiten. Sie schlagen vor, die SMS-Administration entweder vollkommen zu deaktivieren, oder durch umfassende Authentifizierung sicherzustellen, dass Update-SMS tatsächlich vom Hersteller kommen, um auch diese Schnittstelle Angreifern möglichst unzugänglich zu machen.\par
+Als weitere Sicherheitslücke wird die Auslieferung der TCUs inklusive öffentlichem \textit{und} privatem Schlüssel für das SSH-Benutzerkonto auf dem Update-Server mit Administratorenrechten genannt. Die lokale Speicherung des privaten Schlüssels sei nicht nötig und dadurch könne ihn jeder, der sich Zugriff auf das Dateisystem des Gerätes verschafft, lesen. Den Zweck einer Selbst-Authentifizierung des Gerätes auf dem Update-Server konnten die Autoren ohnehin nicht erkennen - wenn dies tatsächlich notwendig sei, sollte es mit einem für jedes Gerät individuellen Schlüssel vorgenommen werden.
 \chapter{Schluss/Fazit}
 %schreiben, wenn die Arbeit fertig ist
-
+%Ansatz: Es gibt so viele Sicherheitslücken, dass es schwierig war, ein Gesamtbild zu bekommen
 \begin{comment}
 %Ursprüngliches Dokument von Federrath mit Hinweisen und Tipps
 
