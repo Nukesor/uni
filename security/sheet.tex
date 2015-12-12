@@ -181,7 +181,7 @@ Die übliche Funktionsweise eines CAN-Busses lässt sich gut am Beispiel des Toy
 \FloatBarrier
 \begin{figure}[h!]
 	\centering
-  \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{pic/can-bus.png}
+  \includegraphics[width=0.7\textwidth,keepaspectratio]{pic/can-bus.png}
 	\caption{Aufbau eines CAN-Busses}
 \end{figure}
 \FloatBarrier
@@ -244,7 +244,7 @@ Durch die zunehmende Vernetzung des Automobils oder technisch beabsichtigte Bequ
 %Dies sind alles Probleme, welche mit einer Verschlüsselung und einem gut implementieren Authorisierungssystem hätten vermieden werden können. --> in Schlussteil
 
 \section{Ausgewählte Angriffsvektoren}
-Nicht alle Systeme, TCUs\footnote{'Telematic Control Units': Steuergeräte für Telematikdienste. Sind in der Regel direkt an den CAN-Bus angeschlossen und zeichnen sich häufig durch viele ausgehende Verbindungen aus (Bluetooth, Mobilfunk, GPS, etc.)} oder ECUs\footnote{'Electronic Control Units': Ähnlich wie TCUs, allerdings können TCUs Geräte verschiedenster Art sein und müssen keine Verbindungen f}, die über den CAN-Bus kommunizieren, sind als Angriffsvektor geeignet. Entscheidend für einen Angriff aus der Ferne (ohne pyhsischen Zugriff) ist eine Verbindung zur Außenwelt. Neben vielen Geräten mit eingeschränkter Möglichkeit des unerlaubten Fremdzugriffes, taten sich die folgenden drei Vektoren als besonders schwerwiegende Sicherheitslücken auf:
+Nicht alle Systeme, TCUs\footnote{'Telematic Control Units': Steuergeräte für Telematikdienste. Sind in der Regel direkt an den CAN-Bus angeschlossen und zeichnen sich häufig durch viele ausgehende Verbindungen aus (Bluetooth, Mobilfunk, GPS, etc.)} oder ECUs\footnote{'Electronic Control Units': Ähnlich wie TCUs, allerdings können TCUs Geräte verschiedenster Art sein und müssen keine Verbindungen zur Außenwelt aufweisen. ECUs sind entscheidende Bauteile eines Automobils und ihre korrekte Funktionsweise sind unverzichtbar für einen geregelten Betrieb. Beispiele für ECUs wären Parkassistenz-Systeme oder Lenkwinkelsensoren. Weitere Beispiele siehe Abb. 2.1}, die über den CAN-Bus kommunizieren, sind als Angriffsvektor geeignet. Entscheidend für einen Angriff aus der Ferne (ohne pyhsischen Zugriff) ist eine Verbindung zur Außenwelt. Neben vielen Geräten mit eingeschränkter Möglichkeit des unerlaubten Fremdzugriffes, taten sich die folgenden drei Vektoren als besonders schwerwiegende Sicherheitslücken auf:
 
 \subsection{Bluetooth}
 %Joshua
@@ -318,26 +318,19 @@ Als weitere Sicherheitslücke wird die Auslieferung der TCUs inklusive öffentli
 
 \chapter{Schluss/Fazit}
 
-Nach dem Betrachten der möglichen Sicherheitslücken an kritischen Systemen in Automobilen, stellt sich heraus, dass es keineswegs unmöglich ist die Systeme eines Autos zu kompromitieren. Jedoch sind damit erhebliche Aufwände erforderlich. Zuerst ein physikalischer Zugang zu dem Zielfahrzeug, was jedoch nur ein dieses einzelne kompromitieren würde.
-
-Um eine von außerhalb ohne direkten Zugang erreichbare Schwachstelle zu entdecken, musste erst ein Baugleiches Model beschafft, die Source Codes der jeweiligen TCU's decompiled und auf mögliche Sicherheitslücken untersucht werden. Dies setzt ein relativ hohes Budget, sowie ein hervorragendes Vorwissen in der jeweiligen Programmiersprache und IT-Sicherheit voraus.
-
-Dies erklärt auch wieso bisher noch nicht im großen Stil Autos gehackt werden. Zudem gibt es keinen offensichtlichen Nutzen, Autos zu kapern, beziehungsweise existieren andere wesentlich einfacher zugängliche und rentablere Ziele in der IT-Welt. Ein Fakt, auf den sich die Automobil Industrie sehr zu verlassen scheint.
+Nach dem Betrachten der möglichen Sicherheitslücken an kritischen Systemen in Automobilen stellt sich heraus, dass es keineswegs unmöglich ist die Systeme eines Autos zu kompromittieren. Jedoch sind damit erhebliche Aufwände verbunden.
 
 Nichtsdestotrotz wird uns erneut aufgezeigt wie angreifbar die von uns benutzte Hardware ist und es stellt sich die Frage, ob in Zukunft die Sicherheit in Automobilen eine größere Rolle spielen wird. Speziell im Ausblick auf autonom fahrende Fahrzeuge.
 
-In jedem Falle, muss die Autoindustrie ihren Fokus mehr in Richtung IT-Sicherheit bewegen. Es müssen hier lediglich einfache Sicherheitsstandarts eingehalten werden, welche bereits weit verbreitet sind. Zum Beispiel sollte niemals ein für alle Fahrzeuge des selben Modells gültiger SSH-Private-Key auf den jeweiligen Fahrzeugen mitgeliefert werden. Ebenfalls ist die Technologie des CAN-Busses überholt und sollte durch ein einfaches Addressierungsverfahren und eine Authentifizierung für neue Geräte um ein vielfaches schwieriger zugänglicher gemacht werden.
+In jedem Falle muss die Autoindustrie ihren Fokus mehr in Richtung IT-Sicherheit bewegen. Es müssen hier lediglich einfache Sicherheitsstandards eingehalten werden, welche bereits weit verbreitet sind. Zum Beispiel sollte niemals ein für alle Fahrzeuge des selben Modells gültiger SS Private-Key auf den jeweiligen Fahrzeugen mitgeliefert werden. Ebenfalls ist die Technologie des CAN-Busses überholt und sollte durch ein einfaches Addressierungsverfahren und eine Authentifizierung für neue Geräte um ein vielfaches schwieriger zugänglicher gemacht werden.
 
-Die Software auf den TCU's selbst müsste besser getestet und nach außen hin abgeschirmt werden. Es gibt zu viele Nachlässigkeiten, so sollte zum Beispiel niemals die D-Bus Software, welche als Hilfsmittel für interne Prozesskommunikation ein kritischer Angriffspunkt ist, über einen Port von außerhalb direkt erreichbar sein.
+Die Software auf den TCUs selbst müsste besser getestet und nach außen hin abgeschirmt werden. Es gibt zu viele Nachlässigkeiten, so sollte zum Beispiel niemals die D-Bus Software, welche als Hilfsmittel für interne Prozesskommunikation ein kritischer Angriffspunkt ist, über einen Port von außerhalb direkt erreichbar sein.
 Auch müssen mitgelieferte Passwörter oder Hashes mit einem nicht nachvollziehbaren Zufallsalgorithmus erstellt werden.
 
-Diese Änderungen sind nicht komplizert oder High-Tech Problematiken. Es sind ganz einfach Fahrlässigkeiten des Herstellers, der auf IT-Security keinen Wert legt.
+Diese Änderungen sind nicht kompliziert oder Hightech-Problematiken. Es sind ganz einfach Fahrlässigkeiten des Herstellers, der auf IT-Security keinen Wert legt.
 
 Es bleibt zu hoffen, dass diese Nachlässigkeit niemals zu größeren Problemen führt.
 
-
-%schreiben, wenn die Arbeit fertig ist
-%Ansatz: Es gibt so viele Sicherheitslücken, dass es schwierig war, ein Gesamtbild zu bekommen
 
 \nocite{*}
 \bibliographystyle{alpha}
