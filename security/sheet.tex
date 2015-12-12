@@ -5,7 +5,7 @@
     fontsize=12pt,
     headings=small,
     parskip=half,           % Ersetzt manuelles setzten von parskip/parindent.
-    bibliography=totoc,9
+    bibliography=totoc,
     numbers=noenddot,       % Entfernt den letzten Punkt der Kapitelnummern.
     open=any,               % Kapitel kann auf jeder Seite beginnen.
 %   final                   % Entfernt alle todonotes und den Entwurfstempel.
@@ -23,7 +23,6 @@
 \usepackage[
     autostyle,
     ]{csquotes}             % Korrekte Anfuehrungszeichen in der Literaturliste.
-\usepackage{fixltx2e}       % Patches fuer LaTeX2e.
 \usepackage{scrhack}        % Verhindert Warnungen mit aelteren Paketen.
 % }}}
 
@@ -176,13 +175,13 @@ Betrachtet man die Kommunikation zwischen den digitalen Systemen und der physisc
 \subsection{Funktion und Aufbau}
 Alle im folgenden erörterten Probleme ergeben sich aus Schwachstellen in der Zentralen Kommunikationsschnittstelle eines Autos, dem sogenannten CAN-Bus.\par
 Der Controller Area Network Bus ist ein klassisches Binary Unit System, welches die meisten Systeme eines PKWs miteinander verbindet. Hierbei ist anzumerken, dass in vielen Autos mehrere CAN-Busse verbaut sind, welche unabhängig voneinander agieren können. Die an den CAN-BUS gebundenen Systeme werden Electronic Control Units genannt, kurz ECUs.\par
-Die übliche Funktionsweise eines CAN-Busses lässt sich gut am Beispiel des Toyota Prius erklären: ECU's kommunizieren untereinander über den Bus, wobei jedes gesendete Paket an jede andere ECU am selben Bus gesendet wird ('Broadcast'). Die ECUs selbst entscheiden anschließend anhand der Struktur der Pakete, ob die Informationen für sie bestimmt sind und verarbeiten diese, falls dies der Fall ist.\par
+Die übliche Funktionsweise eines CAN-Busses lässt sich gut am Beispiel des Toyota Prius erklären \cite{MiV13}: ECU's kommunizieren untereinander über den Bus, wobei jedes gesendete Paket an jede andere ECU am selben Bus gesendet wird ('Broadcast'). Die ECUs selbst entscheiden anschließend anhand der Struktur der Pakete, ob die Informationen für sie bestimmt sind und verarbeiten diese, falls dies der Fall ist.\par
 
 \FloatBarrier
 \begin{figure}[h!]
 	\centering
   \includegraphics[width=0.7\textwidth,keepaspectratio]{pic/can-bus.png}
-	\caption{Aufbau eines CAN-Busses}
+	\caption{Aufbau eines CAN-Busses \cite{MiV13}}
 \end{figure}
 \FloatBarrier
 \newpage
@@ -290,7 +289,9 @@ Das Eindringen in ein Wlan-Netz, obwohl kein direkter physischer Zugriff zum Fah
 Ein weiterer Teil von Miller und Valaseks Arbeit konzentriert sich nun auf das Einschleusen gefälschter CAN-Befehle. Das Multimediasystem kann CAN-Befehle nicht direkt auf den CAN-Bus schreiben, aber es kann mit einem Chip kommunizieren, der genau dazu in der Lage ist. Zusätzlich kann dieser Chip über das Mediensystem geupdatet werden. Dies nutzen Miller und Valasek aus: Sie laden über das Multimediasystem eine eigene Firmware auf besagten Chip, welche es ihnen ermöglicht CAN-Befehle auf die CAN-Netzwerke zu versenden. Dieses Update birgt dabei ein Risiko für den Angreifer bemerkt zu werden, da das Multimediasystem und der zum CAN-Netzwerk verbundene Chip zuerst in einen ''Update mode'' überführt werden müssen. Dies kann nur über einen Neustart der Systeme geschehen, welcher unter Umständen von Fahrzeuginsassen bemerkt wird. \par
 Mit der Möglichkeit eigene CAN-Befehle an das Auto zu schicken, widmeten sich Miller und Valasek der Frage, wie diese Nachrichten aufgebaut sind. Hierfür machten sie von Diagnosegeräten Gebrauch, die in gewöhnlichen Werkstätten benutzt werden. Der Jeep nutzt intern zwei Arten an CAN-Befehlen, einerseits ''normale'', die im herkömmlichen Betrieb des Autos ständig verschickt werden, andererseits diagnostische Befehle, die nur von Werkstätten genutzt werden, daher auch nur bei geringer Geschwindigkeit von den ECUs akzeptiert werden. Im Gegensatz zu CAN-Befehlen anderer Hersteller nutzt der Jeep keine herkömmlichen Algorithmen, um Prüfziffern zu berechnen, sondern einen eigenen, etwas komplizierteren (Details siehe \cite{MiV15}), welcher von Miller und Valasek aber durch Reverse-Engineering herausgefunden werden konnte. Mit diesem Algorithmus waren Miller und Valasek nun endgültig in der Lage eigene CAN-Befehle zu erstellen. \par
 Über ''normale'' CAN-Befehle waren sie z.B. in der Lage den Blinker des Autos zu setzen, die Türen zu öffnen und zu schließen und die Drehzahl, die auf dem Tachometer angezeigt wird, zu manipulieren. Bis auf die Berechnung der Prüfsumme sehen die CAN-Befehle ähnlich aus, wie zuvor in Abschnitt 2.1 beschrieben, erwähnter Befehl zur Manipulation der angezeigten Drehzahl sieht z.B. wie folgt aus:
+
 \centerline{\texttt{01 FC 08 07 47 4C C1 70 00 45 48}}
+
 Wobei ''01 FC'' die ID der adressierten ECU ist, ''08'' die Länge der folgenden Daten festlegt und somit ''07 47 4C C1 70 00 45 48'' die eigentlichen Daten der Nachricht inkl. Prüfziffer. ''07 47'' steht dabei für die konkrete Drehzahl.
 %Lenkung über Parkassisten, Bremsen über Unfallverhinderung, Motor ausschalten...
 
@@ -314,11 +315,11 @@ Die Nachrüstung von Drittkomponenten nehme eine besondere Position in der Disku
 Ein simple, doch umso wichtigere Maßnahme wäre ein Angreifer-\textit{Erkennungs}mechanismus im CAN-Netzwerk. Miller und Valasek schlagen folgende zwei Möglichkeiten vor: Einerseits könne man die gewöhnliche Rate der Nachrichten, die eine ECU sendet, drastisch erhöhen. Würde ein Angreifer nun über diese ECU eigene Nachrichten versenden (in der Praxis werden diese in einer noch höheren Rate als der regelmäßige Verkehr), wäre ein Angriff deutlich zu erkennen. Durch Erkennung und entsprechende Alarmsignale wird die Angriffsfläche des Automobils zwar nicht kleiner, jedoch könnte das Wissen über einen Angriff ein erster Schritt zu mehr Sicherheit sein.
 % woot15-paper-foster S.7ff
 Die Autoren von \cite{FPK15}, die mittels der nachrüstbaren TCU und einer SMS einen modifizierten Update-Prozess starten konnten, schlagen ebenfalls diverse Maßnahmen vor, um die digitale Angriffsfläche auf Automobile zu verkleinern: Der Code für Updates sollte beispielsweise vom Hersteller signiert werden und nur dann ausgeführt werden, wenn er als authentisch anerkannt wird. Außerdem fanden die Forscher zwar eine Black- und Whitelist für SMS-Absender in der TCU vor, diese könne allerdings (z.B. durch Fälschen der Telefonnummer) leicht umgangen werden und nicht zuletzt gelang es den Forschern ebenfalls, diese Listen zu bearbeiten. Sie schlagen vor, die SMS-Administration entweder vollkommen zu deaktivieren, oder durch umfassende Authentifizierung sicherzustellen, dass Update-SMS tatsächlich vom Hersteller kommen, um auch diese Schnittstelle Angreifern möglichst unzugänglich zu machen.\par
-Als weitere Sicherheitslücke wird die Auslieferung der TCUs inklusive öffentlichem \textit{und} privatem Schlüssel für das SSH-Benutzerkonto auf dem Update-Server mit Administratorenrechten genannt. Die lokale Speicherung des privaten Schlüssels sei nicht nötig und dadurch könne ihn jeder, der sich Zugriff auf das Dateisystem des Gerätes verschafft, lesen. Den Zweck einer Selbst-Authentifizierung des Gerätes auf dem Update-Server konnten die Autoren ohnehin nicht erkennen - wenn dies tatsächlich notwendig sei, sollte es mit einem für jedes Gerät individuellen Schlüssel vorgenommen werden.
+Als weitere Sicherheitslücke wird die Auslieferung der TCUs inklusive öffentlichem \textit{und} privatem Schlüssel für das SSH-Benutzerkonto auf dem Update-Server mit Administratorrechten genannt. Die lokale Speicherung des privaten Schlüssels sei nicht nötig und dadurch könne ihn jeder, der sich Zugriff auf das Dateisystem des Gerätes verschafft, lesen. Den Zweck einer Selbst-Authentifizierung des Gerätes auf dem Update-Server konnten die Autoren ohnehin nicht erkennen - wenn dies tatsächlich notwendig sei, sollte es mit einem für jedes Gerät individuellen Schlüssel vorgenommen werden.
 
 \chapter{Schluss/Fazit}
 
-Nach dem Betrachten der möglichen Sicherheitslücken an kritischen Systemen in Automobilen stellt sich heraus, dass es keineswegs unmöglich ist die Systeme eines Autos zu kompromittieren. Jedoch sind damit erhebliche Aufwände verbunden.
+In Anbetracht der zahlreichen Sicherheitslücken in modernen Automobilen stellt sich heraus, dass es keineswegs unmöglich ist die Systeme eines Autos zu kompromittieren. Hin man die fatalen Ergebnisse (z.B. Auslösen oder gar Ausschalten der Bremsen, Abschalten des Motors), die sogar ohne jeden physischen Kontakt zum Auto möglich sind,
 
 Nichtsdestotrotz wird uns erneut aufgezeigt wie angreifbar die von uns benutzte Hardware ist und es stellt sich die Frage, ob in Zukunft die Sicherheit in Automobilen eine größere Rolle spielen wird. Speziell im Ausblick auf autonom fahrende Fahrzeuge.
 
@@ -697,7 +698,7 @@ Bei der Bewertung der schriftlichen Ausarbeitung wird ein Punkteschema verwendet
 
 Die Arbeit wird unter fünf Aspekten einzeln bewertet, die jedoch nicht gleichgewichtig sind. Das verschiedene Gewicht wird dadurch berücksichtigt, dass für die einzelnen Aspekte verschieden hohe Punktzahlen zur Verfügung stehen (siehe Tabelle~\ref{tab:punktzahl}).
 
-\begin{table}[!h]%Tabelle soll hier (!h) erscheinen!
+\begin{table}[!ht]%Tabelle soll hier (!h) erscheinen!
 \begin{tabu}{lcrl}
 	\toprule
 	\multicolumn{3}{l}{Punktzahl} & Aspekt\\
