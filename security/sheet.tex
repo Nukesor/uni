@@ -31,6 +31,7 @@
 \usepackage{mathptmx}       % Times. Package 'times.sty' is obsolete.
 \usepackage[scaled=.92]{helvet}
 \usepackage{courier}
+\usepackage{placeins}
 % }}}
 
 % Biblatex {{{
@@ -176,6 +177,17 @@ Betrachtet man die Kommunikation zwischen den digitalen Systemen und der physisc
 Alle im folgenden erörterten Probleme ergeben sich aus Schwachstellen in der Zentralen Kommunikationsschnittstelle eines Autos, dem sogenannten CAN-Bus.\par
 Der Controller Area Network Bus ist ein klassisches Binary Unit System, welches die meisten Systeme eines PKWs miteinander verbindet. Hierbei ist anzumerken, dass in vielen Autos mehrere CAN-Busse verbaut sind, welche unabhängig voneinander agieren können. Die an den CAN-BUS gebundenen Systeme werden Electronic Control Units genannt, kurz ECUs.\par
 Die übliche Funktionsweise eines CAN-Busses lässt sich gut am Beispiel des Toyota Prius erklären: ECU's kommunizieren untereinander über den Bus, wobei jedes gesendete Paket an jede andere ECU am selben Bus gesendet wird ('Broadcast'). Die ECUs selbst entscheiden anschließend anhand der Struktur der Pakete, ob die Informationen für sie bestimmt sind und verarbeiten diese, falls dies der Fall ist.\par
+
+\FloatBarrier
+\begin{figure}[h!]
+	\centering
+  \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{pic/can-bus.png}
+	\caption{Aufbau eines CAN-Busses}
+\end{figure}
+\FloatBarrier
+\newpage
+
+
 Hier ein Beispiel für ein Paket, das auf einem CAN-Bus kommuniziert wird, in hexadezimaler Schreibweise:
 
 \centerline{\texttt{00 B4 08 00 00 00 00 3C 18 C0 FF}}
@@ -220,32 +232,19 @@ Für den Fall, dass es einem Angreifer gelingt Zugang zu einem der ECU's am Bus 
 
 Im folgenden Abschnitt wird auf die Schwachstellen und die Unsicherheit des CAN-Busses eingegangen.
 
-\subsection{(Un-)Sicherheit}
-Wie bereits im vorherigen Abschnitt erläutert, stellt die Kommunikation am CAN-Bus das größte Sicherheitsproblem dar.
-Bei den meisten Autos ist die Kommunikation auf dem Bus vollkommen unverschlüsselt. \\
-ECUs kommunizieren ohne jegliche Authentifizierung. Dieser Umstand ermöglichte es ohne Hindernisse schadhafte Pakete an ECU's zu senden.
-Das Fehlen einer Kontrollinstanz bei einer derartig wichtigen Komponente eines Autos lässt sich durchaus als grob fahrlässig bezeichnen.
-Alle am Bus hängenden Geräte werden als vollkommen glaubwürdig anerkannt.
-
-Durch die unverschlüsselte Kommunikation, tritt ein weiteres, wenn nicht sogar drastischeres Problem auf. \\
-Die Protokolle, mit denen die ECU's kommunizieren sind nicht öffentlich einsehbar und nur dem Hersteller bekannt.
-Ohne die Dokumentation der API der jewelige ECUs ist es um ein vielfaches schwerer Pakete zu designen, welche von den ECUs als valid angesehen werden.
-Da Pakete auf einem CAN-Bus jedoch an alle verbundenen Geräte gesendet werden, kann ein Angreifer diese ohne Probleme für eine spätere Analyse mitschneiden.
-Selbstverständlich braucht man hierfür Zugriff auf den Bus, aber dies kann z.B. an einem baugleichen Modell geschehen, welches der Angreifer besitzt oder mietet.
-Da der Traffic auf dem Bus unverschlüsselt ist, kann der Mittschnit nun benutzt werden benutzt werden um die API der ECUs zu rekonstruieren.
-Hierfür muss lediglich nach Mustern im Paketstrom gesucht werden, welche in Abhängigkeit zu dem Zustand des Auto stehen.
-Durch dieses Verfahren wurde z.B. die vorher gezeigte API des Geschwindigkeitstachos rekonstruiert.
+\subsection{Sicherheit}
+Wie bereits erwähnt, stellt die Kommunikation über den CAN-Bus das größte Sicherheitsproblem dar: Bei den meisten Autos verläuft diese vollkommen unverschlüsselt, außerdem kommunizieren die ECUs ohne jegliche Authentifizierung. Deshalb können schadhafte Pakete auf den Bus gelegt werden und im Regelfall akzeptiert und verarbeitet es die betroffene ECU problemlos.\par
+Ferner sind die Protokolle und Programmierschnittstellen ('APIs'), mit denen die ECUs kommunizieren, nicht öffentlich einsehbar und nur dem jeweiligen Hersteller bekannt. Zwar erschwert dies, Pakete zu designen, welche von den ECUs als valid angesehen werden, allerdings kann ein Angreifer durch die Broadcast-Architektur des CAN-Busses beliebig viele hiervon ohne Probleme für eine spätere Analyse mitschneiden.
+Selbstverständlich braucht man hierfür Zugriff auf den Bus selbst, die Analyse kann aber z.B. auch an einem baugleichen Modell geschehen, welches der Angreifer besitzt oder mietet. Da der abgehörte Traffic auf dem Bus unverschlüsselt ist, kann der Mittschnit nun benutzt werden um die API der ECUs zu rekonstruieren: Hierfür muss lediglich nach Mustern im Paketstrom gesucht werden, welche in Abhängigkeit zu dem Zustand des Auto stehen. Durch dieses Verfahren wurde beispielsweise die vorher gezeigte API des Geschwindigkeitstachos rekonstruiert.
 
 Durch das Senden und Empfangen Aller an Alle entsteht ein weiteres Problem. Mit jedem Gerät, welches an dem Bus hängt, wird ein neuer Angriffsvektor bereitgestellt.
-Im schlechtesten Fall benötigt ein Angreifer physikalischen Zugriff um einen Empfänger am Bus zu befestigen oder die Firmware der ECU's zu manipulieren.
-Durch die zunehmende Vernetzung oder technische beabsichtigte Bequemlichkeiten wie Firmware-Updates per CD/USB oder gar Funk/Internet, steigt die Kompromitierbarkeit von an dem CAN-Bus befindlichen Geräten zunehmend.
-In einem späteren Abschnitt wird näher auf mögliche Angriffsvektoren eingegangen.
+Solange ein Angreifer physikalischen Zugriff auf den Bus hat, kann er also einen eigenen Empfänger am Bus befestigen oder die Firmware vorhandener ECUs manipulieren.
+Durch die zunehmende Vernetzung des Automobils oder technisch beabsichtigte Bequemlichkeiten wie Firmware-Updates per CD/USB oder gar Funk/Internet, steigt die Kompromitierbarkeit von an dem CAN-Bus befindlichen Geräten zunehmend.
 
-Dies sind alles Probleme, welche mit einer Verschlüsselung und einem gut implementieren Authorisierungssystem hätten vermieden werden können.
+%Dies sind alles Probleme, welche mit einer Verschlüsselung und einem gut implementieren Authorisierungssystem hätten vermieden werden können. --> in Schlussteil
 
 \section{Ausgewählte Angriffsvektoren}
-%Hier anreißen, welche Geräte es allgemein gibt (ABS, ..), mit Verweis, dass auf manche wichtige im folgenden genauer eingegangen wird.
-%Erklärung TCU, ECU und andere Begriffe
+Nicht alle Systeme, TCUs\footnote{'Telematic Control Units': Steuergeräte für Telematikdienste. Sind in der Regel direkt an den CAN-Bus angeschlossen und zeichnen sich häufig durch viele ausgehende Verbindungen aus (Bluetooth, Mobilfunk, GPS, etc.)} oder ECUs\footnote{'Electronic Control Units': Ähnlich wie TCUs, allerdings können TCUs Geräte verschiedenster Art sein und müssen keine Verbindungen f}, die über den CAN-Bus kommunizieren, sind als Angriffsvektor geeignet. Entscheidend für einen Angriff aus der Ferne (ohne pyhsischen Zugriff) ist eine Verbindung zur Außenwelt. Neben vielen Geräten mit eingeschränkter Möglichkeit des unerlaubten Fremdzugriffes, taten sich die folgenden drei Vektoren als besonders schwerwiegende Sicherheitslücken auf:
 
 \subsection{Bluetooth}
 %Joshua
@@ -289,7 +288,7 @@ x=service.invoke("com.harman.service.AudioSettings", "setVolume", params)
 
 Das Eindringen in ein Wlan-Netz, obwohl kein direkter physischer Zugriff zum Fahrzeug benötigt wird, kann nur aus begrenzter Entfernung, etwa 30m, erfolgen. Aus diesem Grund änderte sich nun der Fokus von Miller und Valasek auf die Mobilfunk-Fähigkeiten des Multimediasystems. U.a. für mobilen Internetzugang besitzt der Jeep eine 3G-Verbindung zum Netz eines Mobilfunkanbieters (Im konkreten Testfall handelte es sich um den amerikanischen Anbieter Sprint). Es konnte beobachtet werden, dass innerhalb des Netzes des Mobilfunkanbieters einerseits das Fahrzeug stets eine IP-Adresse in einem von zwei Adressbereichen zugeordnet bekommt und andererseits auch in dieser Umgebung der Zugang zum D-Bus-System für fremde Geräte offen ist. Dies bedeutet, dass, sofern sich der Angreifer im Netz des gleichen Anbieters wie das Fahrzeug befindet, die zuvor beschrieben  Attacken nicht nur in direkter Umgebung, sondern über das ganze Land ausgeführt werden können. Zudem konnten Miller und Valasek über IP-Analysen feststellen, dass diverse andere Fahrzeuge, die dasselbe Mediensystem integriert haben, im gleichen Adressbereich kommunizieren und durch ähnliche Angriffe gefährdet sind. \par
 Ein weiterer Teil von Miller und Valaseks Arbeit konzentriert sich nun auf das Einschleusen gefälschter CAN-Befehle. Das Multimediasystem kann CAN-Befehle nicht direkt auf den CAN-Bus schreiben, aber es kann mit einem Chip kommunizieren, der genau dazu in der Lage ist. Zusätzlich kann dieser Chip über das Mediensystem geupdatet werden. Dies nutzen Miller und Valasek aus: Sie laden über das Multimediasystem eine eigene Firmware auf besagten Chip, welche es ihnen ermöglicht CAN-Befehle auf die CAN-Netzwerke zu versenden. Dieses Update birgt dabei ein Risiko für den Angreifer bemerkt zu werden, da das Multimediasystem und der zum CAN-Netzwerk verbundene Chip zuerst in einen ''Update mode'' überführt werden müssen. Dies kann nur über einen Neustart der Systeme geschehen, welcher unter Umständen von Fahrzeuginsassen bemerkt wird. \par
-Mit der Möglichkeit eigene CAN-Befehle an das Auto zu schicken, widmeten sich Miller und Valasek nun der Frage, wie diese Nachrichten aufgebaut sind. Hierfür machten sie von (sehr teuren) Diagnosegeräten, wie ein Mechaniker sie nutzt, Gebrauch. Der Jeep nutzt intern zwei Arten an CAN-Befehlen, einerseits ''normale'', die im herkömmlichen Betrieb des Autos ständig verschickt werden, andererseits diagnostische Befehle, die nur von Werkstätten genutzt werden, daher auch nur bei geringer Geschwindigkeit von den ECUs akzeptiert werden. Im Gegensatz zu CAN-Befehlen anderer Hersteller nutzt der Jeep keine herkömmlichen Algorithmen, um Prüfziffern zu berechnen, sondern einen eigenen, etwas komplizierteren (Details siehe \cite{MiV15}), welcher von Miller und Valasek aber durch Reverse-Engineering herausgefunden werden konnte. Mit diesem Algorithmus waren Miller und Valasek nun endgültig in der Lage eigene CAN-Befehle zu erstellen. \par
+Mit der Möglichkeit eigene CAN-Befehle an das Auto zu schicken, widmeten sich Miller und Valasek der Frage, wie diese Nachrichten aufgebaut sind. Hierfür machten sie von Diagnosegeräten Gebrauch, die in gewöhnlichen Werkstätten benutzt werden. Der Jeep nutzt intern zwei Arten an CAN-Befehlen, einerseits ''normale'', die im herkömmlichen Betrieb des Autos ständig verschickt werden, andererseits diagnostische Befehle, die nur von Werkstätten genutzt werden, daher auch nur bei geringer Geschwindigkeit von den ECUs akzeptiert werden. Im Gegensatz zu CAN-Befehlen anderer Hersteller nutzt der Jeep keine herkömmlichen Algorithmen, um Prüfziffern zu berechnen, sondern einen eigenen, etwas komplizierteren (Details siehe \cite{MiV15}), welcher von Miller und Valasek aber durch Reverse-Engineering herausgefunden werden konnte. Mit diesem Algorithmus waren Miller und Valasek nun endgültig in der Lage eigene CAN-Befehle zu erstellen. \par
 Über ''normale'' CAN-Befehle waren sie z.B. in der Lage den Blinker des Autos zu setzen, die Türen zu öffnen und zu schließen und die Drehzahl, die auf dem Tachometer angezeigt wird, zu manipulieren. Bis auf die Berechnung der Prüfsumme sehen die CAN-Befehle ähnlich aus, wie zuvor in Abschnitt 2.1 beschrieben, erwähnter Befehl zur Manipulation der angezeigten Drehzahl sieht z.B. wie folgt aus:
 \centerline{\texttt{01 FC 08 07 47 4C C1 70 00 45 48}}
 Wobei ''01 FC'' die ID der adressierten ECU ist, ''08'' die Länge der folgenden Daten festlegt und somit ''07 47 4C C1 70 00 45 48'' die eigentlichen Daten der Nachricht inkl. Prüfziffer. ''07 47'' steht dabei für die konkrete Drehzahl.
