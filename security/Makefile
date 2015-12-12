@@ -19,4 +19,5 @@ clean:
 	rm -f *.out
 	rm -f *.aux
 	rm -f *.fdb*
+	rm -f *.toc
 

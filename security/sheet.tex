@@ -217,7 +217,7 @@ Der komplette Befehl hätte die Form:
 
 \centerline{\texttt{00 B4 08 1F 40 00 4E BC 00 00}}
 
-Nehmen wir an, dass noch eine Checksum hinzugenommen wird, nach der Formel:
+Nehmen wir an, dass noch eine Prüfsumme hinzugenommen wird, nach der Formel:
 
 \[\text{Checksum} = (IDH + IDL + Len + Sum(\text{Data}[0] – \text{Data}[Len-2])) \& 0xFF \]
 
@@ -225,15 +225,11 @@ Dementsprechend ist der letzte Byte $CC$:
 
 \centerline{\texttt{00 B4 08 1F 40 00 4E BC 00 CC}}
 
-Nach diesem Beispiel sollte ersichtlich sein, dass es relativ einfach ist ein CAN-Bus Paket zu erstellen.
-Da alle Geräte am selben Bus sitzen und jedes Gerät an alle ECU's sendet, ergibt sich daraus eine relativ drastische Problematik.
-Für den Fall, dass es einem Angreifer gelingt Zugang zu einem der ECU's am Bus zu bekommen, ist er in der Lage Befehle an alle Geräte am Bus zu senden, eingeschlossen kritische Systeme, wie Bremsen, Motor oder Fahrhilfe.
-
-Im folgenden Abschnitt wird auf die Schwachstellen und die Unsicherheit des CAN-Busses eingegangen.
+Der simple Aufbau der Pakete ist jedoch nur einer der Gründe, weshalb Angriffe auf den CAN-Bus vergleichsweise einfach sind.
 
 \subsection{Sicherheit}
 Wie bereits erwähnt, stellt die Kommunikation über den CAN-Bus das größte Sicherheitsproblem dar: Bei den meisten Autos verläuft diese vollkommen unverschlüsselt, außerdem kommunizieren die ECUs ohne jegliche Authentifizierung. Deshalb können schadhafte Pakete auf den Bus gelegt werden und im Regelfall akzeptiert und verarbeitet es die betroffene ECU problemlos.\par
-Ferner sind die Protokolle und Programmierschnittstellen ('APIs'), mit denen die ECUs kommunizieren, nicht öffentlich einsehbar und nur dem jeweiligen Hersteller bekannt. Zwar erschwert dies, Pakete zu designen, welche von den ECUs als valid angesehen werden, allerdings kann ein Angreifer durch die Broadcast-Architektur des CAN-Busses beliebig viele hiervon ohne Probleme für eine spätere Analyse mitschneiden.
+Ferner sind die Protokolle und Programmierschnittstellen ('APIs'), mit denen die ECUs kommunizieren, nicht öffentlich einsehbar und nur dem jeweiligen Hersteller bekannt. Zwar erschwert dies den Entwurf valider Pakete, allerdings kann ein Angreifer durch den Broadcast-Verkehr der Pakete auf dem CAN-Bus beliebig viele hiervon ohne Probleme für eine spätere Analyse mitschneiden.
 Selbstverständlich braucht man hierfür Zugriff auf den Bus selbst, die Analyse kann aber z.B. auch an einem baugleichen Modell geschehen, welches der Angreifer besitzt oder mietet. Da der abgehörte Traffic auf dem Bus unverschlüsselt ist, kann der Mittschnit nun benutzt werden um die API der ECUs zu rekonstruieren: Hierfür muss lediglich nach Mustern im Paketstrom gesucht werden, welche in Abhängigkeit zu dem Zustand des Auto stehen. Durch dieses Verfahren wurde beispielsweise die vorher gezeigte API des Geschwindigkeitstachos rekonstruiert.
 
 Durch das Senden und Empfangen Aller an Alle entsteht ein weiteres Problem. Mit jedem Gerät, welches an dem Bus hängt, wird ein neuer Angriffsvektor bereitgestellt.
@@ -268,7 +264,7 @@ TCUs von Fremdherstellern werden üblicherweise direkt an den OBD-Port des Fahrz
 Dies ist dabei die größte Gefahr einer nachgerüsteten TCU: eine oft umfangreiche Internet- oder Mobilfunkfähigkeit und dabei theoretisch uneingeschränkter Zugriff auf sicherheitskritische Systeme bietet Angreifern eine optimale Angriffsfläche, die bei einem erfolgreichen Eindringen von außen u.U. eine volle Kontrolle über das Fahrzeug bedeutet. \\
 In \cite{FPK15} haben Foster et al. anhand einer TCU zur Fahrstilanalyse für Versicherungszwecke aufgezeigt, wie ein unsicherer Entwurf des Update-Protokolls letztendlich zur Übernahme des Geräts und damit zum Zugriff auf das Fahrzeug führen konnte. Im beschriebenen Fall waren sie in der Lage, nach Herausfinden der Telefonnummer der TCU, die sie für Mobilfunkdienste besaß, selbst mit einer simplen SMS einen Update-Vorgang an einem beliebigen Server anzustoßen.
 Aufgrund einer nicht vorhandenen Authentifizierung des Servers und Signatur der Updates konnten einfach beliebige eigene Dateien auf die TCU heruntergeladen werden und mit entsprechenden Befehlen ausgeführt werden. Im Endeffekt erlangten die Angreifer so die Möglichkeit, sich mit Root-Zugriff in die TCU einzuwählen und erhielten somit freie Verfügung über das komplette System. Die Verbindung zum CAN-Bus bot dann an, selbst Nachrichten zu verschicken. In einer Proof-of-Concept-Attacke zeigten Foster et al. abschließend, dass sie u.a. in der Lage waren, die Scheibenwischer und einzelne Bremsen zu betätigen. \\
-Ähnliche Fehler bei dem Entwurf derart sicherheitsrelevanter Systeme stellen also eine große Gefahr für den Fahrzeughalter dar. Dies wird noch dadurch verstärkt, dass der Fahrzeughersteller selbst nicht in der Lage ist, diese Fehler zu beheben, da es sich um fremde Systeme handelt, hier muss der jeweilige Hersteller selbst aktiv werden und dafür sorgen, dass alle sich im Umlauf befindenen TCUs eventuelle Updates erhalten.
+Ähnliche Fehler bei dem Entwurf derart sicherheitsrelevanter Systeme stellen also eine große Gefahr für den Fahrzeughalter dar. Dies wird noch dadurch verstärkt, dass der Fahrzeughersteller selbst nicht in der Lage ist, diese Fehler zu beheben. Da es sich um fremde Systeme handelt, hier muss der jeweilige Hersteller selbst aktiv werden und dafür sorgen, dass alle sich im Umlauf befindenen TCUs eventuelle Updates erhalten.
 
 \section{Beispiele}
 \subsection{Jeep Cherokee}
@@ -319,14 +315,14 @@ Als weitere Sicherheitslücke wird die Auslieferung der TCUs inklusive öffentli
 
 \chapter{Schluss/Fazit}
 
-In Anbetracht der zahlreichen Sicherheitslücken in modernen Automobilen stellt sich heraus, dass es keineswegs unmöglich ist die Systeme eines Autos zu kompromittieren. Hin man die fatalen Ergebnisse (z.B. Auslösen oder gar Ausschalten der Bremsen, Abschalten des Motors), die sogar ohne jeden physischen Kontakt zum Auto möglich sind,
+Das Kompromittieren der Systeme eines Autos ist zusammenfassend nicht nur möglich, sondern auf diverse Wege möglich, in vielen Fällen sogar ohne vorzeitiges Bemerken der Insassen. Die in der Literatur erzielten Ergebnisse reichen von der Manipulation der angezeigten Tacho-Geschwindigkeit über Änderung der Musikwiedergabe-Lautstärke, Auslösen der Bremsen bis zur kompletten Abschaltung des Motors. All dies kann ohne physischen Kontakt zum manipulierenden Auto geschehen.
 
-Nichtsdestotrotz wird uns erneut aufgezeigt wie angreifbar die von uns benutzte Hardware ist und es stellt sich die Frage, ob in Zukunft die Sicherheit in Automobilen eine größere Rolle spielen wird. Speziell im Ausblick auf autonom fahrende Fahrzeuge.
+Möglich wird dies einerseits über die (historisch gewachsene) Kommunikation der Systeme über den CAN-Bus, andererseits durch ungewissenhafte Implementation von ECUs beziehungsweise deren Schnittstellen oder schlicht durch fehlenden Sicherheitsmaßnahmen wie Authentifzierung und Sicherstellen der Nachrichtenintegrität.
 
-In jedem Falle muss die Autoindustrie ihren Fokus mehr in Richtung IT-Sicherheit bewegen. Es müssen hier lediglich einfache Sicherheitsstandards eingehalten werden, welche bereits weit verbreitet sind. Zum Beispiel sollte niemals ein für alle Fahrzeuge des selben Modells gültiger SS Private-Key auf den jeweiligen Fahrzeugen mitgeliefert werden. Ebenfalls ist die Technologie des CAN-Busses überholt und sollte durch ein einfaches Addressierungsverfahren und eine Authentifizierung für neue Geräte um ein vielfaches schwieriger zugänglicher gemacht werden.
+In jedem Falle muss die Autoindustrie ihren Fokus mehr in Richtung IT-Sicherheit bewegen. Die Einhaltung grundlegender und weit verbreiteter Sicherheitsstandards könnte bereits viel zum Schutz vor Malware beitragen. Zum Beispiel sollte niemals ein für alle Fahrzeuge des selben Modells gültiger SSH-Private-Key auf den jeweiligen Fahrzeugen mitgeliefert werden. Der Einsatz des CAN-Busses, dessen Technologie vor über 30 Jahren entwickelt wurde, könnte ebenfalls überdacht werden. Stattdessen wäre eine andere Netzwerktopologie als Weiterentwicklung möglich, in der nicht über Broadcast kommuniziert wird, sondern die Nachrichten direkt an die empfangende Komponente adressiert werden. Das Sicherstellen der Nachrichtenintegrität könnte beispielsweise über einen Nachrichtenauthentifizierungscode ('MAC') realisiert werden.
 
-Die Software auf den TCUs selbst müsste besser getestet und nach außen hin abgeschirmt werden. Es gibt zu viele Nachlässigkeiten, so sollte zum Beispiel niemals die D-Bus Software, welche als Hilfsmittel für interne Prozesskommunikation ein kritischer Angriffspunkt ist, über einen Port von außerhalb direkt erreichbar sein.
-Auch müssen mitgelieferte Passwörter oder Hashes mit einem nicht nachvollziehbaren Zufallsalgorithmus erstellt werden.
+Die Software auf den TCUs müsste besser getestet und nach außen hin abgeschirmt werden. Es sind viele Nachlässigkeiten zu erkennen, zum Beispiel sollte niemals die D-Bus Software, die als Hilfsmittel für interne Prozesskommunikation ein kritischer Angriffspunkt ist, über einen Port von außerhalb direkt erreichbar sein.
+Auch müssten mitgelieferte Passwörter oder Hashes mit einem nicht nachvollziehbaren Zufallsalgorithmus erstellt werden.
 
 Diese Änderungen sind nicht kompliziert oder Hightech-Problematiken. Es sind ganz einfach Fahrlässigkeiten des Herstellers, der auf IT-Security keinen Wert legt.
 
