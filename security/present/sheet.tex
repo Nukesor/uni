@@ -15,6 +15,8 @@
 \usepackage[scaled]{helvet}
 
 \usepackage{beamerthemedefault}
+\usepackage{listings}
+\usepackage{comment}
 
 % Ränder definieren
 \setbeamersize{text margin left=5ex, text margin right=5ex}
@@ -119,7 +121,7 @@
 	\tableofcontents
 \end{frame}
 
-\section{Can Bus} % erscheint in Agenda
+\section{CAN-Bus} % erscheint in Agenda
 \begin{frame}
 	\frametitle{CAN-Bus: Was ist der CAN-Bus}
 	\begin{itemize}
@@ -128,7 +130,6 @@
   	    \item
   	    %
 	\end{itemize}
-
 \end{frame}
 
 \section{Ausgewählte Angriffsvektoren} % erscheint in Agenda
@@ -151,33 +152,57 @@
 	    %z.B. Update über Internet ohne sichere Authentifizierung
   	    \item Redundanzen in der Implementierung
   	    %z.B. muss Bluetooth-Modul Zugriff auf den Bus haben?
+        \item Telematik-Modul bündelt ausgehende Verbindungen
+        % Telematic  Control  Units“:  Steuergeräte  für  Telematikdienste.  Sind  in  der  Regel  direkt  an  den  CAN-Bus angeschlossen und zeichnen sich häufig durch viele ausgehende Verbindungen aus (Bluetooth, Mobilfunk, GPS, etc.)
 	\end{itemize}
 \end{frame}
 
- \subsection{Mobilfunk} % erscheint in Gliederung
- \begin{frame}
+\subsection{Mobilfunk}
+\begin{frame}
 	\frametitle{Mobilfunk I}
-        \begin{center}
-    \begin{figure}
-\includegraphics[width=0.3\textwidth]{pic/001_cellular.jpg}
-        \caption[Mobilfunk]{Mobilfunk-Einheit im Jeep Cherokee}
-        %Sierra Wireless AirPrime AR5550 from a Harman Uconnect system
-\cite{Quelle}
-%Quelle für Bild:
-% [MV15]
-\end{figure}
-
-
+    \begin{center}
+        \begin{figure}
+            \includegraphics[width=0.3\textwidth]{pic/001_cellular.jpg}
+            \caption[Mobilfunk]{Mobilfunk-Einheit im Jeep Cherokee}
+            %Sierra Wireless AirPrime AR5550 from a Harman Uconnect system
+            \cite{Quelle}
+            %Quelle für Bild:
+            % [MV15]
+        \end{figure}
 	\end{center}
-    \begin{itemize}
-		\item
-    \end{itemize}
 
+    \begin{itemize}
+		\item Funktionen:
+        \begin{itemize}
+        	\item Internetverbindung (3G) % z.B. für WLAN-Hotspot, Wetterbericht, Routenplaner
+            % oder Hersteller: Ferndiagnose, Anti-Diebstahl-Tracking
+            \item Mobilfunk % z.B. für Notrufe oder Hersteller-Updates
+        \end{itemize}
+    \end{itemize}
 \end{frame}
+
  \begin{frame}
 	\frametitle{Mobilfunk II}
     \begin{itemize}
-		\item
+		\item Unbemerkte Anrufe an Telematik-Einheit sind möglich
+        % 'stealth mode' für Hersteller (Diagnose), versteckt vor Nutzer
+        % gibt Informationen über Auto preis
+        \begin{itemize}
+        	\item Modem übersetzt akustische Töne in Bits
+            %  Airbiquity’s aqLink
+            \item Verwundbarkeiten: Pufferüberlauf und Authentifizierung
+            % 'zufällige' Challenge leicht zu durchschauen
+            % Ungefähr jede 256. (falsche) Antwort wird als richtig erkannt
+        \end{itemize}
+
+        \item Beispiel für Angriff:
+        \begin{itemize}
+        	\item Automatisiertes Anrufen bis Authentifizierung erfolgt
+            \item Aufhebung der maximal erlaubten Anruflänge
+            \item Download von zusätzlichem Code über 3G-Modem
+            % Auch als in Hörer gespielte mp3 möglich
+        \end{itemize}
+        %Stephen  Checkoway,  Damon  McCoy,  Brian  Kantor, ... in Comprehensive experimental analyses of automotive attack surfaces
     \end{itemize}
 \end{frame}
 
@@ -186,7 +211,12 @@
  \begin{frame}
 	\frametitle{WLAN}
     \begin{itemize}
-		\item
+		\item Bla
+        \begin{comment}
+            lstlisting?!
+            This is some code
+            more code
+        \end{comment}
     \end{itemize}
 \end{frame}
  \subsection{Bluetooth} % erscheint in Gliederung
@@ -198,134 +228,70 @@
     \end{itemize}
 \end{frame}
 
+\section{Beispiel Jeep-Hack}
 \begin{frame}
-	\frametitle{Der Arbeitsbereich Sicherheit in Verteilten Systemen (SVS)}
-	\begin{block}{Lorem ipsum dolor}
-		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-	\end{block}
-	\begin{itemize}
-		\item Themen
-			\begin{enumerate}
-				\item Privacy Enhancing Technologies (PET)
-				\item Security Management \& Risk Management
-				\item Security of Mobile Systems
-			\end{enumerate}
-		\item Weitere Informationen
-			\begin{itemize}
-				\item http://www.informatik.uni-hamburg.de/svs
-			\end{itemize}
+	\frametitle{Hack des 2014er Jeep Cherokees}
+	\begin{figure}
+        \includegraphics[width=0.6\textwidth]{pic/2014-jeep-cherokee-1.jpg} %http://www.blogcdn.com/www.autoblog.com/media/2013/02/2014-jeep-cherokee-1.jpg
+        \caption{Ziel des Angriffs: 2014 Jeep Cherokee}
+    \end{figure}
+    \begin{itemize}
+		\item veröffentlicht im Juli 2015
+        \item durchgeführt von Charlie Miller und Chris Valasek
 	\end{itemize}
 \end{frame}
 
+\begin{frame}
+	\frametitle{Jeep Cherokee: CAN-Netzwerk}
+    \begin{figure}
+		%\includegraphics[width=0.5\textwidth]{pic/}
+        \caption{Übersicht über CAN-Netze}
+	\end{figure}
+    \begin{itemize}
+		\item zwei CAN-Netzwerke
+        \item Radio als Verbindungsstück
+	\end{itemize}
+\end{frame}
 
 \begin{frame}
-	\frametitle{Beispiel für eine Abbildung}
-	\begin{itemize}
-		\item Zweck
-			\begin{itemize}
-				\item Nur mit \alert{berechtigten Partnern} weiter kommunizieren
-				\item Verhindert unbefugte Inanspruchnahme von Betriebsmitteln
-			\end{itemize}
-	\end{itemize}
-	\vspace{\fill}
-	\pause % Das Nachfolgende erst nach Klick einblenden...
-	\begin{center}
-		\includegraphics[width=0.8\textwidth]{pic/abbildung1.pdf}
-	\end{center}
+    \frametitle{Fahrassistenzsysteme des Jeeps}
+    \begin{figure}
+        \includegraphics[width=0.48\textwidth]{pic/jeep_parkass.png}
+        \caption{}
+    \end{figure}
+    \begin{itemize}
+        \item adaptiver Tempomat
+        \item Kollisionswarnsystem
+        \item Spurhalteassistent
+        \item Parkassistent
+    \end{itemize}
 \end{frame}
-
 
 \begin{frame}
-	\transwipe % funktioniert nur bei Anzeige mit Acrobat Reader
-	\frametitle{Beispiel für eine Abbildung}
-	\begin{itemize}
-		\item Zweck
-			\begin{itemize}
-				\item Einem Kunden \emph{\color[RGB]{0,128,0} K} einen Inhalt \emph{\color{red} I} in einer bestimmten Weise zugänglich machen, ihn aber daran hindern, \emph{alles} damit tun zu können.
+	\frametitle{Angriffsvektoren des Jeeps}
+    \begin{itemize}
+		\item Bluetooth
+        \begin{itemize}
+			\item herkömmliche Angriffe möglich
+		\end{itemize}
+
+    	\item Radio
+        	\begin{itemize}
+				\item vermutlich keine Code-Ausführung zu erreichen
+			\end{itemize}
+
+        \item WLAN
+        	\begin{itemize}
+				\item Auto fungiert als WLAN-Hotspot
+			\end{itemize}
+
+        \item Mobilfunk / Mobiles Internet
+       		\begin{itemize}
+				\item Freisprechanlage, diverse Apps etc.
 			\end{itemize}
 	\end{itemize}
-	\vspace{\fill}
-	\begin{center}
-		\includegraphics[width=0.8\textwidth]{pic/abbildung2.pdf}
-	\end{center}
+    $\Rightarrow$ UConnect-Mediensystem verbindet sämtliche Faktoren
 \end{frame}
 
-
-\begin{frame}
-	\frametitle{Weiteres Beispiel für eine Abbildung}
-	\framesubtitle{[John Doe, 1966] }
-	\begin{itemize}
-		\item Voraussetzung: {\color{black} Angreifer}
-			\begin{itemize}
-				\item betreibt täuschend echte Webseite der Bank
-				\item bewegt den Kunden zum Besuch dieser Seite
-			\end{itemize}
-	\end{itemize}
-	\vspace{\fill}
-	\begin{center}
-		\includegraphics[width=\textwidth]{pic/abbildung3.pdf}
-	\end{center}
-\end{frame}
-
-
-\begin{frame}
-	\frametitle{Ebenen}
-	\begin{itemize}
-		\item Erste Ebene
-			\begin{itemize}
-				\item Zweite Ebene
-				\begin{itemize}
-					\item Dritte Ebene
-				\end{itemize}
-				\item Zweite Ebene
-			\end{itemize}
-		\item Erste Ebene
-	\end{itemize}
-	\begin{enumerate}
-		\item Erste Ebene
-			\begin{enumerate}
-				\item Zweite Ebene
-				\begin{enumerate}
-					\item Dritte Ebene
-				\end{enumerate}
-				\item Zweite Ebene
-			\end{enumerate}
-		\item Erste Ebene
-	\end{enumerate}
-\end{frame}
-
-
-\begin{frame}{Spalten}
-	\begin{columns}[T]
-		\begin{column}{.6\textwidth}
-			\begin{itemize}
-				\item Linke Spalte
-				\begin{itemize}
-					\item Lorem ipsum dolor sit amet,
-					\item consectetur adipisicing elit,
-					\item sed do eiusmod tempor incididunt ut
-					\item labore et dolore magna aliqua.
-				\end{itemize}
-				\item Erste Ebene
-				\begin{itemize}
-					\item Zweite Ebene
-					\item Zweite Ebene
-				\end{itemize}
-				\item Erste Ebene
-				\begin{itemize}
-					\item Zweite Ebene
-					\item Zweite Ebene
-				\end{itemize}
-			\end{itemize}
-		\end{column}
-		\begin{column}{.4\textwidth}
-			\begin{center}
-				\vspace{1cm}
-				\includegraphics[width=2.2cm]{pic/svs_logo_hires-ohne-was.png} \\
-				Das SVS-Logo
-			\end{center}
-		\end{column}
-	\end{columns}
-\end{frame}
 
 \end{document}
