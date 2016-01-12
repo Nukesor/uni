@@ -20,4 +20,6 @@ clean:
 	rm -f *.aux
 	rm -f *.fdb*
 	rm -f *.toc
+	rm -f *.snm
+	rm -f *.nav
 
