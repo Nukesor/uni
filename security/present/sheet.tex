@@ -93,6 +93,13 @@
 	{\color{white}\vrule width\paperwidth height0.3\paperheight}%
 }
 
+\def\therefore{
+\leavevmode
+\lower0.1ex\hbox{$\bullet$}
+\kern-0.2em\raise0.7ex\hbox{$\bullet$}
+\kern-0.2em\lower0.2ex\hbox{$\bullet$}
+\thinspace}
+
 % =============================
 % = Ab hier Inhalte ändern...
 % =============================
@@ -121,16 +128,156 @@
 	\tableofcontents
 \end{frame}
 
-\section{CAN-Bus} % erscheint in Agenda
+\section{CAN-Bus}
 \begin{frame}
-	\frametitle{CAN-Bus: Was ist der CAN-Bus}
+    % Wir steigen nun relativ technisch in das Thema ein.
+	\frametitle{CAN-Bus: Was ist der CAN-Bus?}
 	\begin{itemize}
-		\item
-	    %
-  	    \item
-  	    %
+  	    % Was sind ECU's, was sitzt am BUS
+        \item Electron control Units (ECU's)
+  	    % Ein Bus
+		\item Zentrale Kommunikationsschnittstelle
+        % Der CAN Bus
+        \item Controller Area Network (CAN)
 	\end{itemize}
 \end{frame}
+
+\begin{frame}
+	\frametitle{CAN-Bus: Kommunikation am Can Bus}
+	\begin{itemize}
+        \item Alle Geräte kommunizieren gleichzeitig.
+		\item Jedes Gerät sendet an jeden.
+	\end{itemize}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{pic/diag_canbus2.jpg} \ \
+        % \caption[Can-Network]{Vereinfachtes CAN-Network}
+        % \cite{Quellen}
+    \end{center}
+    % http://360.here.com/2014/12/19/can-bus-inside-your-car-and-why-does-here-care-about-it/
+\end{frame}
+
+\begin{frame}
+	\frametitle{CAN-Bus: Unsicherheiten}
+	\begin{itemize}
+  	    % Carrier Sense Multiple Access/Collision Resolution (CSMA/CR)
+        \item Kompletter Verkehr ist unverschlüsselt
+		\item Keine Verschlüsselung
+	\end{itemize}
+    $\Rightarrow$ Sniffing
+\end{frame}
+
+\begin{frame}
+	\frametitle{CAN-Bus: Messages}
+    Ein CAN-Bus Paket:
+    \newline
+    \newline
+    \newline
+    \newline
+    {\Large \centerline{\texttt{00 B4 08 00 00 00 00 3C 18 C0 FF}}}
+    \vspace*{1cm}
+
+    22 Hexadezimalstellen = 88 bit or 11 Byte
+\end{frame}
+
+\begin{frame}
+	\frametitle{CAN-Bus: Messages}
+    Ein CAN-Bus Paket:
+    \newline
+    \newline
+    \newline
+    \newline
+    {\Large \centerline{\textbf{00 B4} \texttt{08 00 00 00 00 3C 18 C0 FF}}}
+    \vspace*{1cm}
+
+    Byte 1-2 Address
+\end{frame}
+
+\begin{frame}
+	\frametitle{CAN-Bus: Messages}
+    Ein CAN-Bus Paket:
+    \newline
+    \newline
+    \newline
+    \newline
+    {\Large \centerline{\texttt{00 B4} \textbf{08} \texttt{00 00 00 00 3C 18 C0 FF}}}
+    \vspace*{1cm}
+
+    Byte 1-2 Address \\
+    Byte 3 Payload length
+\end{frame}
+
+\begin{frame}
+	\frametitle{CAN-Bus: Messages}
+    Ein CAN-Bus Paket:
+    \newline
+    \newline
+    \newline
+    \newline
+{\Large \centerline{\texttt{00 B4 08} \textbf{00 00 00 00 3C 18 C0} \texttt{FF}}}
+    \vspace*{1cm}
+
+    Byte 1-2 Address \\
+    Byte 3 Payload length \\
+    byte 4-10 Payload
+\end{frame}
+
+\begin{frame}
+	\frametitle{CAN-Bus: Messages}
+    Ein CAN-Bus Paket:
+    \newline
+    \newline
+    \newline
+    \newline
+{\Large \centerline{\texttt{00 B4 08} \textbf{00 00 00 00 3C 18 C0} \texttt{FF}}}
+    \vspace*{1cm}
+
+    Byte 1-2 Address \\
+    Byte 3 Payload length \\
+    Byte 4-10 Payload \\
+    Byte 11 Checksum \\
+    E.g.: $(IDH + IDL + Len + Sum(\text{Data}[0]\text{ – }\text{Data}[Len-2])) \& 0xFF $
+\end{frame}
+
+\begin{frame}
+	\frametitle{CAN-Bus: Messages}
+    Ein CAN-Bus Paket:
+    \newline
+    \newline
+    \newline
+    \newline
+{\Large \centerline{\texttt{00 B4 08} \textbf{00 00 00 00 3C 18 C0} \texttt{FF}}}
+    \vspace*{1cm}
+
+    Byte 1-2 Address \\
+    Byte 3 Payload length \\
+    byte 4-10 Payload
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{CAN-Bus: Building own packets}
+    Wäre es nicht praktisch konstatt 100 km/h zu fahren?
+    \newline
+    \newline
+    {\Large \centerline{\texttt{AA BB 00 00 CC DD 00 00}}}
+\end{frame}
+
+\begin{frame}
+	\frametitle{CAN-Bus: Building own packets}
+    Wäre es nicht praktisch konstatt 100 km/h zu fahren?
+    \newline
+    \newline
+    {\Large \centerline{\texttt{XX YY LL AA BB 00 00 CC DD 00 SS}}}
+\end{frame}
+
+\begin{frame}
+	\frametitle{CAN-Bus: Building own packets}
+    Wäre es nicht praktisch konstatt 100 km/h zu fahren?
+    \newline
+    \[\text{Speed} (mph) = 0.0065 \cdot (CC DD) - 67\]
+    \[RPM = 0.25 \cdot (AA BB) - 24\]
+\end{frame}
+
 
 \section{Ausgewählte Angriffsvektoren} % erscheint in Agenda
 \begin{frame}
@@ -181,7 +328,7 @@
     \end{itemize}
 \end{frame}
 
- \begin{frame}
+\begin{frame}
 	\frametitle{Mobilfunk II}
     \begin{itemize}
 		\item Unbemerkte Anrufe an Telematik-Einheit sind möglich
@@ -212,11 +359,11 @@
 	\frametitle{WLAN}
     \begin{itemize}
 		\item Bla
-        \begin{comment}
-            lstlisting?!
-            This is some code
-            more code
-        \end{comment}
+        %\begin{comment}
+        %    lstlisting?!
+        %    This is some code
+        %    more code
+        %\end{comment}
     \end{itemize}
 \end{frame}
  \subsection{Bluetooth} % erscheint in Gliederung
