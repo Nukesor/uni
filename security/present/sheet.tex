@@ -156,7 +156,7 @@
 
 \section{CAN-Bus}
 \begin{frame}
-    % Wir steigen nun relativ technisch in das Thema ein.
+    % Wir steigen nun relativ techni 787osch in das Thema ein.
 	\frametitle{CAN-Bus: Was ist der CAN-Bus?}
 	\begin{itemize}
   	    % Was sind ECU's, was sitzt am BUS
@@ -267,17 +267,12 @@
 
 \begin{frame}
 	\frametitle{CAN-Bus: Building your own packets}
-    Wäre es nicht praktisch konstatt 100 km/h zu fahren?
+    Wie einfach ist es eigene Pakete zu bauen?
     \newline
     \newline
     \newline
     \newline
     {\Large \centerline{\texttt{AA BB 00 00 CC DD 00 00}}}
-\end{frame}
-
-\begin{frame}
-	\frametitle{CAN-Bus: Building own packets}
-    Wäre es nicht praktisch konstatt 100 km/h zu fahren?
     \newline
     \newline
     {\Large \centerline{\texttt{XX YY LL AA BB 00 00 CC DD 00 SS}}}
@@ -285,10 +280,25 @@
 
 \begin{frame}
 	\frametitle{CAN-Bus: Building own packets}
-    Wäre es nicht praktisch konstatt 100 km/h zu fahren?
+    Tacho auf 100 km/h bei 2000 RPM!
     \newline
     \[\text{Speed} (mph) = 0.0065 \cdot (CC DD) - 67\]
     \[RPM = 0.25 \cdot (AA BB) - 24\]
+\end{frame}
+
+\begin{frame}
+	\frametitle{CAN-Bus: Building own packets}
+    Tacho auf 100 km/h bei 2000 RPM!
+    \newline
+    \[62.1371 = 0.0065 \cdot (CC DD) - 67\]
+    \[2000 = 0.25 \cdot (AA BB) - 24\]
+    \newline
+    CC DD = 19846 = 4D86 \\
+    AA BB = 8096 = 1FA0
+    \newline
+    \newline
+    {\Large \centerline{\texttt{00 B4 08 1F A0 00 00 4D 86 00 CC}}}
+
 \end{frame}
 
 
@@ -444,12 +454,12 @@
 \begin{frame}
 	\frametitle{Jeep Cherokee: CAN-Netzwerk}
     \begin{figure}
-		%\includegraphics[width=0.5\textwidth]{pic/}
+		\includegraphics[width=0.45\textwidth]{pic/jeep_cannets.png}
         \caption{Übersicht über CAN-Netze}
 	\end{figure}
     \begin{itemize}
 		\item zwei CAN-Netzwerke
-        \item Radio als Verbindungsstück
+        \item Funkmodul in beiden Netzen
 	\end{itemize}
 \end{frame}
 
@@ -487,12 +497,61 @@
 
         \item Mobilfunk / Mobiles Internet
        		\begin{itemize}
-				\item Freisprechanlage, diverse Apps etc.
+				\item Möglicher Zugriff über große Distanzen
 			\end{itemize}
 	\end{itemize}
     $\Rightarrow$ UConnect-Mediensystem verbindet sämtliche Faktoren
 \end{frame}
 
+\begin{frame}
+	\frametitle{UConnect-System von Harman Kardon}
+    \begin{itemize}
+    	\item Radio, WLAN, Navigation, Apps, Freisprechanlage...
+        \item Funktionalität auf einem TI-Chip
+        \item Kommuniziert mit CAN-Netzen über separaten Controller
+        \item Für Vielzahl an Modellen verfügbar
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{UConnect-System von Harman Kardon}
+    \begin{itemize}
+    	\item im WLAN-Netz diverse offene Ports identifizierbar
+    	\item IPC-Dienst D-Bus an Port 6667
+    	\item D-Bus ohne Authentifizierung nutzbar:
+   	\end{itemize}
+    \begin{figure}
+    \includegraphics[width=0.7\textwidth]{pic/dbusauth.png}
+    \caption{Anonymer Zugriff auf D-Bus}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{D-Bus-Exploit}
+	\begin{itemize}
+    	\item Debug-Tools u. Bibliotheken zeigen nutzbare Dienste
+        \begin{itemize}
+        \item z.B. \texttt{NavTrailService} enthält unsichere Methoden
+        \item \texttt{execute} führt beliebige Shell-Befehle aus
+        \end{itemize}
+        \item Simple Lua-Skripte beeinflussen versch. Systeme:
+    \end{itemize}
+    \includegraphics[width=1\textwidth]{pic/setVolume.png}
+    \begin{itemize}
+    \item Zugriff auf
+    \begin{itemize}
+    \item GPS-Daten
+    \item Lautstärke / Bass und Deaktivieren der Drehregler
+    \item Lüftung
+    \item Bildschirm
+    \item ...
+    \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Zugriff über Mobilfunk}
+\end{frame}
 \section{Fazit}
 \begin{frame}
 	\frametitle{Fazit}
