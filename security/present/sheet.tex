@@ -23,7 +23,7 @@
   breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
   breaklines=true,                 % sets automatic line breaking
   captionpos=b,                    % sets the caption-position to bottom
-  commentstyle=\color{green},    % comment style
+  commentstyle=\color{black},    % comment style
   deletekeywords={...},            % if you want to delete keywords from the given language
   escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
   extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
@@ -377,21 +377,45 @@
 			\item Hotspot für Passagiere
 		\end{itemize}
     \end{itemize}
+    \begin{itemize}
+		\item Hardware hat indirekten Zugriff auf CAN-Bus
+	\end{itemize}
+    \begin{itemize}
+		\item Standard-Verschlüsselung: zufälliges WPA2-Passwort
+		\begin{itemize}
+			\item Zufallsalgorithmus basiert auf momentaner Systemzeit %in Sekunden
+		\end{itemize}
+	\end{itemize}
+    \begin{itemize}
+		\item Miller und Valasek extrahierten Algorithmus von OMAP-Chip in [MV15]
+        % aus WiFiSvc Binärdatei
+        % Open Multimedia Applications Platform
+        % in Funktion WiFi.E:generateRandomAsciiKey()
+
+
+
+	\end{itemize}
 \end{frame}
 
  \begin{frame}
 	\frametitle{WLAN II}
     \begin{itemize}
-		\item Bla
+		\item Umwandlung Zufallszahl -> ASCII-Zeichen:
         \end{itemize}
 \end{frame}
 
  \begin{frame}
-	\frametitle{WLAN III}
+	\frametitle{WLAN II}
     \begin{itemize}
-		\item Bla
+		\item Umwandlung Zufallszahl -> ASCII-Zeichen:
     \end{itemize}
     \lstinputlisting[firstline=0, lastline=14, title=WLAN-Passwort-Generierung auf OMAP-Chip (1/2). Quelle {[}MV15{]}]{wlan-pwd.c}
+
+\end{frame}
+
+ \begin{frame}
+	\frametitle{WLAN III}
+    \lstinputlisting[firstline=15, title=WLAN-Passwort-Generierung auf OMAP-Chip (2/2). Quelle {[}MV15{]}]{wlan-pwd.c}
 
 \end{frame}
 
@@ -458,7 +482,7 @@
 
         \item WLAN
         	\begin{itemize}
-				\item Auto fungiert als WLAN-Hotspot
+				\item herkömmliche Angriffe / Schwäche bei Standardpasswörtern
 			\end{itemize}
 
         \item Mobilfunk / Mobiles Internet
@@ -467,6 +491,15 @@
 			\end{itemize}
 	\end{itemize}
     $\Rightarrow$ UConnect-Mediensystem verbindet sämtliche Faktoren
+\end{frame}
+
+\section{Fazit}
+\begin{frame}
+	\frametitle{Fazit}
+	\begin{itemize}
+		\item Alles super
+        %to be continued
+	\end{itemize}
 \end{frame}
 
 
