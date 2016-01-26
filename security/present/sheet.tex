@@ -5,6 +5,7 @@
 % ===============================================================================
 %
 \documentclass[t]{beamer}
+%\usepackage{biblatex}
 % Option t              Place text of slides at the (vertical) top of the slides.
 % Option handout        Ein PDF ohne Pausen und Overlayeffekte erzeugen.
 % Option aspectratio=43 169 => 16:9, 1610 => 16:10, 43 => 4:3
@@ -19,7 +20,7 @@
 \usepackage{comment}
 \lstset{ %
   backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
-  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  basicstyle=\scriptsize,        % the size of the fonts that are used for the code
   breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
   breaklines=true,                 % sets automatic line breaking
   captionpos=b,                    % sets the caption-position to bottom
@@ -40,7 +41,7 @@
   showstringspaces=false,          % underline spaces within strings only
   showtabs=false,                  % show tabs within strings adding particular underscores
   stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
-  stringstyle=\color{mauve},     % string literal style
+  stringstyle=\color{gray},     % string literal style
   tabsize=2,	                   % sets default tabsize to 2 spaces
   %title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
@@ -87,7 +88,7 @@
 \setbeamerfont{sections/subsections in toc}{size=\normalsize}
 \setbeamerfont{itemize/enumerate body}{size=\normalsize}
 \setbeamerfont{itemize/enumerate subbody}{size=\normalsize}
-\setbeamerfont{itemize/enumerate subsubbody}{size=\normalsize}
+\setbeamerfont{itemize/enumerate subsubbody }{size=\normalsize}
 
 % Definitionen für farbig hinterlegten Block
 \setbeamertemplate{blocks}[rounded]
@@ -126,6 +127,8 @@
 \kern-0.2em\lower0.2ex\hbox{$\bullet$}
 \thinspace}
 
+\renewcommand{\footnotesize}{\tiny}
+
 % =============================
 % = Ab hier Inhalte ändern...
 % =============================
@@ -158,24 +161,31 @@
 \begin{frame}
     % Wir steigen nun relativ techni 787osch in das Thema ein.
 	\frametitle{CAN-Bus: Was ist der CAN-Bus?}
+    \ \par
 	\begin{itemize}
   	    % Was sind ECU's, was sitzt am BUS
-        \item Electron control Units (ECU's)
+        \item Controller Area Network (CAN)
+   \end{itemize}
+   \ \par
+   \begin{itemize}
   	    % Ein Bus
 		\item Zentrale Kommunikationsschnittstelle
         % Der CAN Bus
-        \item Controller Area Network (CAN)
+    \end{itemize}
+   	\ \par
+   	\begin{itemize}
+        \item Electronic control units (ECUs)
 	\end{itemize}
 \end{frame}
 
 \begin{frame}
-	\frametitle{CAN-Bus: Kommunikation am Can Bus}
+	\frametitle{CAN-Bus: Kommunikation am CAN-Bus}
 	\begin{itemize}
-        \item Alle Geräte kommunizieren gleichzeitig.
-		\item Jedes Gerät sendet an jeden.
+        \item Alle Geräte kommunizieren gleichzeitig
+		%\item Jedes Gerät sendet an jeden.
 	\end{itemize}
     \begin{center}
-        \includegraphics[width=0.8\textwidth]{pic/diag_canbus2.jpg} \ \
+        \includegraphics[width=0.75\textwidth]{pic/diag_canbus2.jpg} \ \footnote{Quelle: \href{http://360.here.com/2014/12/19/can-bus-inside-your-car-and-why-does-here-care-about-it/}{http://360.here.com/2014/12/19/can-bus-inside-your-car-and-why-does-here-care-about-it/}}\
         % \caption[Can-Network]{Vereinfachtes CAN-Network}
         % \cite{Quellen}
     \end{center}
@@ -184,17 +194,24 @@
 
 \begin{frame}
 	\frametitle{CAN-Bus: Unsicherheiten}
+    \ \par
 	\begin{itemize}
   	    % Carrier Sense Multiple Access/Collision Resolution (CSMA/CR)
-        \item Kompletter Verkehr ist unverschlüsselt
-		\item Keine Verschlüsselung
+   		\item Kompletter Verkehr ist unverschlüsselt
+   	\end{itemize}
+   	\begin{itemize}
+		\item Keine Authentifizerung
 	\end{itemize}
+   	\begin{itemize}
+		\item Jedes Gerät sendet an alle
+	\end{itemize}
+
     $\Rightarrow$ Sniffing
 \end{frame}
 
 \begin{frame}
-	\frametitle{CAN-Bus: Messages}
-    Ein CAN-Bus Paket:
+	\frametitle{CAN-Bus: Nachrichten}
+    Ein CAN-Bus-Paket: (2010 Toyota Prius)
     \newline
     \newline
     \newline
@@ -202,12 +219,12 @@
     {\Large \centerline{\texttt{00 B4 08 00 00 00 00 3C 18 C0 FF}}}
     \vspace*{1cm}
 
-    22 Hexadezimalstellen = 88 bit or 11 Byte
+    22 Hexadezimalstellen = 88 Bit or 11 Byte
 \end{frame}
 
 \begin{frame}
-	\frametitle{CAN-Bus: Messages}
-    Ein CAN-Bus Paket:
+	\frametitle{CAN-Bus: Nachrichten}
+    Ein CAN-Bus-Paket:
     \newline
     \newline
     \newline
@@ -215,12 +232,12 @@
     {\Large \centerline{\textbf{00 B4} \texttt{08 00 00 00 00 3C 18 C0 FF}}}
     \vspace*{1cm}
 
-    Byte 1-2 Address
+    Byte 1-2: Adresse
 \end{frame}
 
 \begin{frame}
-	\frametitle{CAN-Bus: Messages}
-    Ein CAN-Bus Paket:
+	\frametitle{CAN-Bus: Nachrichten}
+    Ein CAN-Bus-Paket:
     \newline
     \newline
     \newline
@@ -228,13 +245,13 @@
     {\Large \centerline{\texttt{00 B4} \textbf{08} \texttt{00 00 00 00 3C 18 C0 FF}}}
     \vspace*{1cm}
 
-    Byte 1-2 Address \\
-    Byte 3 Payload length
+    Byte 1-2: Adresse \\
+    Byte 3: Payload-Länge
 \end{frame}
 
 \begin{frame}
 	\frametitle{CAN-Bus: Messages}
-    Ein CAN-Bus Paket:
+    Ein CAN-Bus-Paket:
     \newline
     \newline
     \newline
@@ -242,14 +259,14 @@
 {\Large \centerline{\texttt{00 B4 08} \textbf{00 00 00 00 3C 18 C0} \texttt{FF}}}
     \vspace*{1cm}
 
-    Byte 1-2 Address \\
-    Byte 3 Payload length \\
-    byte 4-10 Payload
+    Byte 1-2: Adresse \\
+    Byte 3: Payload-Länge \\
+    Byte 4-10: Payload
 \end{frame}
 
 \begin{frame}
-	\frametitle{CAN-Bus: Messages}
-    Ein CAN-Bus Paket:
+	\frametitle{CAN-Bus: Nachrichten}
+    Ein CAN-Bus-Paket:
     \newline
     \newline
     \newline
@@ -257,17 +274,17 @@
 {\Large \centerline{\texttt{00 B4 08 00 00 00 00 3C 18 C0} \textbf{FF}}}
     \vspace*{1cm}
 
-    Byte 1-2 Address \\
-    Byte 3 Payload length \\
-    Byte 4-10 Payload \\
-    Byte 11 Checksum \\
-    E.g.: $(IDH + IDL + Len + Sum(\text{Data}[0]\text{ – }\text{Data}[Len-2])) \& 0xFF $
+    Byte 1-2: Adresse \\
+    Byte 3: Payload-Länge \\
+    Byte 4-10: Payload \\
+    Byte 11: Prüfsumme \\
+    Z.B.: $(IDH + IDL + Len + Sum(\text{Data}[0]\text{ – }\text{Data}[Len-2])) \& 0xFF $
 \end{frame}
 
 
 \begin{frame}
-	\frametitle{CAN-Bus: Building your own packets}
-    Wie einfach ist es eigene Pakete zu bauen?
+	\frametitle{CAN-Bus: Eigenbau von Paketen}
+    Wie einfach ist es, eigene Pakete zu bauen?
     \newline
     \newline
     \newline
@@ -279,16 +296,16 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{CAN-Bus: Building own packets}
-    Tacho auf 100 km/h bei 2000 RPM!
+	\frametitle{CAN-Bus: Eigenbau von Paketen}
+    Tacho auf 100 km/h bei 2000 RPM
     \newline
     \[\text{Speed} (mph) = 0.0065 \cdot (CC DD) - 67\]
     \[RPM = 0.25 \cdot (AA BB) - 24\]
 \end{frame}
 
 \begin{frame}
-	\frametitle{CAN-Bus: Building own packets}
-    Tacho auf 100 km/h bei 2000 RPM!
+	\frametitle{CAN-Bus: Eigenbau von Paketen}
+    Tacho auf 100 km/h bei 2000 RPM
     \newline
     \[62.1371 = 0.0065 \cdot (CC DD) - 67\]
     \[2000 = 0.25 \cdot (AA BB) - 24\]
@@ -300,20 +317,18 @@
     {\Large \centerline{\texttt{00 B4 08 1F A0 00 00 4D 86 00 CC}}}
 
 \end{frame}
-
-
-\section{Ausgewählte Angriffsvektoren} % erscheint in Agenda
+% WLAN-Code (2 Folien) rausnehmen
+% Mobilfunk I rausnehmen
+\section{Ausgewählte Angriffsvektoren}
 \begin{frame}
 	\frametitle{Angriffsvektoren: verwundbare Komponenten am CAN-Bus}
     \begin{center}
     	\begin{figure}
 			\includegraphics[width=0.3\textwidth]{pic/remote_attack_images-026.jpg} \ \
 			\includegraphics[width=0.3\textwidth]{pic/remote_attack_images-027.jpg}
-      	  	\caption[2010 Infiniti G37 (Sedan)]{Sedan Infiniti (2010)\footnote{Quelle: http://images.thecarconnection.com/lrg/2010-infiniti-g37-sedan} und Komponenten im CAN-Netzwerk\footnote{Quelle: {[}MV14{]}}}
+      	  	\caption[2010 Infiniti G37 (Sedan)]{2010 Infiniti G37\footnote{Quelle: \href{http://images.thecarconnection.com/lrg/2010-infiniti-g37-sedan}{http://images.thecarconnection.com/lrg/2010-infiniti-g37-sedan}} und Komponenten im CAN-Netzwerk \cite{MiV14}}
 			% Lenkradkontrolle, Reifendrucksensoren, Bremssysteme, Motorkontroll-Einheit, AM/FM-Radio, Bluetooth, ferngesteuertes Öffnen bzw. Starten des Autos
-			%Quellen für Bilder:
-			% http://images.thecarconnection.com/lrg/2010-infiniti-g37-sedan_100234015_l.jpg
-			% [MV14]
+			% Als Beispiel hier 2010er Infiniti G37 mit CAN-Netzwerk
 		\end{figure}
 	\end{center}
 	\begin{itemize}
@@ -327,32 +342,35 @@
 	\end{itemize}
 \end{frame}
 
-\subsection{Mobilfunk}
-\begin{frame}
-	\frametitle{Mobilfunk I}
-    \begin{center}
-        \begin{figure}
-            \includegraphics[width=0.3\textwidth]{pic/001_cellular.jpg}
-            \caption[Mobilfunk]{Mobilfunk-Einheit im Jeep Cherokee, Quelle: [MV15]}
+%
+%\begin{frame}
+%	\frametitle{Mobilfunk I}
+ %   \begin{center}
+  %      \begin{figure}
+   %         \includegraphics[width=0.3\textwidth]{pic/001_cellular.jpg}
+    %        \caption[Mobilfunk]{Mobilfunk-Einheit im Jeep Cherokee, Quelle: [MV15]}
             %Sierra Wireless AirPrime AR5550 from a Harman Uconnect system
             %Quelle für Bild:
             % [MV15]
-        \end{figure}
-	\end{center}
+     %   \end{figure}
+	%\end{center}
 
+
+%\end{frame}
+
+\subsection{Mobilfunk}
+\begin{frame}
+	\frametitle{Mobilfunk}
     \begin{itemize}
 		\item Funktionen:
         \begin{itemize}
-        	\item Internetverbindung (3G) % z.B. für WLAN-Hotspot, Wetterbericht, Routenplaner
+
+            \item Internetverbindung (3G) % z.B. für WLAN-Hotspot, Wetterbericht, Routenplaner
             % oder Hersteller: Ferndiagnose, Anti-Diebstahl-Tracking
-            \item Mobilfunk % z.B. für Notrufe oder Hersteller-Updates
+            \item Anrufe und SMS % z.B. für Notrufe oder Hersteller-Updates
         \end{itemize}
     \end{itemize}
-\end{frame}
 
-\begin{frame}
-	\frametitle{Mobilfunk II}
-    \ \par
     \begin{itemize}
 		\item Unbemerkte Anrufe an Telematik-Einheit sind möglich
         % 'stealth mode' für Hersteller (Diagnose), versteckt vor Nutzer
@@ -360,7 +378,7 @@
         \begin{itemize}
         	\item Modem übersetzt akustische Töne in Bits
             %  Airbiquity’s aqLink
-            \item Verwundbarkeiten: Pufferüberlauf und Authentifizierung
+            \item Verwundbarkeiten: Authentifizierung und Pufferüberlauf
             % 'zufällige' Challenge leicht zu durchschauen
             % Ungefähr jede 256. (falsche) Antwort wird als richtig erkannt
         \end{itemize}
@@ -376,11 +394,11 @@
         \end{itemize}
         %Stephen  Checkoway,  Damon  McCoy,  Brian  Kantor, ... in Comprehensive experimental analyses of automotive attack surfaces
     \end{itemize}
-\end{frame}
+ \end{frame}
 
 \subsection{WLAN} % erscheint in Gliederung
  \begin{frame}
-	\frametitle{WLAN I}
+	\frametitle{WLAN}
     \begin{itemize}
 		\item Funktion:
         \begin{itemize}
@@ -394,56 +412,114 @@
 		\item Standard-Verschlüsselung: zufälliges WPA2-Passwort
 		\begin{itemize}
 			\item Zufallsalgorithmus basiert auf momentaner Systemzeit %in Sekunden
+            \item von Miller und Valasek in \cite{MiV15} extrahiert
 		\end{itemize}
 	\end{itemize}
     \begin{itemize}
-		\item Miller und Valasek extrahierten Algorithmus von OMAP-Chip in [MV15]
+		\item Systemzeit nach Boot scheint immer dieselbe zu sein (01.01.2013, 00:00:32)
+        % Bei Start: von GPS- bzw. Mobilfunkeinheit
+        \end{itemize}
+    %\begin{itemize}
+	%	\item Miller und Valasek extrahierten Algorithmus von OMAP-Chip in
         % aus WiFiSvc Binärdatei
         % Open Multimedia Applications Platform
         % in Funktion WiFi.E:generateRandomAsciiKey()
 
 
 
+	%\end{itemize}
+\end{frame}
+
+% \begin{frame}
+%	\frametitle{WLAN II}
+%     \begin{itemize}
+% 		\item Umwandlung Zufallszahl -> ASCII-Zeichen:
+%         \end{itemize}
+% \end{frame}
+
+%  \begin{frame}
+% 	\frametitle{WLAN II}
+%     \begin{itemize}
+% 		\item Umwandlung Zufallszahl -> ASCII-Zeichen:
+%     \end{itemize}
+%     \lstinputlisting[firstline=0, lastline=14, title=WLAN-Passwort-Generierung auf OMAP-Chip (1/2). Quelle {[}MV15{]}]{wlan-pwd.c}
+
+% \end{frame}
+
+%  \begin{frame}
+% 	\frametitle{WLAN III}
+%     \
+%     \lstinputlisting[firstline=15, title=WLAN-Passwort-Generierung auf OMAP-Chip (2/2). Quelle {[}MV15{]}]{wlan-pwd.c}
+
+% \end{frame}
+
+%  \begin{frame}
+% 	\frametitle{WLAN IV}
+%     \
+
+%         \ \par
+%         \begin{itemize}
+% 		\item Sicherheit der Algorithmus-Anwendung fraglich
+%         \end{itemize}
+% \end{frame}
+
+\subsection{Bluetooth} % erscheint in Gliederung
+\begin{frame}
+	\frametitle{Bluetooth I}
+    \begin{itemize}
+		\item Funktionen:
+        \begin{itemize}
+			\item Freisprecheinrichtung
+            \item Anrufe starten
+            \item Musikwiedergabe
+		\end{itemize}
+    \end{itemize}
+     %Stephen  Checkoway,  Damon  McCoy,  Brian  Kantor, ...
+     %Comprehensive experimental analyses of automotive attack surfaces
+    \begin{itemize}
+		\item Unix-ähnliches Betriebssystem auf Telematik-Einheit
+	\end{itemize}
+    \begin{itemize}
+		\item Sicherheitslücke in Interface:
+        %zwischen Bluetooth Stack Implementation, Freisprechprogramm und Rest der Telematik
+		\begin{itemize}
+			\item Unüberprüfte strcpy-Befehle auf Bluetooth-Stack
+            \item Einfach zu erzeugender Überlauf
+            % Nur mit gepaarten Geräten!
+		\end{itemize}
 	\end{itemize}
 \end{frame}
 
- \begin{frame}
-	\frametitle{WLAN II}
-    \begin{itemize}
-		\item Umwandlung Zufallszahl -> ASCII-Zeichen:
-        \end{itemize}
-\end{frame}
-
- \begin{frame}
-	\frametitle{WLAN II}
-    \begin{itemize}
-		\item Umwandlung Zufallszahl -> ASCII-Zeichen:
-    \end{itemize}
-    \lstinputlisting[firstline=0, lastline=14, title=WLAN-Passwort-Generierung auf OMAP-Chip (1/2). Quelle {[}MV15{]}]{wlan-pwd.c}
-
-\end{frame}
-
- \begin{frame}
-	\frametitle{WLAN III}
-    \lstinputlisting[firstline=15, title=WLAN-Passwort-Generierung auf OMAP-Chip (2/2). Quelle {[}MV15{]}]{wlan-pwd.c}
-
-\end{frame}
-
-\subsection{Bluetooth} % erscheint in Gliederung
-
 \begin{frame}
-	\frametitle{Bluetooth}
+	\frametitle{Bluetooth II}
+    \ \par
+       \begin{itemize}
+		\item Forscher implementierten Trojanisches Pferd für Android
+            % Überprüft bei BT-Verbindung auf Telematik-Einheit
+            % Wenn ja, sendet payload, lässt code ausführen und 'knackt' sämtliche wichtige Bausteine am CAN-Bus
+	\end{itemize}
+    \ \par
     \begin{itemize}
-		\item
-    \end{itemize}
+		\item Ungepaarte Geräte:
+        \begin{enumerate}
+			\item MAC-Adresse der Telematik
+            % Open-Source: Bluesniff
+            % oder Traffic überwachen,
+            % Auto muss gar nicht an sein
+            \item Pin für die Paarung
+            % Kann u.U. lange dauern
+            % Forscher: Ab 15 Min
+            \item Code-Ausführung
+		\end{enumerate}
+	\end{itemize}
 \end{frame}
 
 \section{Beispiel Jeep-Hack}
 \begin{frame}
 	\frametitle{Hack des 2014er Jeep Cherokees}
 	\begin{figure}
-        \includegraphics[width=0.6\textwidth]{pic/2014-jeep-cherokee-1.jpg} %http://www.blogcdn.com/www.autoblog.com/media/2013/02/2014-jeep-cherokee-1.jpg
-        \caption{Ziel des Angriffs: 2014 Jeep Cherokee}
+        \includegraphics[width=0.6\textwidth]{pic/2014-jeep-cherokee-1.jpg}
+        \caption{Ziel des Angriffs: 2014 Jeep Cherokee\footnote{Quelle: \href{http://www.blogcdn.com/www.autoblog.com/media/2013/02/2014-jeep-cherokee-1.jpg}{http://www.blogcdn.com/www.autoblog.com/media/2013/02/2014-jeep-cherokee-1.jpg}} }
     \end{figure}
     \begin{itemize}
 		\item veröffentlicht im Juli 2015
@@ -455,7 +531,7 @@
 	\frametitle{Jeep Cherokee: CAN-Netzwerk}
     \begin{figure}
 		\includegraphics[width=0.45\textwidth]{pic/jeep_cannets.png}
-        \caption{Übersicht über CAN-Netze}
+        \caption{Übersicht über CAN-Netze \cite{MiV15}}
 	\end{figure}
     \begin{itemize}
 		\item zwei CAN-Netzwerke
@@ -467,11 +543,11 @@
     \frametitle{Fahrassistenzsysteme des Jeeps}
     \begin{figure}
         \includegraphics[width=0.48\textwidth]{pic/jeep_parkass.png}
-        \caption{}
+        \caption{Display des Parkassistenten \cite{MiV15}}
     \end{figure}
     \begin{itemize}
         \item adaptiver Tempomat
-        \item Kollisionswarnsystem
+        \item Kollisionswarnsystem ''Plus''
         \item Spurhalteassistent
         \item Parkassistent
     \end{itemize}
@@ -507,8 +583,14 @@
 	\frametitle{UConnect-System von Harman Kardon}
     \begin{itemize}
     	\item Radio, WLAN, Navigation, Apps, Freisprechanlage...
+    \end{itemize}
+    \begin{itemize}
         \item Funktionalität auf einem TI-Chip
+    \end{itemize}
+    \begin{itemize}
         \item Kommuniziert mit CAN-Netzen über separaten Controller
+    \end{itemize}
+    \begin{itemize}
         \item Für Vielzahl an Modellen verfügbar
     \end{itemize}
 \end{frame}
@@ -522,7 +604,7 @@
    	\end{itemize}
     \begin{figure}
     \includegraphics[width=0.7\textwidth]{pic/dbusauth.png}
-    \caption{Anonymer Zugriff auf D-Bus}
+    \caption{Anonymer Zugriff auf D-Bus \cite{MiV15}}
     \end{figure}
 \end{frame}
 
@@ -534,7 +616,7 @@
         \item z.B. \texttt{NavTrailService} enthält unsichere Methoden
         \item \texttt{execute} führt beliebige Shell-Befehle aus
         \end{itemize}
-        \item Simple Lua-Skripte beeinflussen versch. Systeme:
+        \item Simple Lua-Skripte beeinflussen versch. Systeme \cite{MiV15}:
     \end{itemize}
     \includegraphics[width=1\textwidth]{pic/setVolume.png}
     \begin{itemize}
@@ -551,15 +633,83 @@
 
 \begin{frame}
 	\frametitle{Zugriff über Mobilfunk}
+    \begin{itemize}
+		\item Port 6667 auch über 3G-Interface offen (Im Netz des Netzanbieters)
+    \end{itemize}
+    \begin{itemize}
+        \item Netzanbieter verhindert keine Kommunikation zwischen Endgeräten
+	\end{itemize}
+    $\Rightarrow$ Reichweite des Angriffs auf komplette USA ausgeweitet
 \end{frame}
+
+\begin{frame}
+	\frametitle{Ausführen von CAN-Nachrichten I}
+    \begin{itemize}
+    	\item Modifizierte Firmware für Mikrocontroller benötigt
+    \end{itemize}
+    \begin{itemize}
+        \item Update über UConnect
+        \begin{itemize}
+        	\item Mikrocontroller u. UConnect rebooten in Updatemodus
+            \item 25s benötigt, Angriff wird bemerkbar
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Ausführen von CAN-Nachrichten II}
+	\begin{itemize}
+		\item Normale CAN-Nachrichten
+        	\begin{itemize}
+            	\item Ständiges Senden während Betrieb
+                \item Blinker
+                \item Tacho
+                \item Parkmodul u. Kollisionsverhinderung mit Einschränkungen
+                \item ...
+            \end{itemize}
+        \item Diagnostische CAN-Nachrichten
+        	\begin{itemize}
+            	\item Mächtig, aber nur bei geringen Geschwindigkeiten nutzbar
+            	\item Motor
+                \item Bremsen
+                \item ...
+            \end{itemize}
+	\end{itemize}
+\end{frame}
+
+
 \section{Fazit}
 \begin{frame}
 	\frametitle{Fazit}
 	\begin{itemize}
-		\item Alles super
-        %to be continued
+		\item Unbemerktes Eindringen auf vielen Wegen realisierbar
+	\end{itemize}
+    \begin{itemize}
+		\item viele Autos betroffen
+	\end{itemize}
+    	\begin{itemize}
+		\item Maßnahmen:
+        	\begin{enumerate}
+				\item Einsatz des CAN-Busses überdenken
+                % adressierter Verkehr statt Broadcast
+                % signierte Pakete, Integrität
+                \item Einhaltung von Sicherheitsstandards
+                % offene Ports
+                \item TCU-Software besser testen und abschirmen
+                % Pufferüberlauf, Zufallsalgorithmen
+			\end{enumerate}
 	\end{itemize}
 \end{frame}
+% Auto gefühl
+% WLAN aufgreifen
+% Gerät/Handy
+% uconnect, microcontroller flacher
 
+\begin{frame}[allowframebreaks]
+    \frametitle{Quellenverzeichnis}
+	\nocite{*}
+	\bibliographystyle{alpha}
+	\bibliography{quellen.bib}
+\end{frame}
 
 \end{document}
