@@ -1,0 +1,6 @@
+pvssvr10-bln.localdomain Mon Jul  7 15:40:20 CEST 2014
+IPSEC TABLE
+ROUTING TABLE
+192.168.100.192/27 dev eth4  proto kernel  scope link  src 192.168.100.194 
+169.254.0.0/16 dev eth4  scope link  metric 1002 
+default via 192.168.100.193 dev eth4  proto static 
