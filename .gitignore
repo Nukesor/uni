@@ -31,6 +31,8 @@
 *.xdy
 *.tdo
 *.graphml
+*.bcf
+*.run.xml
 /tmp
 
 .project
