@@ -64,12 +64,10 @@ In case one wants to find similar binary files, it would be reasonable to split 
 For websites or documents, looking at the composition and structure of text could be a viable approach to select features for hashing
 The original data can then be seen as a high dimensional vector of features.
 
-The size of available features can vary significantly and is completely in the hand of the designer for a \emph{Simhash} implementation.
-It's important to note, that there exists no clear guideline on which features of a data set are interesting and which features can be discarded.
+The size of available features can vary significantly and is completely in the hand of the designer for each \emph{Simhash} implementation.
+It's important to note, that there exists no clear guideline on which features of a data set are interesting and which features can be ignored.
 The performance of a \emph{Simhash} implementation thereby also depends on the chosen features and the respective properties of the dataset.
 Such features can be for instance binary chunks, file extension~\cite{inproc:simhash}, individual words, tags or URLs~\cite{inproc:main}.
-
-After determining in which way feature are extracted from the original data, each feature is
 
 \begin{figure}[H]
 \includegraphics[scale=0.5]{./gfx/binary_chunk_fingerprint}
@@ -79,7 +77,13 @@ A binary file split into chunks, which are then hashed.
 Combined all hashes results in the desired fingerprint.~\cite{article:sampling-similarity}}\label{fig:gitalizer-relationship}
 \end{figure}
 
-\cite{inproc:simhash}
+After determining in which way feature are extracted from the original data, each feature is hashed and mapped onto a fingerprint, which represents the constellation of features.
+
+The next challenge, which is the main topic this paper deals with, is to compare a fingerprint to all other fingerprints inside the given dataset.
+
+\subsection{Weights and Hamming Distance}
+
+
 
 \subsection{}
 
