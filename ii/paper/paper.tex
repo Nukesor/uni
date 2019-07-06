@@ -26,7 +26,13 @@
 
 In the age of the modern Internet, which depends in large parts on crawlers and proper document detection and duplication elimination, near duplicate document detection becomes a necessity.
 Real time detection of which website has already been visited and whether a website is new or just has been edited are important tasks during crawling~\cite{paper:scaling_six_billion}.
-This paper attends to the paper \emph{Seminar paper on Probabilistic Near-Duplicate Detection Using Simhash}~\cite{inproc:main}. The authors of~\cite{inproc:main} design a new algorithm that allows significantly faster online document comparison, for a small percentage of recall loss.
+
+Standard hashing functions are often inefficient and operate in $O(n^2)$ space requirements for RAM and computing time~\cite{book:hashing}.
+At the same time, the size of available documents grow steadily.
+Google's website index alone has multiple hundreds of billions of webpages and over 100 Petabyte in size, according to their information website~\cite{info:google_stats}.
+
+This paper attends to the paper \emph{Seminar paper on Probabilistic Near-Duplicate Detection Using Simhash}~\cite{inproc:main}.
+The authors of~\cite{inproc:main} design a new algorithm that allows significantly faster online document comparison and reduced RAM requirements, for a small percentage of recall loss.
 
 In the first chapters, the basics for understanding this topic will be explained.
 Afterwards the proposed algorithm will be looked at and the authors' findings will be discussed.
