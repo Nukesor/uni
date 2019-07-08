@@ -40,7 +40,7 @@ The authors of~\cite{inproc:main} aim to design a new algorithm that allows sign
 In the first chapters, the basics for understanding this topic will be explained.
 Afterwards the proposed algorithm will be looked at and the authors' findings will be discussed.
 
-\section{Conventional Hashing}
+\subsection{Conventional Hashing}
 
 Hashing is a technique, which is used to map data of an arbitrary size to a fingerprint with some fixed size.
 This procedure could be seen as a function  $f(i) \rightarrow j$, which produces a value $j$ from from any value $i$, where $j \in H$ and $H$ is the set of values of the fixed length $s$ with $s \in \mathbb{N}$.
@@ -51,12 +51,14 @@ Without this property it would be easier to change the input without the hash si
 This would allow malicious third parties to, for instance, change code in a binary, without users being able to detect the change with the help of this hash and would require a full byte level comparison between the original and the copied file to verify its integrity.
 
 If, on the other hand, one's goal is to find near duplicates, which are identical for the most part, but sometimes only differ by a few bits or bytes, this hashing approach immediately becomes useless, due to this property.
-Due to the need for a hashing algorithm, that creates a fingerprint based on the features and structure of the input data, \emph{Simhash} has been created.
+Due to the need for a hashing algorithm, that creates a fingerprint based on the features and structure of the input data, \emph{simhash} has been created.
 
 
 \section{Simhash}
 
-\emph{Simhash} is a procedure used to create a fingerprint of a any kind of data.
+To compare documents for similarity a methodology to create some uniform value, which should be identical for two similar matching documents.
+
+\emph{simhash} is a procedure used to create a fingerprint of a any kind of data.
 This fingerprint can then be used to, for instance, inspect two files for similarity.
 
 The process for creating such a fingerprint can completely differ depending on the features in the hashed data one is interested in.
@@ -64,17 +66,17 @@ In case one wants to find similar binary files, it would be reasonable to split 
 For websites or documents, looking at the composition and structure of text could be a viable approach to select features for hashing
 The original data can then be refined to a high dimensional vector of features.
 
-The size of available features can vary significantly and is completely in the hand of the designer for each \emph{Simhash} implementation.
+The size of available features can vary significantly and is completely in the hand of the designer for each \emph{simhash} implementation.
 It's important to note, that there exists no clear guideline on which features of a data set are interesting and which features can be ignored.
-The performance of a \emph{Simhash} implementation thereby also depends on the chosen features and the respective properties of the dataset.
+The performance of a \emph{simhash} implementation thereby also depends on the chosen features and the respective properties of the dataset.
 Such features can be for instance binary chunks, file extension~\cite{inproc:simhash}, individual words, tags or URLs~\cite{inproc:main}.
 
 \begin{figure}[H]
 \includegraphics[scale=0.5]{./gfx/binary_chunk_fingerprint}
 \centering
-\caption{Visual example for calculating a \emph{Simhash} fingerprint.
+\caption{Visual example for calculating a \emph{simhash} fingerprint.
 A binary file split into chunks, which are then hashed.
-Combining all hashes results in the desired fingerprint.~\cite{article:sampling-similarity}}\label{fig:gitalizer-relationship}
+Combining all hashes results in the desired fingerprint.~\cite{article:sampling-similarity}}\label{fig:simhash-example}
 \end{figure}
 
 After determining in which way feature are extracted from the original data, each feature is hashed and mapped onto a fingerprint, which represents the constellation of features.
@@ -84,28 +86,54 @@ After determining in which way feature are extracted from the original data, eac
 \centering
 \end{figure}
 
-Algorithm 1 explaines the process of~\cite{inproc:evaluation} for creating fingerprints.
-At first one iterates over the features subset $F(u)$, which is selected from the set $F$ of all unique features with $F(u) \in F$.
+Algorithm 1 explains the process of~\cite{inproc:evaluation} for creating fingerprints.
+At first one iterates over the features subset $F(u)$ of size $b$, which is selected from the set $F$ of all unique features with $F(u) \in F$.
 Each feature is then uniformly hashed to a fix size.
 This uniform hashing can be seen as a random projection of a arbitrarily large feature to a fixed size.
 The amount of ones and zeros in this hash are then counted.
 A one increments the counter, a zero decrements it.
-The result is then stored in a vector $W$ which has the same length as $F(u)$ under the respective index of the feature.
+The result is then stored in a weight vector $W$ under the respective index of the feature. $W$ has the same length $b$.
 
-After calculating all values for each feature, a new binary Vector $B$ will then be created with the same Length as $W$.
-Each value $v_i \geq 0$ at index $i$ will result in $B[i] = 1$, while each $v_i < 0$ will reslut in $B[i] = 0$.
-
-The next challenge, which is the main topic this paper deals with, is to compare a fingerprint to all other fingerprints inside the given dataset.
+After calculating all values of $W$, a new binary Vector $B$ will then be created with the same Length as $W$.
+Each value $v$ with $v_i \geq 0$ at index $i$ will result in $B[i] = 1$, while each $v_i < 0$ will result in $B[i] = 0$.
 
 \subsection{Weights and Hamming Distance}
 
+To achieve their goal of decreasing the runtime of fingerprint comparisons, the authors of~\emph{inproc:main} investigated the properties and distribution of weights of the temporary weight vector $W$ that was introduced the previous section.
+
+For their current work, they used normalized term frequency–inverse document frequency (TF-IDF) weights.
+This kind of weights is used to reflect the importance of a word to a document in a collection and is great for text-based document comparison methods~\cite{Salton:1986:IMI:576628}.
+The corpus of the researchers consisted of 70M web pages.
+
+\begin{figure}[H]
+\includegraphics[scale=0.4]{./gfx/distribution.png}
+\centering
+\caption{Histogram of \emph{simhash} weights. A clear trend towards a Laplace-like distribution can be seen in a\).}\label{fig:weight-distribution}
+\end{figure}
+
+While using normalized TF-IDF weights, they noticed, that the distribution of weights rather resembles a Laplace-like distribution, than a Gaussian distribution, which has been expected, since the Central Limit theorem suggests it.
+This can be seen in Figure~\ref{fig:weight-distribution}.
+
+Using this knowledge they were able to generalize the formula for determining the specific weight of a feature to non-Bernoulli cases:
+
+\[W_j(u) = \sum_{i \in F(u)} v_{ij}w_i(u)\]
+
+$v$ is a vector, whose elements are drawn from a zero-mean symmetric distribution, which is theoretically equivalent to the Laplace-like distribution mentioned above.
+
+After investigating the various probabilities and necessities for changing a weight to the side, it becomes apparent that certain bits are much more volatile to flip than others.
+If one looks at the \emph{simhash} weights $(12, 0, -10)$, the second bit is much more likely to flip to the negative side, when small changes occur, than the other weights.
+Much bigger changes would be needed to flip the weights at position 1 or 3.
 
 
-\subsection{}
+\section{Bit order}
+
+With the insight gained in the previous section, we are now able determine, which bits are more volatile to flip than others.
+This knowledge can be utilized to determine an order, that should be used to determine the Hamming distance $h$ between the fingerprint and all hashes in the collection $D$.
+While this is straight forward for single bit flips, where bits are simply ordered by their volatility, it becomes more complex, as soon as one wants to detect two-bit combination flips.
+
+\subsection{Brute force}
 
 
-
-\subsection{Achievements of Session Juggler}
 
 
 \section{Impact in the scientific community}

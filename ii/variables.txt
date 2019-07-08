@@ -18,7 +18,8 @@ s: V^2 → [0, 1]: Simliarity function, which maps a pair of feature vectors to 
 w_i: Weight of feature i
 w_i(u) ∈ R: Weight
 
-W_j(u): Feature vector for page u
+W: Temporary feature vector
+W_j(u): Temporary feature vector for page u
 
 ζ: bytes needed to store each feature index
  nE[f (u)]ζ: expected space requirement of D
