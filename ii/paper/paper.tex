@@ -66,11 +66,6 @@ In case one wants to find similar binary files, it would be reasonable to split 
 For websites or documents, looking at the composition and structure of text could be a viable approach to select features for hashing
 The original data can then be refined to a high dimensional vector of features.
 
-The size of available features can vary significantly and is completely in the hand of the designer for each \emph{simhash} implementation.
-It's important to note, that there exists no clear guideline on which features of a data set are interesting and which features can be ignored.
-The performance of a \emph{simhash} implementation thereby also depends on the chosen features and the respective properties of the dataset.
-Such features can be for instance binary chunks, file extension~\cite{inproc:simhash}, individual words, tags or URLs~\cite{inproc:main}.
-
 \begin{figure}[H]
 \includegraphics[scale=0.5]{./gfx/binary_chunk_fingerprint}
 \centering
@@ -79,10 +74,15 @@ A binary file split into chunks, which are then hashed.
 Combining all hashes results in the desired fingerprint.~\cite{article:sampling-similarity}}\label{fig:simhash-example}
 \end{figure}
 
+The size of available features can vary significantly and is completely in the hand of the designer for each \emph{simhash} implementation.
+It's important to note, that there exists no clear guideline on which features of a data set are interesting and which features can be ignored.
+The performance of a \emph{simhash} implementation thereby also depends on the chosen features and the respective properties of the dataset.
+Such features can be for instance binary chunks, file extension~\cite{inproc:simhash}, individual words, tags or URLs~\cite{inproc:main}.
+
 After determining in which way feature are extracted from the original data, each feature is hashed and mapped onto a fingerprint, which represents the constellation of features.
 
-\begin{figure}[H]
-\includegraphics[scale=0.3]{./gfx/pseudocode.png}
+\begin{figure}[h]
+\includegraphics[scale=0.4]{./gfx/pseudocode.png}
 \centering
 \end{figure}
 
@@ -131,15 +131,35 @@ With the insight gained in the previous section, we are now able determine, whic
 This knowledge can be utilized to determine an order, that should be used to determine the Hamming distance $h$ between the fingerprint and all hashes in the collection $D$.
 While this is straight forward for single bit flips, where bits are simply ordered by their volatility, it becomes more complex, as soon as one wants to detect two-bit combination flips.
 
-\subsection{Brute force}
+\subsection{Ordering}
 
+$p_j(u)$ be the probability of another page in $D$, which has a flipped bit in position $j$ in the simhash of a page $u$ with $p_j(u) = P(Y_j > |W_j(u)|)$.
+$Y$ is the random weight chance that occurs to changes in a document with $Y = X_j^{\alpha} - X_j^{\beta}$, where $X_j^{\alpha} - X_j^{\beta}$ are corresponding to the changed features.
 
+Now it's possible to order and limit the Hamming search to the most likely subsets of hash bits.
+For this let $S \subseteq \{1,2,\dots, b\}$ be a subset of non-empty hash bits.
+The probability for the existence of a page in $D$ with differing bits on $S$ is then:
+
+\[p(u,S) = \prod_{i \in S}p_i(u) \prod_{j \notin S}(1-p_j(u)) \]
+
+Creating all possible subsets of $S$ in decreasing would be too time and space consuming, since it requires $\Theta(l \log l)$ operations and $\Theta(\sum_{i=1}^{h} ({b \atop i}))$ space.
+
+\subsection{Volatility Heap}
+To tackle the computation power and space requirement problems mentioned in the section above, the authors of~\cite{inproc:main} create a new data structure they call \emph{Volatility Ordered Set Heap} (VOSH).
+
+W
 
 
 \section{Impact in the scientific community}
+This paper has been cited by 36 different publications.
+Considering this paper has been released 2011, it's still cited by papers and books in 2019, which makes it still valuable contribution to the scientific community.
 
+\section{Relevance as of 2019}
+Near duplicate detection is still a very important research field.
+The current trend shows, that data will continue to be generated in a exponential manner.
 
-\section{Relevance as of 2018}
+For instance, Google started using \emph{simhash} in 2007 for their web-crawling services~\cite{Manku:2007:DNW:1242572.1242592}.
+With Google being one of the biggest Internet companies and the number one search engine, relevance of this topic is obviously very high.
 
 
 \printbibliography
