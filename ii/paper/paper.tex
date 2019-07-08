@@ -62,7 +62,7 @@ This fingerprint can then be used to, for instance, inspect two files for simila
 The process for creating such a fingerprint can completely differ depending on the features in the hashed data one is interested in.
 In case one wants to find similar binary files, it would be reasonable to split the data into equal chunks and use these chunks as features.
 For websites or documents, looking at the composition and structure of text could be a viable approach to select features for hashing
-The original data can then be seen as a high dimensional vector of features.
+The original data can then be refined to a high dimensional vector of features.
 
 The size of available features can vary significantly and is completely in the hand of the designer for each \emph{Simhash} implementation.
 It's important to note, that there exists no clear guideline on which features of a data set are interesting and which features can be ignored.
@@ -72,12 +72,28 @@ Such features can be for instance binary chunks, file extension~\cite{inproc:sim
 \begin{figure}[H]
 \includegraphics[scale=0.5]{./gfx/binary_chunk_fingerprint}
 \centering
-\caption{Process of calculating a \emph{Simhash} fingerprint.
+\caption{Visual example for calculating a \emph{Simhash} fingerprint.
 A binary file split into chunks, which are then hashed.
-Combined all hashes results in the desired fingerprint.~\cite{article:sampling-similarity}}\label{fig:gitalizer-relationship}
+Combining all hashes results in the desired fingerprint.~\cite{article:sampling-similarity}}\label{fig:gitalizer-relationship}
 \end{figure}
 
 After determining in which way feature are extracted from the original data, each feature is hashed and mapped onto a fingerprint, which represents the constellation of features.
+
+\begin{figure}[H]
+\includegraphics[scale=0.3]{./gfx/pseudocode.png}
+\centering
+\end{figure}
+
+Algorithm 1 explaines the process of~\cite{inproc:evaluation} for creating fingerprints.
+At first one iterates over the features subset $F(u)$, which is selected from the set $F$ of all unique features with $F(u) \in F$.
+Each feature is then uniformly hashed to a fix size.
+This uniform hashing can be seen as a random projection of a arbitrarily large feature to a fixed size.
+The amount of ones and zeros in this hash are then counted.
+A one increments the counter, a zero decrements it.
+The result is then stored in a vector $W$ which has the same length as $F(u)$ under the respective index of the feature.
+
+After calculating all values for each feature, a new binary Vector $B$ will then be created with the same Length as $W$.
+Each value $v_i \geq 0$ at index $i$ will result in $B[i] = 1$, while each $v_i < 0$ will reslut in $B[i] = 0$.
 
 The next challenge, which is the main topic this paper deals with, is to compare a fingerprint to all other fingerprints inside the given dataset.
 

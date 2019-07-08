@@ -6,8 +6,10 @@ F(u): subset of features in page u
 F(u) ⊆ F
 
 i: Feature in F(u), i ∈ F(u)
-f(u) = |F(u)|: Selected features in 
+f(u) = |F(u)|: Selected features in
 w_i(u) ∈ R
+
+B: Binary feature vector (Simhash)
 
 V: Set of all feature vectors
 
