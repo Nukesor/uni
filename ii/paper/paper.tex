@@ -214,7 +214,39 @@ This is to be expected, but still shows how inefficient such an approach would b
 Also it becomes apparent that the speedup for VOSH in comparison to a random approach gets higher, the bigger the Hamming distance $h$ gets, making it viable for larger hash sizes with proportional small Hamming distances.
 
 
-\subsection{Online Mode}
+\subsection{Probabilistic Simhash Matching}
+
+The VOSH algorithm is implemented in a framework called Probabilistic Simhash Matching (PSM).
+PSM features an online mode, in which all existing Fingerprints are stored in a collection $H$.
+$H$ is sorted before the algorithm start, therefore the cost for sorting the set are not considered here.
+
+Since using VOSH on all bites and the whole dataset $H$ is highly inefficient only a small range of bits.
+The search is then performed on a small range of uppermost bits, which are called headers.
+For the purpose of performant header lookups a hash table of size $t$ is used as can be seen in Figure~\ref{fig:vosh-lookup}.
+
+\begin{figure}[h]
+    \includegraphics[scale=0.33]{./gfx/vosh-online.png}
+    \centering
+    \caption{The lookup using PSM is not performed on the whole dataset $H$, but rather on a small subset of bits defined by the header in the hash table.}\label{fig:vosh-lookup}
+\end{figure}
+
+
+The algorithm also features a batch query mode, which accumulates new fingerprints in a set $Q$, until it reaches size $m$.
+Once the threshold is reached, PSM splits the existing collection in chunks of $m$ fingerprints and matches each $x \in Q$ against the loaded chunk.
+Afterwards all $x \in Q$ are sorted and appended to the existing collection.
+
+
+\section{Conclusion}
+The authors of~\cite{inproc:main} compare their proposed methodology to the, at their time, most performant implementation, namely Block-Permuted Hamming Search (BPHS), for finding similar \emph{simhashes} in a document collection~\cite{Manku:2007:DNW:1242572.1242592}.
+
+\begin{figure}[H]
+    \includegraphics[scale=0.4]{./gfx/performance_comparison.png}
+    \centering
+    \caption{Performance comparison between PSM and BPHS in batch mode.}\label{fig:performance-comparison}
+\end{figure}
+
+PSM outperforms BPHS in pretty much every scenario, by sacrificing a very small amount of recall.
+This new approach can be seen as a viable addition for \emph{simhashing} algorithms.
 
 
 \section{Impact in the scientific community}
