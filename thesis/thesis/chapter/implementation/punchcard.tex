@@ -1,0 +1,102 @@
+\section{Sleep Rhythm and Working Hours}\label{punchcard-implementation}
+
+The next attack aims to extract information about the working hour behavior of a target.
+This should be achieved by displaying the pattern of the target in form of a weighted scatter plot and by comparing those patterns between several targets.
+Additionally, a detection of anomalies, such as automated programs that contribute to a project on a regular basis, will be conducted.
+
+A clustering will be performed to find common patterns, anomalies and to evaluate the results of this analysis.
+As we are only interested in contributors with a representative amount of commits, all contributors with less than one hundred commits in the last year have been excluded.
+This reduced the number of considered contributors from 175.000 to about 10.300.
+
+The data used for this analysis are the commit timestamps of the target, as well as the Github employee information for verification.
+These commit timestamps are then converted into a different format, which represents the occurrences of commits per hour per weekday over the last year.
+This results in a simple vector with length 168 which corresponds to seven days with 24 hours each.
+I will refer to this representation hereafter as a \emph{punch card}.
+
+\begin{minted}[linenos]{python}
+def preprocess(commits):
+    punchcard = [0] * 168
+    for commit in commits:
+        hour = commit.commit_time.hour # returns 0-23
+        weekday = = commit.commit_time.weekday() # returns 0-6
+
+        index = weekday*24 + hour
+        punchcard[index] += 1
+
+\end{minted}
+\begingroup
+\captionof{listing}{The preprocessing code used to simplify all commits into a usable format of a vector with length 168.}\label{lst:puchcard-preprocessing}
+\endgroup
+
+The data transformation is achieved by incrementing the field of the respective weekday and hour by one for each commit, as can be seen in Listing~\ref{lst:punchcard-preprocessing}.
+The resulting punch card vector is then stored in the database for faster and easier analysis in the next steps.
+
+\begin{figure}[h]
+    \includegraphics[scale=0.32]{./graphs/analysis/ordered-punchcard}
+    \centering
+    \caption{Punch card of the author.}\label{fig:working-hour-rhythm-author}
+\end{figure}
+
+Figure~\ref{fig:working-hour-rhythm-author} shows the punch card of the author.
+The y-axis represents the days of a week, the x-axis defines the hour of a day.
+The weight on the dots of the scatter plot corresponds to the number of commits contributed at this specific hour in respect to the number of all commits in the considered time span.
+
+
+\subsection{Punch card Clustering}
+
+To find common work patterns, several cluster algorithms have been applied to the aggregated data.
+The Python \emph{scikit} framework has been used for this purpose, as it features nine different clustering methods and provides good documentation and abstraction from the underlying clustering logic~\footnote{`Clustering' scikit-learn.org, http://scikit-learn.org/stable/modules/clustering.html (accessed, 24.04.2018)}.
+
+For the task of finding similar punch card patterns in the data, a clustering algorithm that can operate on a high-dimensional dataset with an unknown amount of clusters is required.
+Scikit provides three different clustering algorithms, which can handle an unknown amount of clusters.
+
+\subsubsection{Mean Shift}\label{mean-shift}
+Mean shift is a clustering method which performs an operation similar to a gradient descent, during which all adjacent data points are shifted towards their cluster center~\cite{article:mean-shift}.
+The goal of this algorithm is to find a representative centroid for each cluster and to assign each data point to a cluster.
+Unfortunately, this methodology proves to be too aggressive for the current data.
+
+\begin{figure}[h]
+    \includegraphics[scale=0.32]{./graphs/analysis-mean-shift/supercluster}
+    \centering
+    \caption{Punch card of the super cluster centroid found by mean-shift clustering.}\label{fig:mean-shift-super-cluster}
+\end{figure}
+
+Despite trying a wide range of values for the bandwidth, which is the measure of distance used for detecting adjacent points, this algorithm always created a supercluster, which contains more than 89\% of all data points.
+Such a supercluster can be seen in Figure~\ref{fig:mean-shift-super-cluster}.
+The other 11\% were invariably small clusters representing extreme outlier or strange patterns, which do not resemble any of the expected patterns for normal work shift or leisure time developers.
+An example of such an extreme outlier can be seen in Figure~\ref{fig:mean-shift-outlier}.
+
+My assumption is, that the density of data points is too high and that they are too equally distributed around the centroid of the supercluster for the major part of the provided data.
+Thereby all those data points are slowly shifted to this single centroid.
+As it is difficult to debug 168-dimensional space, I decided that a profound analysis would be too time-consuming and to try the next solution.
+
+\begin{figure}[h]
+    \includegraphics[scale=0.32]{./graphs/analysis-mean-shift/outlier}
+    \centering
+    \caption{Punch card of an extreme outlier centroid found by mean-shift clustering.}\label{fig:mean-shift-outlier}
+\end{figure}
+
+\subsubsection{DBSCAN}
+The \ac{dbscan} clustering algorithm operates by creating clusters of transitively connectable data points within a specific maximal acceptable distance between adjacent points~\cite{inproceedings:dbscan}.
+It is highly scalable and performant, even for large data sets, which made it my first choice.
+Unfortunately, it produces very similar results to the mean shift clustering algorithm~\ref{mean-shift} since it finds a supercluster very similar to Figure~\ref{fig:mean-shift-super-cluster}.
+
+I assume that this algorithm suffers from similar problems as the mean shift approach, which are high density and equal distribution of data points without clear borders.
+Thereby the algorithm manages to reach the most part of all data points transitively from a single starting point.
+When supplied with smaller values for the maximal acceptable distance between data points it creates huge amounts of mini clusters, just as expected.
+
+This algorithm also manages to find extreme outlier clusters, but it is not suitable for the purpose of this thesis, due to the extremely low granularity on the data inside the supercluster.
+
+
+\subsubsection{Affinity Propagation}
+The Affinity Propagation algorithm considers similarities between all data points to find clusters~\cite{article:affinity-propagation}.
+This clustering algorithm features a promising approach since it utilizes a method similar to message passing for finding an \emph{exemplar}.
+An exemplar resembles the representative of a cluster and its surrounding cluster member.
+
+Affinity Propagation was the only available clustering method that was detailed enough to find interesting patterns without creating a supercluster.
+About 200 different patterns have been discovered using this methodology.
+However, it has to be noted, that this clustering method is sometimes a little too detailed since it split relatively similar patterns into two or more different clusters.
+
+Additionally, the memory requirements for this algorithm scale quadratically for non-sparse sets with the number of the data points~\cite[p.~ii]{article:affinity-propagation}.
+About 12 \ac{gb} memory have already been used with a sample of roughly 10.000 data points.
+This algorithm becomes thereby impractical for analyses on the whole dataset, but it works for smaller analyses and is suitable for the validation of this thesis.

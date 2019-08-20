@@ -1,0 +1,50 @@
+Git is a \ac{vcs} used by most programmers on a daily basis these days.
+Its purpose is to help developers version and manage the code base of their projects.
+According to the Eclipse Community Survey, about 42.9\% of professional software developers used Git in 2014 with an upward tendency~\cite{article:git-popularity}.
+It is deployed in many, if not most, commercial and private projects and generally valued by its users.
+On top of this, it allows collaborating with thousands of contributors on the same project whilst maintaining a clear version history.
+
+Several million users send new commits to their Git repositories every day.
+On Github alone, the currently biggest open source platform, there exist about 25 million active repositories and a total of 67 million repositories~\cite{article:github-statistics}.
+
+Some well-known projects and organizations use Git, for example, Linux, Microsoft, Ansible, and Facebook~\cite{article:github-statistics}.
+Each of those repositories contains the complete contribution history of every contributing user and every contribution contains all changes, a timestamp, a message from the author and their email address.
+
+This raises the question how much information is hidden in this metadata of a Git repository and which attack vectors could be introduced by analyzing this information.
+Could it be used to harm or manipulate a contributor or maybe even a company?
+
+The gained knowledge could be utilized by employers to spy on their employees.
+It could be used by an unknown attacker, who aims to obtain sensitive information about a company and its employees through their open-source projects.
+It is also imaginable, that a private individual uses this data to monitor another person, who regularly contributes to open-source repositories.
+
+As there have not been any papers published about this specific topic yet or at least no public paper and as Git plays such a crucial role in today's software development, I want to investigate and evaluate this potential threat.
+Furthermore, I want to create a foundation for future research and provide a first example of how such attacks might look like.
+
+\section{Motivation}
+Each year more and more data is collected by employers.
+A study conducted by \ac{mit} students shows, that data-driven companies, that collect data about everything in their company, are about 5\% more productive~\cite{article:management-revolution}, but this should never justify any invasion into their employees' privacy.
+Privacy violation already goes as far as tracking medical records of employees, which is a service provided by the company \emph{Castlight}~\cite{article:medical-data}.
+Some parties warn against surveillance of employees by the management and demand stricter handling of employee data~\cite{article:vermessung-belegschaft}
+
+Generally, it can be said, that we need to take better care of our personal information and that people need to know in which ways they can leak information.
+This thesis aims to show this on the example of the \ac{vcs} Git, which is by itself a very handy tool for code versioning of a project.
+It was not developed with any malicious intent, but it might be used for such.
+
+\section{Leading Questions and Goals}
+
+The primary research objective of this thesis is to find out if data mining on Git metadata would be feasible.
+This question is explored by looking at various data mining techniques and applying them to aggregated data from Github.
+
+To gather data and to perform analysis on the data for the purpose of this thesis, a program called \emph{Gitalizer} is developed.
+It is capable of continuously collecting data from Github in several ways.
+Furthermore, three different analysis methodologies and several evaluation methods for these are implemented.
+
+\section{Outline}
+This thesis examines the process and capabilities of building a data mining software based on Git metadata.
+The Introduction will explain the motivation, the approach and the goals of this thesis.
+In Chapter 2 three different attack models will be constructed to determine possible attack goals.
+In this context related work will be mentioned with respect to the attack goals.
+Chapter 3 will explain the requirements to the data, existing solutions and the process of building an own aggregator, which collects data from Github.
+Chapter 4 shows the actual approach and algorithmic implementation of three different attacks.
+Chapter 5 evaluates the results of the previously presented algorithms by comparing it with real-world ground truth and conducting small surveys.
+In Chapter 6 the overall results of this research will then be discussed and an outlook will be provided.

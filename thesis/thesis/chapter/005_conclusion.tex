@@ -1,0 +1,32 @@
+\chapter{Conclusion and Outlook}
+
+The study set out to determine how feasible and precise data mining attacks on simple Git metadata could be.
+All three performed attacks, lead to promising results and showed potential for malicious usage.
+
+The miss-out analysis showed that it is possible to automatically detect holiday and sick-leave anomalies.
+Additionally, it is capable of detecting other anomalies in the developer's work pattern.
+
+Analyzing the Git commit timestamps to narrow down the geographic location of a user-led to a significant reduction of possible locations on the globe.
+With a proper test group, it is also likely to prove, that the other detected timezones represent the travel history of the target.
+
+The analysis of punch cards showed, that it is possible to detect developers working at regular five day office hours and to distinguish between working employees and leisure time developers.
+
+However, it must be noted that in all attacks only a small amount of the available data was used.
+Simply using the Git commit timestamps allowed us to perform analyses such as narrowing down the location of a contributor.
+The possible applications for the remaining data, like actual changes in code, references of contributors between repositories or commit messages, are extensive.
+
+If one would add additional data from Github, such as followers, stars or information from their issues system, the results could become even more accurate.
+Developers around the world provide metadata about themselves on a daily basis, probably without knowing how much they are actually exposing.
+To prevent the unauthorized usage and abuse of this data, we need to create countermeasures or prevent exposing this data in the first place.
+
+Luckily the \ac{eu} set an example by enforcing the \ac{gdpr}, which is a regulation that strictly rules the handling of any user data.
+But there are still many countries left in the world, that do not have such strict rules and that might need ways to protect their privacy from being invaded.
+
+While \emph{Gitalizer} is a foundation for data aggregation and the conduct of rather simple analyses, there is a necessity for more detailed research with better sources for ground truth.
+Additionally, more statistics about the mining process would be convenient for evaluating the research results, such as the ratio between starred and contributed repositories.
+\emph{Gitalizer} is a quite complex program, but it is well documented and should allow other people to easily jump into using it.
+
+Many of the attacks mentioned in Section~\ref{attack-goals} are not implemented, as they did not fit in the scope of this thesis.
+Implementing those could be the topic of another bachelor thesis or for a subsequent master thesis.
+
+Furthermore, it would be interesting to explore the possibilities of countermeasures such as obfuscating Git commit timestamps.

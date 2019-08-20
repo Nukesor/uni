@@ -1,0 +1,212 @@
+\section{Geographic Location}~\label{timezone-implementation}
+
+This attack aims to extract information about the geographic location of a target.
+The algorithm tries to determine the exact timezone of the target and to exclude any countries or states that do not match the observed timestamps.
+
+The data used for this analysis are the commit timestamps of the target, as well as the target's Github location for verification.
+In the following, I will explain the algorithm used to detect different time zones and to narrow down the home location of a contributor.
+Several external data sources have been used to accomplish this:
+
+\begin{description}
+    \item[IANA Database] \hfill \\
+    The \ac{iana} provides a free-to-use database, with all timezones and the respective \acp{dst} switches for each year.
+    It also provides the exact \ac{utc} offset and offset switches for all time zones.
+
+    \item[Natural Earth] \hfill \\
+    The Natural Earth organization provides detailed free-to-use and up-to-date geological data with timezones, countries and even states on a resolution down to 1:10m.
+    This data is used for visualization in combination with the Python \emph{cartopy} library.
+
+    \item[Pycountry] \hfill \\
+    Since the country codes and names used by the \ac{iana} database and Natural Earth do not always match, another layer with more information about country names and country codes was necessary.
+    To match non-assignable timezones to their respective country on the map, the library \emph{pycountry} was added.
+
+    \item[OpenStreetMap and geocoders] \hfill \\
+    OpenStreetMap is a collaborative project that provides a free map of the world.
+    Since there are some time zones that cannot be assigned to a country with the help of the \emph{pycountry} library, another solution for getting the relation between timezone and state or country was necessary.
+    To match non-assignable timezone strings to their respective state or country, Gitalizer occasionally issues requests to the \emph{OpenStreetMap} \ac{api} with help of the Python \emph{geocoder} library.
+
+\end{description}
+
+To assign \ac{utc} offsets to their possible timezones a special reverse mapping of the existing \ac{iana} database was necessary.
+The Python library \emph{tzinfo} provides interaction with the \ac{iana} database, but this adapter is only capable of resolving timezones to their respective \ac{utc} offset.
+
+As a result, I wrote a custom adapter that extracts the data from \ac{iana} with help of \emph{tzinfo} and saves it into the Gitalizer database.
+The database model is named \emph{TimezoneInterval} and contains the timezone identifier, the \ac{utc} offset and the exact start and end of this specific timezone interval.
+This table only needs to be populated once for each project setup, but it needs to be updated in case a new version of the \ac{iana} database is released.
+
+
+\begin{minted}[linenos]{python}
+def get_travel_path(commits):
+    travel_path = []
+    current_location = None
+    last_valid_location = None
+    change_at_day = None
+    location_candidate = None
+
+    for commit in commits:
+        commit_time = commit.commit_time
+        zones = find_timezones(commit_time, commit.commit_time_offset)
+
+        # Create the initial timezone
+        if current_location is None:
+            current_location = {
+                "set": set(zones),
+                "start": commit_time.date(),
+                "end": commit_time.date(),
+            }
+            last_valid_location = commit_time.date()
+
+            continue
+
+        # Get possible timezone candidates for this commit and
+        # intersect them with the current_location set
+        location = set(zones)
+        intersection = location & current_location["set"]
+
+        # Check if the possible timezones of this commit
+        # matches any timezone of the current set.
+        if len(intersection) > 0:
+            # By reassigning the intersected set we gain additional precision
+            # by considering possible specific DST changes
+            current_location["set"] = intersection
+            current_location["end"] = commit_time.date()
+            last_valid_location = commit_time.date()
+
+        # There is no match between the possible timezones and the current set.
+        #, In this case, we need to check if this is a single
+        # occurrence (anomaly) or if this is an actual change.
+        else:
+            # No change_at_day exists, but we detected a change
+            # Remember the change. If this change lasts for at
+            # least a day it will be marked.
+            if change_at_day is None:
+                change_at_day = commit.commit_time.date()
+                location_candidate = {
+                    "set": set(zones),
+                    "start": commit_time.date(),
+                    "end": commit_time.date(),
+                }
+
+        # No change detected
+        if change_at_day is None:
+            continue
+
+        # There was an anomaly, but not for a whole day.
+        # This could for instance be a developer committing from a remote server.
+        if change_at_day <= last_valid_location:
+            change_at_day = None
+            location_candidate = None
+
+            continue
+
+        # The change is not older than a day
+        # ignore it until the change lasts for longer than a day
+        if change_at_day <= last_valid_location:
+            continue
+
+        # There exists a change from the last day.
+        duration = current_location["end"] - current_location["start"]
+
+        # The current_location set only existed for a single day.
+        # This is most likely an outlier. Thereby drop it and restore the previous timezone.
+        if duration < timedelta(days=1) and len(travel_path) > 0:
+            last_location = travel_path.pop()
+            last_location["end"] = current_location["end"]
+            current_location = last_location
+
+            # Check if the old location and the current candidate actually match
+            # If that is the case drop the candidate and
+            # completely replace the current_location set
+            intersection = location_candidate["set"] & current_location["set"]
+            if len(intersection) > 0:
+                # Update current_timezone
+                current_location["set"] = intersection
+                current_location["end"] = commit_time.date()
+
+                # Reset candidate and last_valid_location occurrence
+                last_valid_location = commit_time.date()
+                change_at_day = None
+                location_candidate = None
+
+                continue
+
+        # We detected a change and it seems to be valid.
+        # Save the current timezone and set the
+        # candidate as the current timezone.
+        travel_path.append(current_location)
+        current_location = location_candidate
+        change_at_day = None
+        location_candidate = None
+        last_valid_location = commit_time.date()
+
+    current_location["end"] = datetime.now().date()
+    travel_path.append(current_location)
+    return travel_path
+\end{minted}
+\begingroup
+\captionof{listing}{Algorithm used to detect changes in the target's location by analyzing the \ac{utc} offsets of Git commit timestamps.}\label{lst:travel-analysis}
+\endgroup
+
+The algorithm in Listing~\ref{lst:travel-analysis} iterates through every commit and determines in which timezone the contributor could have been at commit time.
+For each following commit, it is checked if there is an intersection between the possible timezones of the last commits and the current commit.
+This is usually the case if the contributor did not travel to another time zone.
+But it is possible that a change in the timezone happens, even though the contributor did not travel.
+This is due to \ac{dst}, which is also something that can be used to improve the precision of the location.
+
+For instance, Germany enforces \ac{dst} and switches between the \ac{utc} offsets +1 and +2. Angola, on the other hand, does not have \ac{dst} and thereby has a continuous offset of +1.
+In case only commits are considered that were created by a German contributor during a small time interval in the winter, it cannot be determined whether the contributor lives in South-Africa or in Western Europe.
+But if one considers the commits of a whole year, it can be concluded that the contributor has to be in a country that enforces \ac{dst} and switches between the offsets +1 and +2.
+
+If no intersection between the timezones can be found, it needs to be determined, whether the contributor actually committed or if the change happened through some other event, such as the commit from a remote server in a different timezone.
+For this purpose, all timezone switches which do not continue for longer than a day or which happen on the same day as a commit from the previous location are marked as insignificant and are ignored.
+
+The algorithm then returns a chronological list of all detected and as significantly ranked locations with their respective time interval.
+
+
+\begin{minted}[linenos]{python}
+def find_home_location(travel_path):
+    home_location_candidates = []
+    home_location = None
+    found = False
+
+    # Try to find the current home location and
+    # to narrow it down as good as possible
+    for location in travel_path:
+        duration = location["end"] - location["start"]
+
+        # Try to find a set which intersects with the current set
+        for candidate in home_location_candidates:
+            intersection = location["set"] & candidate["set"]
+
+            # Found an intersection, set the new intersection and increment days
+            if len(intersection) > 0:
+                candidate["set"] = intersection
+                candidate["days"] += duration.days
+                found = True
+                if candidate["days"] > home_location["days"]:
+                    home_location = candidate
+
+                break
+
+        # Found no matching location, create a new candidate
+        if not found:
+            location["days"] = duration.days
+            home_location_candidates.append(location)
+        else:
+            found = False
+
+        if not home_location:
+            home_location = location
+
+    return home_location
+\end{minted}
+\begingroup
+\captionof{listing}{Methodology used to determine the main location of a target, based on the information gained from the function in Listing~\ref{lst:travel-analysis}}\label{lst:home-location-analysis}
+\endgroup
+
+To detect the home location of a contributor, the algorithm in Figure~\ref{lst:home-location-analysis} is used.
+The parameter provided to this function are the results of function~\inlinecode{get\_travel\_path} in Figure~\ref{lst:travel-analysis}.
+The algorithm simply tries to determine the best possible set of timezones that subsists for the longest duration.
+
+During this process, intersections of matching timezone sets are performed to further increase the precision of the home location.
+The result of this function is a non-empty intersection of timezone sets, which persisted for the longest time period, compared to all other possible non-empty intersection sets.

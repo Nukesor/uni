@@ -1,0 +1,212 @@
+\section{Data Aggregation}\label{aggregator}
+As mentioned in Section~\ref{github}, I decided to use Github as my primary data source and to utilize their \emph{Github APIv3} for this purpose.
+The aggregator and analysis program written for this thesis is named \emph{Gitalizer}.
+In this section, I will explain the technologies and methods used in the data aggregation process, the database structure and the interaction with Github's \ac{api}.
+In the end, some problems which occurred during the data collection will be shown as well.
+
+
+\subsection{Existing Solutions}
+There are of existing solutions for accessing and collecting Git metadata.
+In the following, the practicability of these solutions is evaluated based on our requirements.
+
+\subsubsection{GHTorrent}
+The \emph{GHTorrent} project aims to provide Github's metadata to elude the limitations of Github's \ac{api} rate limiting~\cite{inproceedings:ghtorrent}.
+It provides representations for followers and commits, as well as organizations and organization members, but some crucial pieces of information are missing.
+GHTorrent only stores the main email address of a user and does thereby not support the handling of multiple emails, as commits are directly assigned to their respective Github user id.
+Commits miss information about additions and deletions in lines of code, which implicates that each commit would need to be scanned by a separate program again.
+Furthermore, GHTorrent does not have the concept of \emph{starring}, which makes it hard to reduce the number of considered repositories to a manageable size.
+Their database provides about 4~\ac{tb} of data according to their website, which is too much information without the possibility of specifying a precise subset of data~\footnote{`The GHTorrent project' ghtorrent.com, http://ghtorrent.org/ (accessed, 05.05.2018)}.
+It provides a vast amount of data, but at the same time, it cannot be ensured, that the data is as complete as possible for a specific user.
+Modifying the GHTorrent code base and extending their database schema has thereby been judged as impractical.
+
+\subsubsection{ghcrawler}
+Microsoft provides an open-source crawler called \emph{ghcrawler}, which is supposed to continuously fetch data from Github~\footnote{`Github crawler' github.com, http://github.com/ (accessed, 05.05.2018)}.
+Sadly their documentation is very incomplete and after diving into their source code, it appears that their crawler is for Github entities only and not for the underlying data of Git repositories.
+
+\subsubsection{Alitheia-Core}
+\emph{Alitheia-Core} is a Java data collector for Git repositories.
+It is not actively maintained for more than three years and their documentation website is offline.
+Using this library seemed unpromising and unfeasible.
+
+\subsubsection{RepoDriller}
+The \emph{RepoDriller} project aims to support researchers by providing easy access to repository data from Github~\footnote{`A tool to support researchers on mining software repositories studies' github.com, http://github.com/ (accessed, 05.05.2018)}.
+Despite providing a good solution for getting all necessary information from a repository, it provides no way to explore Github using \emph{stars} or \emph{following}.
+These features, as well as the assignment of emails to a contributor via the Github \ac{api}, would need to be added.
+As the program is also written in Java and I am no longer familiar with the language and its ecosystem, I decided to stick to writing my own solution.
+
+\subsection{Database}\label{gitalizer-database}
+To store the gathered Information I chose a \ac{sql} based solution.
+PostgreSQL provides excellent tools to ensure a high consistency in your database, namely check constraints, as well as great support for working with times, time zones and locations.
+The \ac{sql} database is used in combination with the \ac{orm} library \emph{SQLAlchemy}.
+
+The basic schema created for the purpose of this thesis consists of five \ac{orm} models.
+A model for commits, emails, repositories, contributors, and organizations has been created.
+The latter is only important to validate results and is not actually used for knowledge discovery, as this is Github specific data.
+
+\begin{figure}[H]
+\includegraphics[scale=0.3]{./graphs/gitalizer-data-structure}
+\centering
+\caption{The relationships between Gitalizer's most important database objects in Crow's foot notation.}\label{fig:gitalizer-relationship}
+\end{figure}
+
+Every commit of each repository is saved in the database along with its \ac{sha1} hash and the two email addresses as in Listing~\ref{lst:raw-commit}.
+It is important to note that there is a many-to-many relationship in figure~\ref{fig:gitalizer-relationship} between commits and repositories.
+This feature prevents duplication of the same commits from forked repositories.
+It is, for instance, a common practice to create a fork of a repository to develop without intervening with the main Git repository of the project.
+As described in Section~\ref{git-internal-representation} the probability of a \ac{sha1} collision is highly improbable.
+By exploiting this feature, it is possible to enforce a unique constraint on the commit hash column, assuming that any duplicated commit hash actually results from a forked or copied repository.
+The formula for calculating the probability of such a collision is as follows, where $p$ is the probability of collision, $n$ is the number of different hashes and $b$ is the size of the hash in bytes:
+
+\begin{equation}\label{eq:collision-probability}
+    p \leq \frac{n(n-1)}{2} * \frac{1}{2^{b}}
+\end{equation}
+
+Without this mechanism, it could be possible that the same commit of a contributor could be used multiple times as a result of repository forking.
+After collecting 43 million commits from Github and actively ignoring obvious project forks, there are still 49 million references between commits and repositories.
+This means that about 13\% of gathered commits result from forked repositories which cannot easily be identified as such.
+Considering Formula~\ref{eq:collision-probability}, the probability of a collision for 49 million hashes on the 160 bit \ac{sha1} hash would be about $8.21 * 10^{-34}$.
+
+As stated above each commit is also saved with its respective email addresses.
+There exists a one-to-many relationship between contributors and emails since every contributor can obtain an unlimited amount of email addresses.
+It is necessary to connect all email addresses to a specific contributor, to unambiguously assign all commits to their respective contributor.
+This relationship does not have a \inlinecode{NOT NULL} constraint as it happens quite often that an email address cannot be assigned to any person.
+Looking at the collected data it appears that roughly 20\% of all collected email addresses from Github are no longer connected to an active user.
+
+As stated in Section~\ref{github-features} Github provides a way to organize several people in organizations and teams.
+As one of the potential goals of this thesis is to see if it is possible to detect members of an organization in open-source projects, a model for organizations has been created as well.
+This data can then be used to check the results of this research's results.
+
+
+\subsection{Gitalizer}
+The Program written for this thesis features data aggregation, preprocessing, knowledge extraction and visualization.
+Gitalizer uses a PostgreSQL database for data storage and data consistency checks as described in~\ref{gitalizer-database}.
+For interaction with the Github \ac{api} the \emph{PyGithub} library is used.
+It provides a convenient abstraction layer for requests and automatically maps \ac{json} responses to \emph{Python} objects.
+
+The data aggregation module of Gitalizer is capable of several approaches for gathering data.
+In the following, I will explain those approaches in detail.
+
+\begin{description}
+    \item[Git repository]\label{stand-alone-repository-scan} \hfill \\
+        Gitalizer can scan any Git repository from a \ac{ssh} or \ac{http} \acs{url}, as long as the user used by Gitalizer has access to it.
+        The repository is cloned into a local directory.
+        After the cloning is done, the actual scanning process begins.
+        During the scan, the \inlinecode{HEAD} of the current default branch for this repository is checked out and every from the \inlinecode{HEAD} downwards reachable commit of the Git history is scanned.
+        The program saves all available metadata for each commit in its database, which are emails, timestamps as well as additions and deletions to the project in lines of code.
+
+        After this scan, a lot of information is still missing.
+        There exists no unique identifier of an author or committer since names may change or can be ambiguous and a single person can have multiple email addresses.
+        The problem with the simplicity of Git is that there exists no concept of a user.
+        Thereby we cannot easily link several email addresses to a specific contributor without additional metadata.
+
+
+    \item[Github Repository]\label{github-repo-scan} \hfill \\
+        To tackle the problem of missing metadata in the previous approach, I used the Github \ac{api} to get some of the missing metadata.
+        The general approach is the same as in the previous scan method.
+        At first, the repository is cloned and locally scanned.
+        However, a request is issued to Github every time an email is found, that is not already linked to a contributor.
+        Github allows linking multiple email addresses with a single user account and automatically references the respective user in their own \ac{api} commit representation.
+        With this additional metadata, we gain ground truth about the identity of an author or committer.
+
+        Anyway, this approach does not work if the user of a commit removes the email, which has been used for the commit, from their account or if the user completely deletes their account.
+        If this happens and the email contributor relationship has not already been created in a previous scan, there is nothing that can be done and those commits need to be handled later on during the preprocessing of the data.
+
+    \item[Github User]\label{github-repo-scan} \hfill \\
+        While trying to get all repositories of a specific user, a new functionality has been added, which highly utilizes the Github \ac{api}.
+        At first, several requests are issued to get all repositories of the specified user, as well as all starred repositories of this user.
+        During the repository exploration, every relevant repository is added to a shared queue, called the ``repo-queue'', which is then processed by a multiprocessing pool of workers.
+        Each worker process continuously pops entries from the ``repo-queue'' and scans every single repository as described in the previous approach.
+
+
+    \item[Connected users and organizations]\label{github-repo-scan} \hfill \\
+        For detection and analysis of connections between contributors over multiple repositories, additional user repository discovery, as described in Section~\ref{requirements}, has been added to Gitalizer.
+        Gitalizer is able to achieve this by not just scanning a single user, but also scanning the repositories of all following and followed users as described in the previous approach.
+        For this task, two different worker pools are utilized.
+        The user discovery pool is initialized with a shared queue, called ``user-queue'', with all users we need to look at.
+        This worker pool simply searches for relevant repositories of each user and passes the repository \ac{url} to the second shared queue.
+        The second worker pool then processes the ``repo-queue'' as described in the approach for Github repositories.
+
+        For organizations, it is nearly the same approach.
+        Initially, all repositories, which are owned by the organization, are added to the ``repo-queue''.
+        All publicly visible organization members are then added to the ``user-queue'' and processed as described above.
+\end{description}
+
+
+\subsection{Database Optimization}
+As the database kept growing, it became the bottleneck in the aggregation process several times.
+As a result, adjustments in the database schema, PostgreSQL parameter tweaking and a migration to better hardware were necessary.
+The first considerable slowdown occurred after reaching about 12~\acp{gb} of data.
+At this stage, the database \ac{io} operations took longer than the actual aggregation process and the whole machine started to become unresponsive because of high \ac{io} load.
+
+The performance of the database then needed to be continuously tweaked in several steps.
+The first countermeasure was the reduction of commits using deduplication by using the features of the \ac{sha1} hash as stated in Section~\ref{gitalizer-database}
+Ignoring forked repositories reduced the number of entries in the relation table between commits and repositories by another 26\%.
+
+Other performance boosts were achieved by disabling or loosening several fail-safe mechanisms of PostgreSQL, namely `synchronous commit' and `write-ahead' parameter, which are designed to prevent data loss on a system crash.
+As there is no important or critical data handled, it was acceptable to pass on these mechanisms and to trade safety for performance.
+
+\begin{figure}[H]
+\includegraphics[scale=0.22]{./graphs/server-graphs/query-refactoring}
+\centering
+\caption{The \ac{cpu} load of the aggregation server before and after query and cache optimization.
+The light blue area represents the \ac{cpu} percentage actually used for computation.
+The dark blue area represents the amount of \ac{cpu} idle time due to \ac{io} load.
+At the beginning of the graph the server was partly unresponsive due to high \ac{io} wait.
+At the right side of the graph the \ac{io} load is significantly reduced after some optimizations.}\label{fig:cpu-load}
+\end{figure}
+
+After renting a root server and deploying Gitalizer onto it, the aggregation process worked really well, until the database size hit about 25~\ac{gb}.
+In Figure~\ref{fig:cpu-load} the overall \ac{cpu} load right before optimizing several \ac{sql} queries, by caching intermediate results and increasing the cache size of PostgreSQL, can be seen.
+The dark blue represents the \ac{io} wait time while the light blue represents the actually used processor capacity by the aggregator.
+Due to complex and numerous \ac{sql} queries the server became partly unresponsive and the aggregation process began to stall.
+
+After many improvements, the server can now run with 16 worker threads and roughly 38~\ac{gb} of data without any signs of slowdown whilst using the rate limit to capacity.
+
+
+\subsection{Incremental Aggregation}
+To ensure a constantly up to date database, Gitalizer needed to be capable of fast rescans of repositories.
+The initial scan of a repository always includes cloning, scanning the whole repository and writing it into the database.
+After a repository is scanned completely at least once, it is marked as such and will never by completely scanned again.
+All following runs then only clone the repository and scan the newest unknown commits.
+These are discovered by performing a breadth-first search until no new commits can be found.
+
+\begin{figure}[H]
+\includegraphics[scale=0.3]{./graphs/git-history-rewrite}
+\centering
+\caption{This figure shows an example of a Git history tree which master branch's history has been rewritten by a force push.}\label{fig:truncated-git-history}
+\end{figure}
+
+As explained in Section~\ref{git-features} it is possible to rewrite commits and force push them.
+This scenario needs to be explicitly handled since force pushes can completely alter the history of a Git repository, which can subsequently lead to a split in the Git history and leave dangling commits.
+As the complete history of a repository is stored in the database, Gitalizer needs to detect a force push by walking down the Git history tree until it finds known commits.
+If any of these commits have children, which are not in the newly scanned commits, a force push took place and the old commit history has to be flagged as such since it is now outdated and irrelevant.
+An example scenario can be seen in Figure~\ref{fig:truncated-git-history}, where all red commits represent the old commit history, which needs to be truncated.
+
+
+\subsection{Problems}
+During the development of the data aggregator, I experienced a few problems and edge cases that needed to be handled.
+The earliest and most delaying problem was the rate limit of the Github \ac{api}, which is limited to 5000 requests per hour.
+Beside this rate limiting, there also is an abuse detection mechanism, that triggers if too many requests are fired in a short amount of time.
+The solution for this problem resulted in various workarounds, which include random wait times to detain those mechanisms from triggering.
+
+The first version of the aggregator did not clone and scan the repository locally, but rather gathered all information from the Github \ac{api} endpoints.
+This approach worked well until the aggregator hit the official repository of \emph{Nmap}, which had about 11.000 commits and took over three hours to scan.
+Soon I realized that this would severely slow down my research and I then started to continuously minimize the amount of \ac{api} calls issued by Gitalizer, to avoid waiting for a reset of the previously mentioned \ac{api} limit.
+A connected user scan of my own Github account led to about 600.000 commits and took about one and a half day on the final working version of Gitalizer, to provide you with a reference of scale.
+
+After implementing multiprocessing, I managed to hit the rate limit again, as I was now issuing requests to the \ac{api} with multiple threads.
+To fix this issue I implemented a wait and retry wrapper around every single function call or object access, that triggered a call to the Github \ac{api}.
+Afterward, the aggregator was capable of running multiple days without worker processes silently dying or finishing with incomplete data.
+
+Fine tuning the edge cases and the handling of the \ac{api} took about 3 months since there were many problems such as unpredictable error responses from Github, missing data in queries or simply unknown or broken encodings in Github's metadata.
+
+A big throwback became apparent as I discovered that PostgreSQL automatically normalizes \ac{utc} timestamps with any offset to the \inlinecode{UTC +0} timezone.
+As a result of this normalization, the exact time of the commit admittedly stays the same, but the crucial metadata about the offset is lost.
+As a consequence, the commit model needed to be adjusted, as the \ac{utc} offset had to be stored explicitly, and the whole commit aggregation process was started from scratch.
+
+Another problem occurred during the local scanning of the repositories.
+The \emph{libgit2} library, used for interaction with Git, issued \emph{stat} Linux syscalls during a diff operation for each file, which changed between the compared commits, to check if there were any local uncommitted changes.
+Anyhow the locally scanned repositories were cloned in \emph{bare} mode.
+This means that there exists no project root directory, but rather only the git internal representations of those files, which makes the behavior stated above unnecessary and unwanted.
+As a result, all processes slowed severely down due to high \ac{io} wait times, because of a huge amount of stat syscalls on non-existent files.
+Luckily after reporting the issue~\footnote{`Unnecessary syscalls on bare repository' github.com, https://github.com/libgit2/libgit2/issues/4480 (accessed, 25.04.2018)} it was resolved in a week and I was able to continue developing with my own compiled version of the libgit2 library.

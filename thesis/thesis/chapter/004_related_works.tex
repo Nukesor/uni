@@ -1,0 +1,145 @@
+\chapter{Attacks Goals and Related Work}\label{related-work}
+This chapter will show the creation of several attack models, which are used to design possible attacks and outline the requirements to the data needed for these tests.
+In the same context, several related works will be mentioned in reference to the particular attacks.
+Additional related work, which is not directly related to any attacks is listed in a separate section.
+
+
+\section{Attack Models}\label{attack-models}
+In the following, I will present three attacker models, which were used to design the attack goals in the next section.
+Each attacker model represents an interest group, which might use Git metadata to surveil, spy upon, manipulate or harm a target.
+A number of possible valuable information about a target, which might be obtainable by analyzing Git metadata, are stated for each model.
+
+\begin{description}
+    \item[The Employer] \hfill \\
+        This attack model deals with the scenario of an employer who wants to monitor their employees.
+        The attacker's motivation is to spot irregularities in working behavior and thereby unmotivated or unproductive employees.
+        Information gained by this attack, such as productivity metrics of employees, compliance with working hours and sick leave, could be used to surveil employees without their consensus.
+
+    \item[The Individual] \hfill \\
+        This scenario describes a single person, who wants to harm, monitor or gain information about an open-source developer.
+
+        A possible goal of the attacker could be to either stalk the victim, cause harm in any way or manipulate it or one of their acquaintances.
+        The motivation of this attacker is mostly personal and on an emotional level.
+        For this purpose, the attacker could use information about the target such as relationships to other developers, sleeping rhythm, and daily routines.
+
+        Another nonemotional attacker motive could be a robber trying to find the perfect time window to rob a house.
+        Information about the geographic location of the target at a specific time or knowledge about when the target is at work could be used for this purpose.
+
+        A third attacker motive could be a headhunter, that tries to get information about the skills and reliability of a developer.
+        Several metrics, such as productivity, sick leave tendencies, geographic location and daily routine could be used for this purpose.
+
+    \item[The Industrial Spy]~\label{attack:industrial-spy} \hfill \\
+        This attack model covers the scenario of an external person, who wants to gain as much private or malicious information about a company as possible.
+        The attacker's motivation is either to harm the company, gain an advantage as a competitor or in the stock market or to sell secret information to a third party.
+        This attack vector only works if the targeted company is providing their full product or at least parts of their product as open-source software.
+
+        Valuable information for this attacker is, for instance, a list of company employees, the company employee history, the geographic location of the company's workforce and internal team structures of the company.
+\end{description}
+
+
+\section{Attack Goals}\label{attack-goals}
+This section attends to the establishment of several attack goals, which could be pursued by an attacker.
+These goals serve as a guideline for the data aggregation process, which will be covered in the next chapter.
+It needs to be noted, that only a few these listed attacks will be actually performed in the scope of this thesis, but this listing also serves as an exhibition of some possible attacks for anyone that wants to further investigate this topic.
+
+\begin{description}
+    \item[Productivity of Employees]~\label{attack:employer-monitoring} \hfill \\
+        An employer wants to ensure that their employees work sufficiently.
+        For this approach, several values could be used to create a metric of quality and quantity of work.
+
+        In~\cite[p.~3]{article:job-productivity} simple productivity measurements such as counting the contributed lines of code and the number of function points are evaluated.
+        It is stated, that these measurements indeed provide a metric for the quantity of code, but not about the actual quantity of work and quality of the code.
+        In~\cite[p.~43]{article:measuring-programming-quality} the author recommends to also consider the number of removed defects from the code.
+        The authors of~\cite[p.~257]{article:software-productivity} also include code style quality measurements such as \emph{cyclomatic complexity}, \emph{coupling} and lack of cohesion of methods.
+
+        The gained information by this attack could, for instance, be used to compare the productivity of several employees with the intent to dismiss all employees that do not perform well enough in relation to their coworkers.
+        Another possible use case could be the revelation of developers with a specific skill set for headhunters.
+        The data needed for this attack are the additions and deletions of all commits as well as all commit timestamps and the full patches of each commit.
+
+    \item[Compliance of Working Hours] \hfill \\
+        The aim of this attack is to allow employers to check whether an employee is productive in the given working hours.
+        This might be especially useful to supervise employees, that work remotely and cannot be locally monitored.
+
+        In~\cite{article:do-programmers-work-at-night} a survey on repositories of \emph{Mozilla} and \emph{Apache} is conducted, to detect at what time their developers work.
+        For this purpose, all commit timestamps of those repositories have been collected and analyzed.
+        Their survey discovers that about 66\% of conducted developers follow office hours.
+
+        The data needed for this attack are commit timestamps of all employees' commits.
+
+    \item[Sleeping Rhythm and Working Behaviour] \hfill \\
+        This attack aims to understand and predict the victim's sleep rhythm and working behavior.
+        This information could also be used to detect whether the target is a person working regular shifts from Monday to Friday or rather an open-source contributor working in their leisure time.
+        The data needed for this attack are commit timestamps.
+
+    \item[Personal Relationships to Various Programmers] \hfill \\
+        The objective of this attack is the detection of relationships between various contributors by simply analyzing Git repositories.
+        This information could, for instance, be used by a rogue person to perform social engineering attacks based on the gained knowledge.
+
+        A similar topic has been conducted in the study of~\cite{inproceedings:exploring-the-ecosystem}.
+        The authors try to detect a correlation between social interaction and different measures, such as written code and the Github \emph{following} mechanic.
+
+        The data needed for this attack are commit timestamps as well as the full Git history graph of the respective repositories.
+
+    \item[Sick Leave and Holiday] \hfill \\
+        The aim of this attack is to detect anomalies in the typical work behavior.
+        The detection of anomalies in the regular work pattern can be a valuable information for several parties.
+        Usually, only a few of parties know about the holiday or sick leave times of a person.
+        To know if a person tends to become sick more often or for long times is a dangerous intrusion into a person's privacy.
+        For instance, this could be abused by headhunters or personnel managers to cull possible employees with too high sick leave rates and thereby reduce the job prospects of the target.
+
+        For employers, this might be convenient for detecting anomalies in the productivity of employees.
+        In case an employee does not commit on a regular basis for several days, this behavior could be detectable with this method.
+
+        Another attack vector could be to look at the correlation of miss-out between several persons.
+        This attack could even be performed by an outsider on a commercial open-source project if the employees of the targeted company are known.
+        The information gained by this attack could be quite delicate, as it could reveal relationships between persons.
+        This attack is heavily inspired by an article about data mining articles of the popular German weekly magazine \emph{Der Spiegel} written by the David Kriesel~\cite{article:spiegel-mining}.
+
+        The data needed for this attack are commit timestamps.
+
+    \item[Geographic Location]~\label{attack:geographic-location} \hfill \\
+        This attack aims to detect the location of a target at a given time.
+        The goal is to detect the home country of the developer or at least to narrow the location down to a timezone or to a set of countries.
+        Another goal is to identify all significant detectable changes in the developer's location.
+
+        For instance, this information might be critical for an individual that wants to be as anonymous as possible.
+        Revealing the home location of the target can suggest further information, such as the cultural origin and religious orientation.
+        The results of this attack might also provide the attacker with a history of the target's travels.
+        This could be used as an additional measure in the detection of relationships between contributors.
+
+        The data needed for this attack are the target's commit timestamps.
+
+    \item[Company Employees]~\label{attack:company-employees} \hfill \\
+        The goal of this attack is to detect employees in the repositories of a company.
+        A motivation for this attack could be to detect company members for social engineering attacks or to headhunt these employees.
+        This attack could also be used to detect team structures of companies and the respective role of each team and their team members.
+
+        In~\cite{inproceedings:developer-networks} a very similar approach on \ac{vcs} data is conducted.
+        They try a new fine-grained methodology to automatically detect communities in Git data.
+        They do this by analyzing the \ac{vcs} data from their considered projects.
+        Their detected communities show a high accordance to the real world communities for those repositories~\cite[p.~10]{inproceedings:developer-networks}.
+
+        The data needed for this attack are the Git commit history graphs of the respective repositories.
+
+    \item[Employment History] \hfill \\
+        This attack aims to detect the timespan for which an employee worked at a given company.
+        The knowledge about a company's employment history could be interesting, as it shows the average employment duration and the employee amount over the history of the company, which could be an indicator of its current financial growth.
+        Social engineering or headhunting could be a motivation here as well.
+
+        To perform this attack the employees of a company need to be known, it is therefore dependent on the previous attack.
+        The subsequent proceeding is rather simple as only the first and the last commit of an employee needs to be detected.
+        The data needed for this attack are git commit timestamps.
+
+\end{description}
+
+
+\section{Further Related Work}~\label{further-related-work}
+
+In~\cite{git-mining} several data mining approaches for Github are evaluated.
+The authors analyze the data provided by Github and present several existing solutions for aggregating data.
+One of their research goals is the analysis and evaluation of data mined from Github by the \emph{GHTorrent} project.
+They further investigate the developer knowledge passed between different repositories by applying a novel visualization technique on the datasets.
+
+The authors of~\cite{inproceedings:promises-and-perils} evaluate the usability of data mined from Github for scientific purposes.
+They warn about several possible flaws in the data, depending on the research goal.
+These perils include, for instance, that the major part of repositories on Github are used for personal projects and that a repository does not necessarily need to be the official repository of a project, but can rather be a fork of it~\cite[p.~4]{inproceedings:promises-and-perils}.

@@ -1,0 +1,62 @@
+# Chapter 1
+
+
+
+# Chapter 2 Data requirements
+
+Was für Ziele hat diese These
+Was für Anforderungen an die Daten entstehen durch die Ziele
+
+- Employer
+    - Productivity of employees
+    - Compliance of working hours
+    - Check if employees work on external projects during working hours
+    - Code quality between employees
+
+
+- Industrial Espionage
+    - Company members
+    - History of all employees
+    - Global distribution of company employees by timezone
+    - Internal team structures
+    - Overall status of a project
+
+
+- Individual
+    - Sleeping Rythm and daily routine
+    - Programming languages and skills
+    - Personal relationships between various programmers
+    - Sick leave and holiday
+
+Aufbau:
+- Einleitung
+- Vorstellung der Angreifermodelle
+    - Ziele des Angreifermodells
+    - Anforderungen an die Daten durch Ziele
+
+
+Chapter 3 Git:
+
+Erklärung von Git und dessen Daten
+
+- Wofür wird Git benutzt
+- Welche Rollen gibt es in Git
+- Was ist wichtig für die Arbeit (Contributor, Email, Commit)
+- Welche Datenstruktur benutzt Git intern.
+
+Chapter 4 Github:
+
+Erklärung, was Github ist. Warum Github?
+
+- Welche Daten beinhaltet Github
+- Wie ermöglicht Github das scrapen
+- Welche Daten fehlen uns
+
+
+Chapter 5 Aggregator:
+
+Vorstellung des Aggregators
+
+- In was ist der Aggregator geschrieben, welche Libraries
+- Wie geht der Aggregator vor. Zwei pools, einmal User Repositories, einmal Repositories selbst
+- Verschiedene Scraping Ansätze.

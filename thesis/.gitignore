@@ -1,0 +1,16 @@
+*.aux
+*.lol
+*.bbl
+*.blg
+*.bcf
+*.lof
+*.log
+*.lot
+*.out
+*.nav
+*.run.xml
+*.snm
+*.toc
+*.vrb
+_minted*
+*.pyg

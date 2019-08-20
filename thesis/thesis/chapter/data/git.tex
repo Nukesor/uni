@@ -1,0 +1,159 @@
+\section{Git}\label{git-explanation}
+This section presents the \ac{vcs} \emph{Git}, as it plays a fundamental role in this thesis.
+In the following, the most relevant parts of Git will be explained such as user roles, technologies, and internal data representations.
+Moreover, current cases of application and some scenarios, that might be interesting for this thesis, will be mentioned.
+
+
+\subsection{Introduction to Git}\label{git-introduction}
+At its core, Git is a tool that is used to manage different versions of files in a specific directory.
+A directory managed by Git is called a \emph{repository}.
+Each version of the project is saved as a so-called \emph{commit}, which represents a specific state of all files and directories in the project.
+Users are able to meticulously specify files or changes in files that should be added to a commit.
+For instance, a developer can only commit a subset of the changes, which were applied to a repository.
+By doing so, one can split a large set of possibly completely unrelated changes into several commits, where each commit in itself forms a set of logically related changes.
+After creating at least two commits, Git is capable of showing the exact changes between any two commits, which is called a \emph{diff} and it allows to jump between different commits of the project, which is called a \emph{checkout}.
+
+Git is the currently most popular tool to control a project's code with a still upward tendency~\cite{article:git-popularity}.
+It enables to work with multiple developers on a single code base, as it provides several techniques to prevent, detect and resolve conflicts of changes at the same lines of code, namely the \emph{history tree}, the \emph{branch} and the \emph{merge}.
+The commit history of Git is internally represented as a directed, non-cyclic, connected graph of commits.
+The commits act as \emph{nodes} and the connection to their parent commits as \emph{edges}.
+
+If a single node has two children, a new \emph{branch} has been created.
+In Git a branch is a pointer to a specific commit, which allows you to easily jump between and to distinguish versions.
+Git provides the feature to name branches, whereas the main branch is per default named \emph{master}.
+
+\begin{figure}[H]
+    \includegraphics[scale=0.35]{./graphs/git-history-branch}
+    \centering
+    \caption{A Git commit history tree that shows a history graph with two feature branches and a bug fix that is merged into the master branch.}\label{fig:git-commit-tree}
+\end{figure}
+
+As shown in figure~\ref{fig:git-commit-tree} two developers can, for example, create their own branch on which they can work unimpeded.
+If they finished their tasks and want to add their work to the master branch, they can now merge their changes.
+Git then tries to automatically resolve any conflicts which might have emerged from editing the same lines in a file.
+If that is not possible, it marks the conflicts and allows the user to manually correct them.
+After this resolution a new \emph{merge commit} is created.
+A merge commit represents the merge of changes from two different branches.
+
+With this methodology, it is possible to work with many people or teams on the same project, without accidentally overwriting changes of another developer, whilst maintaining a clear history of all changes in the project.
+
+Another important feature of Git is the possibility to set up a \emph{remote}.
+A remote often acts as a centralized repository, developers can \emph{push} their changes to or \emph{pull} changes from other developers.
+This principle is called a \ac{cvcs} and is supported by many \acp{vcs}~\cite{version-control}.
+It can, for example, be a distinct server, which is attached to some kind of network accessible by the developers.
+This feature allows developers to remotely contribute to a project, as long as they have access to the remote's network.
+Git also supports several protocols such as \ac{http} or \ac{ssh} to connect to a remote and thereby provide a simple user management layer.
+
+
+\subsection{Git User Roles}
+There exist two roles in Git, the \emph{committer} and the \emph{author}.
+Every commit in Git contains the email addresses and the names of those two roles.
+The author of a commit is the person who actually contributed the changes in the files.
+The committer is the person, who created the Git commit.
+This is important to keep track of the original author of the changes.
+
+If one looks at the case of an author contributing code to a project via an email with an attached patch file.
+If a maintainer of the project now applies the patch file and commits without setting the author, the information about the original author would be lost.
+The collected data of 49 million commits, indicate that in about 89\% the author and the committer are the same person.
+
+
+\subsection{Internal Representation}~\label{git-internal-representation}
+Git's underlying storage and management solution for files is commonly described as a mini \ac{fs}~\cite[p.~9]{book:pro-git}
+In the following I will thereby refer to its file management layer as \emph{git-fs} and explain the most important aspects of it.
+
+The representation of a single file in Git is called a \emph{blob} object~\cite[p.~56]{book:pro-git}.
+A blob object is a file, which has been added to a \emph{git-fs}.
+It is compressed and saved in the \inlinecode{.git/objects} directory under the respective \ac{sha1} hash of the uncompressed file.
+As a result, there exists a blob object for every version of every file of the project.
+
+The \ac{sha1} hashing for unique file identifier might seem unsafe at first, but the probability of a \ac{sha1} collision is really low, roughly $10^{-45}$.
+In 2017 Google managed to force a collision in a controlled environment, but it is really unlikely to encounter such a collision under normal circumstances~\cite{techreport:sha-collision}.
+This characteristic of \ac{sha1} hashing will become quite important in the design of the database later on.
+
+As mentioned in the Section~\ref{git-introduction} Git is used to store the state of a specific directory of an actual \ac{fs}.
+To represent a \ac{fs} or to simply bundle multiple Git blob objects together, Git uses the tree object.
+
+A tree object is a file, which has a \ac{sha1} hash reference to all underlying blob and tree objects as well as their names and their \ac{fs} permissions.
+To represent a subdirectory, a tree simply holds a reference to another tree object.
+With these tools, Git manages to build its own basic representation of a \ac{fs}.
+
+\begin{minted}[linenos]{text}
+    100644 blob 11d1ee77f9a23ffcb4afa860dd4b59187a9104e9  .gitignore
+    040000 tree ac0f5960d9c5f662f18697029eca67fcea09a58c  expose
+    100644 blob 61b5b2808cc2c8ab21bb9caa7d469e08f875277a  install.sh
+    040000 tree 8aaf336db307bdcab2f082bd710b31ddb5f9ebd4  thesis
+\end{minted}
+\begingroup
+\captionof{listing}{An example of a Git tree file\label{lst:raw-commit}.}
+\endgroup
+
+As stated before the commit is utilized to provide an exact representation of a state of the repository's files and directories.
+For this purpose, it holds a reference to the tree object representing the root directory of the project as can be seen in line 1 in Listing~\ref{lst:raw-commit}.
+Just as blob objects, the tree and commit files are also stored in the \inlinecode{.git/objects} directory under their respective hash.
+
+\begin{minted}[linenos]{text}
+    tree      cd7d001b696db430b898b75c633686067e6f0b76
+    parent    c19b969705e5eae0ccca2cde1d8a98be1a1eab4d
+    author    Arne Beer <arne@twobeer.de> 1513434723 +0100
+    committer Arne Beer <arne@twobeer.de> 1513434723 +0100
+
+    Chapter 2, acronyms
+\end{minted}
+\begingroup
+\captionof{listing}{An example of a Git commit file\label{lst:raw-commit}.}
+\endgroup
+
+As you can see in Listing~\ref{lst:raw-commit}, the commit is just another kind of file utilized by Git, which contains some metadata about a repository version:
+
+\begin{itemize}
+    \item The reference to a tree object, which represents the root directory of the commit's version of the project.
+    \item A reference to one or multiple parent commits, to maintain a version history.
+    \item The name and email address of the author.
+    \item The name and email address of the committer.
+    \item The timestamps with an \ac{utc} offset for the committer and the author.
+    \item The commit message. A message with arbitrary text from the committer.
+\end{itemize}
+
+The commit is the most important object for this thesis.
+It contains crucial information such as the date of the commit as well as the email, which is needed to identify a contributor across several commits.
+
+\subsection{Relevant Features}~\label{git-features}
+Git provides a collection of high level abstraction tools to work with its underlying \emph{git-fs}.
+In the following, the most important features for data aggregation will be listed and briefly explained.
+
+\begin{description}
+    \item[checkout] \hfill \\
+        Git allows jumping between different project versions with the \emph{checkout} command.
+        Calling \inlinecode{git checkout \$IDENTIFIER} jumps to the commit specified by the variable \inlinecode{\$IDENTIFIER}.
+        The identifier, for instance, can be a partial or full \ac{sha1} hash of commit, a branch name or a tag.
+
+    \item[HEAD] \hfill \\
+        To mark the current checkout of a repository, Git utilizes a special marker called \emph{HEAD}.
+        Due to this feature, it is, for instance, possible to jump to the previous commit in history with \inlinecode{git checkout HEAD\textasciitilde1}.
+
+    \item[diff] \hfill \\
+        The \emph{diff} is a tool to compare the state of two different commits in a repository.
+        It allows listing all files which changed between those commits as well as showing the exact changes in the files
+
+\end{description}
+
+Git provides many more features, which are not necessarily important for data analysis, but which might need be taken into account when aggregating the data.
+In the following, some functionalities will be shown, that can lead to problems or irregularities in the gathered data.
+
+\begin{description}
+    \item[force push] \hfill \\
+        Git allows pushing to a remote with the \inlinecode{--force} flag, which is called a \emph{force push}.
+        This enables the users to rewrite every commit in the whole history tree.
+        If another user has the old Git repository version before the force push, they would now be incapable of simply pulling the newest version.
+        Instead, they would need to manually checkout the newest commit of the rewritten remote branch and change their branch pointer to the new commit.
+
+    \item[rebase] \hfill \\
+        It is possible to \emph{rebase} branches. For instance, a rebase can rewrite the commit history and change the branch point of a branch to another commit.
+        This is, for example, a very powerful but also dangerous tool, as it also implicitly changes the timestamps of the commits of the rebased branch.
+
+    \item[filter-branch] \hfill \\
+        In case somebody pushes a huge file, which significantly increases the size of the repository, or adds a file with secret information, such as a password file, Git provides the \emph{filter-branch} command.
+        The filter-branch command removes a specified file from every commit in the history and thereby rewrites the history to the point, where this file was added to the repository.
+        This command leads to similar problems as the rebase command since it can severely change the history of a repository.
+
+\end{description}

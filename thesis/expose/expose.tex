@@ -1,0 +1,224 @@
+% Note about the usage of full stops in captions in this document.
+% The Chicago Manual of Style, 15th Edition (2003), provides the following suggestion:
+%
+% 12.32 ... No punctuation is needed after a caption consisting solely of an incomplete sentence.
+% If one or more full sentences follow it, each (including the opening phrase) has closing punctuation.
+% In a work in which most captions consist of full sentences, even incomplete ones may be followed by
+% a period for consistency.
+%
+% As such, this thesis will always use full stops in every caption, even if it is an incomplete
+% sentence.
+\documentclass[
+  twoside,
+  11pt, a4paper,
+  footinclude=true,
+  headinclude=true,
+  cleardoublepage=empty
+]{scrreprt}
+
+\usepackage{lipsum}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman,english]{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage[x11names]{xcolor}
+\usepackage{lmodern}
+\usepackage{float}
+\usepackage{sidecap}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{tabularcalc}
+\usepackage{todonotes}
+\usepackage{hyperref}
+\usepackage{minted}
+\usepackage{siunitx}
+\usepackage{acronym}
+\usepackage{subfig}
+\usepackage{tabularx}
+\usepackage{setspace}
+\usepackage[customcolors]{hf-tikz}
+\usepackage{url}
+\usepackage{csquotes}
+\usepackage{booktabs}
+\usepackage[T1]{fontenc}
+\usepackage[alldates=long]{biblatex}
+\addbibresource{expose.bib}
+\graphicspath{{images/}}
+\pgfplotsset{compat=1.12}
+
+
+\title{Privacy implications of exposing Git meta data}
+\author{Arne Beer}
+
+\begin{document}
+
+
+\thispagestyle{empty}
+% \addcontentsline{toc}{chapter}{Muster des Deckblatts}
+
+\begin{titlepage}
+    \includegraphics[width=6.8cm]{./pic/up-uhh-logo-u-2010-u-farbe-u-rgb.pdf}
+    \begin{center}\Large
+        % Universität Hamburg \par
+        % Fachbereich Informatik
+        \vfill
+        Bachelor Thesis Exposé
+        \vfill
+
+        \makeatletter
+        {\Large\textsf{\textbf{\@title}}\par}
+        \makeatother
+
+        \vfill
+        presented by
+        \par\bigskip
+
+        \makeatletter
+        {\@author} \par
+        \makeatother
+
+        born on the 21th of December 1992 in Hadamar \par
+        Matriculation number: 6489196 \par
+        Department of Computer Science
+        \vfill
+
+        \makeatletter
+        submitted on {\@date}
+        \makeatother
+
+        \vfill
+        Supervisor: Dipl.-Inf. Christian Burkert \par
+        Primary Referee: Prof.\ Dr.-Ing. Hannes Federrath \par
+        Secondary Referee:  Prof.\ Dr.\ Dominik Herrmann
+
+    \end{center}
+\end{titlepage}
+
+{\small \tableofcontents}
+
+\chapter{Motivation}
+Git is a code version control system which is used by most programmers on a daily basis these days. According to the Eclipse Community Survey about 42.9\% of professional software developers used git in 2014 with an upward tendency~\footnote{Ian Skerret. Exclipse Community Survey 2014 Results.\ \url{https://ianskerrett.wordpress.com/2014/06/23/eclipse-community-survey-2014-results/} Retrieved Oct. 25, 2017}.
+It is deployed in many if not most commercial and private projects and generally valued by its users. It allows quick jumps between different versions of a project's code base and to manage and merge code from different sources to one upstream.
+
+
+Several million users send new commits to their Git repositories every day.
+On Github alone, the currently biggest open source platform, there exist about 25 million active repositories, a total of 67 million repositories and about 24 million users~\footnote{The State of the Octoverse 2017, Retrieved Oct. 25 2011, \url{https://octoverse.github.com/}}.
+
+Some well known projects and organizations use Git, for example Linux\footnote{\url{https://github.com/torvalds/linux}, Retrieved Nov. 24 2017}, Google\footnote{\url{https://github.com/google}, Retrieved Nov. 24 2017}, Adobe\footnote{\url{https://github.com/adobe}, Retrieved Nov. 24 2017} and Paypal\footnote{\url{https://github.com/paypal}, Retrieved Nov. 24 2017}.
+Every repository contains the complete contribution history of every contributing user.
+Each commit contains the full directory structure, a link to a blob for every file, a timestamp, a commit message from the author and more additional metadata.
+
+This raises the question how much information is hidden in the metadata of a Git repository and which attack vectors could be introduced by mining this information, regarding a contributer or the owner of the repository.
+
+The newly gained knowledge could be utilized by employers to spy on their employees.
+It could be used by an unknown attacker who aims to obtain sensitive information about a company and its employees trough their open-source projects.
+It is even possible that a privat person wants to monitor another person that regularly contributes to open-source repositories.
+
+
+As there have not been any papers published about this specific topic or at least no public paper and Git plays such a crucial role in todays information technology, I want to investigate and evaluate this potential threat.
+
+
+\chapter{Goals}
+
+The ambition of this thesis is to find possible attack vectors for knowledge extracted from git metadata of a single or multiple git repositories and analyze the possible damage potential.
+For that purpose I will look at three realistic attacker models and try to get as much compromising and harmful knowledge for the objective of each specific model.
+
+In the following three different attacker models with potential goals are listed.
+Some goals will probably be extended, changed, added or removed during the research process.
+
+\begin{description}
+    \item[Employer]
+        The employer tries to get as much information about its employees with the intention of spying on them:
+        \begin{itemize}
+            \item Direct comparison of productivity between employees
+            \item Compliance of working hours
+            \item Check if employees work on external projects during working hours
+            \item Code quality between employees
+        \end{itemize}
+
+    \item[Industrial Espionage]
+        The attacker tries to get as much information from the public open-source projects of a company:
+        \begin{itemize}
+            \item Company members
+            \item History of all employees
+            \item Overall status of a project
+            \item A project's Code quality
+            \item Internal team structures
+        \end{itemize}
+
+    \item[Individual]
+        Somebody tries to get as much information about the personal life of a contributing individual:
+        \begin{itemize}
+            \item Sleeping rythm and daily routine
+            \item Interests
+            \item Programming languages and skills
+            \item Personal relationships between various programmers
+            \item Sick leave and holiday
+        \end{itemize}
+
+\end{description}
+
+To achieve these goals, a program will be developed, which gathers and preprocesses data and stores it inside a PostgreSQL database for easy access and querying.
+The data needed to validate our data mining models will be provided by scraping Github and open-sourced projects.
+The tool will thereby be able to gather all repositories from a specific person as well as all followed and following user repositories utilizing the Github API v2.
+
+Hereafter the data is going to be further analyzed and processed for easy display of the results.
+If there is enough time it is planned to create a server-client application with an web interface for easy usage.
+The aggregated Data will be checked for possible attack vectors and a prototype for each of them will be build.
+The data mining techniques used for this analysis will be mostly based on The Kaufmann Series data mining book~\cite{book:data-mining}.
+For every gained piece of knowledge an analysis for possible malicious usages will be performed and the severity of each usage checked.
+
+After the analysis, the focus will shift to the legal justification for the gathering and processing of git metadata.
+Furthermore I will examine if the exposure of git metadata in open source projects is actually legal.
+The legal foundation for this investigation will be the German `Bundesdatenschutzgesetz'.
+
+As the author of this thesis is not trained in legal questions, the legal section will not be as detailed and profound as could be expected from a law student.
+
+\chapter{Chapter Outline}
+
+In the first chapter I will state the general problem as well as the thesis motivation.
+An overview of the current project status and the goals of the thesis will follow together with the chapter outline.
+
+Chapter two will attend to the aggregation of data. In this context I will elucidate git and go into the fundamental technology behind it, as well as its mechanisms for saving, versioning and organizing Data.
+The tree like structure of the git history will be investigated and some problems of this structure regarding continuous data mining of git commit histories examined.
+If, for example, a contributer uses force-pushes changes and thereby rewrites the git history tree, the data needs to be update accordingly and the old history has to be identified and truncated.
+As we get the data for the evaluation of this research from Github, the used techniques for getting data through the Github APIv2 will also be introduced.
+
+The third chapter will discuss the general structure of the mined data and the technologies used for data preprocessing.
+Possible risks of unclean or imprecise data and general problems with the data will be a topic as well.
+
+In the fourth chapter the gained knowledge and the used data mining techniques will finally be presented.
+The possible damage potential of this knowledge will be evaluated as well. For this purpose the correctness of the gained knowledge will be examined using the data from Github.
+These correctness checks probably won't be perfect, as it is hard to get real world information about employees from a company.
+As an example, organizations don't necessarily expose all their employees on Github and you can't look at Github organization teams without explicit access.
+However, knowing only a subset of employees should be enough to see tendencies and verify the correctness of an employee network analysis.
+
+Evaluation of easier statistics like working hours and code quality can be easily verified, as they are mainly visualization of simple data.
+The comparison of the quality of work between two contributers can be manually checked for correctness on any repository by looking at the respective contributions.
+Holiday and sick leave analytics can be verified by comparing known reoccurring patterns in which people take one's holiday like Christmas, New Year's Eve or Easter.
+
+The biggest expected problem on those easier statistics is detecting outliers such as massive changes in line of code additions caused by the inclusion of external library code.
+
+The fifth chapter will be about the legal justification of this project and clarify if it is allowed to use this tool in a commercial environment.
+It will also raise the subject for the need of obscuration of git meta data in commercial open source projects.
+
+Chapter six will contain the conclusion of the research as well as an ethical discussion about git meta data mining.
+
+
+\chapter{Current State of Research}
+
+At the moment the data aggregator prototype is functional and it is already possible to get all repositories and their data from a specific Github user, a Github user including their Stars/Followed/Followers or to just scan a arbitrary clonable git repository.
+There are some edge cases as the `force push' and a resulting restructuring of the git history which needs separate handling. Despite that the aggregator is fully functional.
+The ORM models for the data and the storage in a PostgreSQL database are working and tested as well.
+
+
+\begingroup
+\footnotesize
+\let\clearpage\relax
+\endgroup
+\renewcommand*{\bibfont}{\footnotesize}
+\printbibliography{}
+
+\end{document}

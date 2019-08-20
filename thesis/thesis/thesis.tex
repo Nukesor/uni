@@ -1,0 +1,122 @@
+\documentclass{thesis}
+
+\usepackage{lipsum}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman,english]{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{adjustbox}
+\usepackage{pdflscape}
+\usepackage[toc,page]{appendix}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{lmodern}
+\usepackage{float}
+\usepackage{sidecap}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{tabularcalc}
+\usepackage{todonotes}
+\usepackage{hyperref}
+\usepackage{minted}
+\usepackage{siunitx}
+\usepackage{acronym}
+\usepackage{subfig}
+\usepackage{tabularx}
+\usepackage{setspace}
+\usepackage[customcolors]{hf-tikz}
+\usepackage{url}
+\usepackage{csquotes}
+\usepackage{booktabs}
+\usepackage[T1]{fontenc}
+\usepackage[alldates=long]{biblatex}
+\addbibresource{thesis.bib}
+\graphicspath{{images/}}
+\pgfplotsset{compat=1.12}
+
+\title{Privacy implications of exposing Git meta data}
+\author{Arne Beer}
+
+\pagenumbering{roman}
+\begin{document}
+
+\input{./chapter/000_title.tex}
+\cleardoublepage{}
+
+\input{./chapter/001_abstract.tex}
+\clearpage
+
+\input{./chapter/002_quote.tex}
+
+% Set table of contents depth
+\setcounter{secnumdepth}{1}
+\setcounter{tocdepth}{1}
+{\small \tableofcontents}
+
+\input{./chapter/003_acronyms.tex}
+
+\chapter{Introduction}
+\pagenumbering{arabic}
+\input{./chapter/introduction/introduction.tex}
+
+\input{./chapter/004_related_works.tex}
+
+\chapter{Data Source and Aggregation}\label{data}
+This chapter will attend to the collection of required data as stated in Section~\ref{attack-goals}.
+At first the \ac{vcs} \emph{Git} will be presented and its functionalities explained.
+The actual source of the data \emph{Github} will then be evaluated in terms of the amount of ground truth and availability.
+At last the methodology used for aggregation and exploration of Github will be explained.
+
+\input{./chapter/data/git.tex}
+
+\input{./chapter/data/github.tex}
+
+\input{./chapter/data/aggregator.tex}
+
+
+\chapter{Attack Implementations}~\label{implementation}
+After collecting all necessary data as shown in Chapter~\ref{data}, this chapter now attends to the analysis of this data.
+The approach for several attacks, as listed in Section~\ref{attack-goals} will be presented and their attack goals recapitulated.
+The possible applications for the gained knowledge will be stated and the implementation of and requirements to the respective algorithm will be explained for each attack.
+
+\input{./chapter/implementation/miss-out.tex}
+
+\input{./chapter/implementation/punchcard.tex}
+
+\clearpage
+\input{./chapter/implementation/travel.tex}
+
+\chapter{Evaluation and Interpretation}\label{evaluation}
+In the previous chapter, the implementation of several possible attacks which could be performed on the gathered data has been shown.
+This chapter will now attend to the evaluation of all results gained from these attacks.
+I will present the extracted information from each algorithm and compare it to the real-world ground truth.
+This information will be then be explained and audited in terms of precision and reliability.
+
+\input{./chapter/evaluation/miss-out.tex}
+
+\input{./chapter/evaluation/punchcard.tex}
+
+\input{./chapter/evaluation/travel.tex}
+
+\input{./chapter/005_conclusion.tex}
+
+\begin{appendices}
+\chapter{Leisure time cluster evaluation}
+\input{./chapter/evaluation/leasure-punchcard-table.tex}
+\end{appendices}
+
+
+\begingroup
+    \footnotesize
+    \listoffigures
+    \let\clearpage\relax
+    \listoflistings{}
+    \listoftables
+\endgroup
+
+\renewcommand*{\bibfont}{\footnotesize}
+\printbibliography{}
+
+\input{./chapter/999_statutory_declaration.tex}
+
+\end{document}

@@ -1,0 +1,26 @@
+Welche Daten sieht man.
+Github relation visualisieren.
+
+Logo /screenshot
+Eyecandy ablenkung
+
+Betonen, dass es um das Crawlen aller repos eines Users/Company geht.
+Daher Github
+
+
+Workflow Diagram für Research approaches
+
+Attack models weglassen?
+
+Goals als Ziel des Angriffs:
+- Schlafrythmus herausfinden
+
+- Fehlzeiten
+- Unregelmäßigkeiten
+
+Scale visibility
+
+general tendency
+Umformulierung in Forschungsfragen
+
+So schnell wie möglich den Diagramtypen erklären
