@@ -153,6 +153,16 @@ Durch Daten dieser Art, ließ sich zum Beispiel eine großangelegte Studie durch
 Jedoch lassen sich diese Analysen nicht nur auf eine Gruppe von Personen anwenden, sondern auch auf eine Einzelperson.
 So war es zum Beispiel möglich mithilfe von Github gewonnenen Daten sehr präzise die Urlaubs und Krankheitsausfälle mehrerer Arbeiter eines Unternehmens zu analysieren (\cite[p.~37-39]{thes:thesis}).
 
+\begin{figure}[H]
+    \includegraphics[scale=0.17]{./gfx/krankheit.png}
+    \centering
+    \caption{Analyse eines Mitarbeiter auf Krankheitsfälle und Urlaub.
+    Rote Blöcke sind garantierte Fehltage.
+    Blaue Abschnitte stellen normal erkennbare Werktagmuster dar.
+    Gelbe Abschnitte stellen Anomalien dar, die jedoch nicht als ganzer Ferien- oder Krankheitsausfall erkannt werden(\cite[p.~37-39]{thes:thesis}).}\label{fig:git-history}
+\end{figure}
+
+
 Wenn nun weitere Daten von GitHub eingebunden werden, könnte ein sehr genaues Profil eines aktiven Entwicklers erstellt werden, welches die Schlafzeiten, Krankheitsausfall, beherrschte Technologien, die Erfahrungen mit einer bestimmten Technologie und Produktivität umfassen könnte.
 
 Ein solcher Datensatz wäre beispielsweise perfekt geeignet um gezielte Rekrutierungen von Entwicklern mit einem bestimmten Skill Set durchzuführen.
@@ -182,9 +192,27 @@ Der gesamte Sinn hinter GitHub ist, eine Plattform für die freie Verbreitung vo
 
 \section{Diskussion}
 
-Within the discourse of computer science, transparency is often seen as desirable because it brings insight and governance (\cite[p.~6]{article:seeing-knowing}).
+Die Erfassung von Daten, speziell in der Informationstechnischen Umgebung, ist häufig zwangsweise Notwendig und gewünscht (\cite[p.~6]{article:seeing-knowing}).
+Beim Beispiel von Git, wird durch Erfassung von Daten Einsicht und eine verbesserte Kontrolle über das Projekt ermöglicht.
+
+Zusammenarbeit mit mehreren Parteien wird erleichtert, da stets klar ist, welche Partei für welche Änderungen verantwortlich sind.
+Im Zweifelsfall, kann stets die verantwortliche Person angeschrieben und gefragt werden, wenn sich Fehler ergeben sollten.
+Auf der gegenüberliegenden Seite, kann jedoch auch stets die verantwortliche Person zur Rechenschaft gezogen werden, da jede Änderung fein säuberlich dokumentiert ist.
+
+Die Grundintention anderen Menschen zu helfen und Produkte jahrelanger kostenloser Arbeitszeit frei zur Verfügung zu stellen ist wie bereits erwähnt durchaus nobel und sollte gesellschaftlich angesehen und belohnt werden.
+
+Es entsteht das Dilemma zwischen dem Willen zu helfen und der gleichzeitigen Bestrafung durch Einschränkungen der Privatsphäre durch Veröffentlichung von Daten.
+
+Das Verschleiern von Daten im Open-Source Umfeld würde eventuell dabei helfen die Privatsphäre von Entwickler zu verstecken, als Gegenzug würde darunter jedoch sehr die Kollaboration und Konversationen in der Community leiden, welche das Rückgrad derselben bilden.
 
 \section{Zusammenfassung}
+Das Dilemma zwischen Veröffentlichung und der Notwendigkeit Daten zu erfassen, um ein System lauffähig zu halten lässt sich nicht ohne weiteres lösen.
+In jedem Fall leidet einer der beiden Standpunkte.
+Sobald striktere Einschränkungen auf die Erfassung von Daten angewendet, leidet sofort die Nutzbarkeit der Tools und die Kollaborationsfähigkeit der Open-Source community darunter.
+
+Es gibt keine offensichtliche Stragegie, mit der sich die Situation im Open-Source Umfeld verbessern lässt.
+Im professionellen Umfeld und im Gebiet der Mitarbeiterüberwachung hingegen, lässt sich mit klaren Richtlinien, der Missbrauch von Metadaten zu Analysezwecken verhindert.
+
 
 
 In dieser Arbeit wurden zudem nur die Aspekte der Transparenz und der Privatheit angesprochen.
