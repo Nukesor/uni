@@ -124,10 +124,12 @@ Der Begriff der Transparenz in Bezug auf die Nutzung von Git, bezieht sich in er
 Hier spielt die Komplexität eines Programmes eine große Rolle.
 So wird es zunehmend schwerer die Auswirkung einer Handlung abzuschätzen, speziell mit der zunehmenden Komplexität des unterliegenden Programms (\cite[p. 2]{article:dataethics}).
 
-Git wird in erster Linie als Commandline Tool verwendet.
-Hierbei werden bestimmte Befehle auf der Konsole eingegeben, welche interpretiert werden und anschließend die gewünschte operation ausführen.
-Die Tatsächlichen Metadaten, die bei diesen Operationen erstellt werden, sind beim alltäglichen Gebrauch nicht ersichtlich und meist nicht notwendig für die Benutzung des Programms.
-Daher wird häufig nicht über diese aufgeklärt.
+Git wird in erster Linie als Commandline Tool oder noch höher abstrahiert in einem grafischen Interface verwendet.
+Auf der Commandline werden bestimmte Befehle auf der Konsole eingegeben, welche interpretiert werden und anschließend die gewünschte operation ausführen.
+In einem grafischen Interface wird stattdessen mithilfe von Knöpfen und Visualisierungen eine interaktive Oberfläche erstellt, welche jedoch nicht die Feingranularität und bei weitem nicht alle Optionen der Commandline Applikation zur Verfügung ermöglichen.
+Ein komplexes Programm immer weiter zu abstrahieren birgt stets die Gefahr weniger von der tatsächlichen Funktionalität zu verstehen und sich der Technologie auszusetzen.
+Doch selbst beim benutzen des Commandline interfaces, sind die tatsächlichen Metadaten, die bei diesen Operationen erstellt werden, beim alltäglichen Gebrauch nicht ersichtlich und meist nicht notwendig für die Benutzung des Programms.
+Daher wird auch häufig nicht über diese aufgeklärt.
 Für interessierte Entwickler, gibt es ein öffentliches Buch, welches genauer auf die unterliegenden Funktionalitäten und Methoden von Git eingeht, jedoch ist dieses wie bereits gesagt keine notwendige Lektüre (\cite{book:pro-git}).
 
 Auch bei dem weiteren Durchsuchen der offiziellen Hilfe Seite von Git, findet sich keine Hinweis oder Warnung darüber, dass Daten nach außen hin veröffentlicht werden könnten (\cite{online:manpage}).
@@ -145,6 +147,10 @@ Wenn ein System ohne eine klaren Vorstellung implementiert wird, in welcher klar
 GitHub stellt eine API zur Verfügung, die es erlaubt die Website programmatisch zu erkunden und mit dieser via Code zu interagieren.
 Durch diese API ist es möglich mit mit relativ guter Präzision die meisten Repositories zu der eine einzelne Person oder eine Gruppe von Personen beigesteuert hat, zu finden und von diesen Daten zu extrahieren (\cite[p.~14-16]{thes:thesis}).
 
+Dieser Mechanismus ist zwar nicht perfekt, aber reicht in vielen Fällen aus, um eine ausreichende Menge an Daten für verschiedene Analysen zu erfassen.
+Zudem bietet die Web-Oberfläche eine Visualisierung der kompletten Aktivität eines Nutzers.
+Diese ist zwar nicht über die API einsehbar, jedoch könnte man mithilfe eines Scrapers diese Oberfläche benutzen um sämtliche öffentlich einsehbaren Daten eines Nutzers der Plattform zu sammeln.
+
 Es herrscht kein wirklicher Mechanismus um großflächiges Sammeln von Daten zu verhindern und es existieren sogar bereits Projekte, wie zum Beispiel GHTorrent, welche alle Daten von Github live beobachten und jedem öffentlich zur Verfügung stellen.
 Dadurch kann jeder, auch Personen ohne größeres technisches Verständnis, diese Daten herunterladen und benutzen.
 
@@ -152,22 +158,27 @@ Durch Daten dieser Art, ließ sich zum Beispiel eine großangelegte Studie durch
 
 Jedoch lassen sich diese Analysen nicht nur auf eine Gruppe von Personen anwenden, sondern auch auf eine Einzelperson.
 So war es zum Beispiel möglich mithilfe von Github gewonnenen Daten sehr präzise die Urlaubs und Krankheitsausfälle mehrerer Arbeiter eines Unternehmens zu analysieren (\cite[p.~37-39]{thes:thesis}).
+Diese Daten können hoch sensible sein, da durch die Veröffentlichung dieser potentiell Nachteile auf dem Arbeitsmarkt entstehen können.
+Falls ein Nutzer innerhalb eines Jahres vermehrt an einer Krankheit gelitten hat, sollte sich dies nicht negativ auf seinen Wert auf dem Arbeitsmarkt auswirken.
 
 \begin{figure}[H]
     \includegraphics[scale=0.17]{./gfx/krankheit.png}
     \centering
     \caption{Analyse eines Mitarbeiter auf Krankheitsfälle und Urlaub.
     Rote Blöcke sind garantierte Fehltage.
-    Blaue Abschnitte stellen normal erkennbare Werktagmuster dar.
+    Blaue Abschnitte stellen normal erkennbare Werktagsmuster dar.
     Gelbe Abschnitte stellen Anomalien dar, die jedoch nicht als ganzer Ferien- oder Krankheitsausfall erkannt werden(\cite[p.~37-39]{thes:thesis}).}\label{fig:git-history}
 \end{figure}
 
 
 Wenn nun weitere Daten von GitHub eingebunden werden, könnte ein sehr genaues Profil eines aktiven Entwicklers erstellt werden, welches die Schlafzeiten, Krankheitsausfall, beherrschte Technologien, die Erfahrungen mit einer bestimmten Technologie und Produktivität umfassen könnte.
+Auch wenn Punkte wie Technologien und Erfahrung eventuell gewünscht dargestellt werden, sind andere Aspekte wie Schlafzeiten und allgemeine Produktivität eventuell ungewünscht einsehbar.
+Solche Daten können immer missbraucht werden, um auf den Lebensstil und die momentanen Umstände einer Person Rückschlüsse zu ziehen.
 
 Ein solcher Datensatz wäre beispielsweise perfekt geeignet um gezielte Rekrutierungen von Entwicklern mit einem bestimmten Skill Set durchzuführen.
 
 Ebenfalls ist vorstellbar, das durch die Analyse von Repositories Mitarbeiterüberwachung durchgeführt werden kann.
+Ein Repository ist ein beinahe perfektes Logbuch, in welchem die gesamte geleistete Arbeit eines jeden Programmierers an einem Projekt einsehbar ist.
 Durch die Anzahl der Commits und die Länge und Qualität des hinzugefügten Codes könnte die Effizienz eines Mitarbeiters bestimmt werden und Mitarbeiter, welche eine bestimmte Quota nicht erfüllen, könnten Opfer einer Benachteiligung werden.
 So existieren bereits mehrere Methoden, um die Effizienz eines Entwicklers anhand von geschriebenen Zeilen von Code zu berechnen (\cite{inproc:measuring-loc}).
 
@@ -175,7 +186,7 @@ Wie z.B. die Snowden Enthüllung gezeigt hat, werden Daten heutzutage im großen
 Eine Anwendung zur Analyse von Git repositories und Github im professionellen Sektor ist nicht unrealistisch und höchstwahrscheinlich schon vorhanden.
 
 
-\subsection{Privatheit}
+\section{Privatheit}
 
 Um die Auswirkung auf die Privatsphäre einer Person, betrachten wir hierzu zuerst eine Definition der Privatsphäre von W.A. Parent.
 
@@ -189,6 +200,7 @@ Zudem handelt es sich um volle Transparenz in Bezug auf die veröffentlichten Pr
 
 Der Nutzer hat zwar stets die Möglichkeit seine Projekte zu verbergen oder erst gar nicht auf GitHub oder einer anderen Seite zu veröffentlichen, jedoch würde dies gegen das Grundsätzliche Prinzip von Open-Source sprechen.
 Der gesamte Sinn hinter GitHub ist, eine Plattform für die freie Verbreitung von Wissen zu bieten, welches ein nobles moralisch wünschenswertes Ziel ist.
+
 
 \section{Diskussion}
 
@@ -210,10 +222,8 @@ Das Dilemma zwischen Veröffentlichung und der Notwendigkeit Daten zu erfassen, 
 In jedem Fall leidet einer der beiden Standpunkte.
 Sobald striktere Einschränkungen auf die Erfassung von Daten angewendet, leidet sofort die Nutzbarkeit der Tools und die Kollaborationsfähigkeit der Open-Source community darunter.
 
-Es gibt keine offensichtliche Stragegie, mit der sich die Situation im Open-Source Umfeld verbessern lässt.
+Es gibt keine offensichtliche Strategie, mit der sich die Situation im Open-Source Umfeld verbessern lässt.
 Im professionellen Umfeld und im Gebiet der Mitarbeiterüberwachung hingegen, lässt sich mit klaren Richtlinien, der Missbrauch von Metadaten zu Analysezwecken verhindert.
-
-
 
 In dieser Arbeit wurden zudem nur die Aspekte der Transparenz und der Privatheit angesprochen.
 Jedoch sollte ebenfalls die Fairness und Sauberkeit der Daten berücksichtigt werden.
@@ -221,8 +231,6 @@ Git Repositories haben selten eine komplett saubere und nachvollziehbare History
 Commits können beispielsweise bearbeitet, gelöscht, überschrieben und zusammengefasst werden, um nur ein paar der Möglichen Fehlerquellen zu nennen.
 Durch diese Fehlerquellen könnten Analysen verzerrt werden.
 Die Errungenschaften einer Person könnten versehentlich auf eine andere übertragen werden und ungerechtfertigte Benachteiligungen oder Anschuldigungen wären die direkte Folge einer solchen Analyse.
-
-\section{Literatur}
 
 \printbibliography
 \end{document}
