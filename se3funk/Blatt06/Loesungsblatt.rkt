@@ -39,22 +39,22 @@
       ; Die leuchtene Spitze
       (star-polygon 50 7 4 "solid" "gold")
       (overlay/offset
-       ; Rekursiver Aufruf des Tannenbaumstücks
-       (scale 0.8 (weihnachtsbaum_tanne (- iteration 1)))
-       0 80
-       (underlay/offset
-        ; Tannenbaumstück
-        (triangle/aas -40 -40 320 "solid" "darkgreen")
-        0 70
-        ; Weihnachtskugeln
-        (overlay/offset (circle 10 "solid" "red") 280 0 (circle 10 "solid" "red"))))))
+        ; Rekursiver Aufruf des Tannenbaumstücks
+        (scale 0.8 (weihnachtsbaum_tanne (- iteration 1)))
+        0 80
+        (underlay/offset
+          ; Tannenbaumstück
+          (triangle/aas -40 -40 320 "solid" "darkgreen")
+          0 70
+          ; Weihnachtskugeln
+          (overlay/offset (circle 10 "solid" "red") 280 0 (circle 10 "solid" "red"))))))
 
 ; Kompletter Weihnachtsbaum mit Stamm
 (define (weihnachtsbaum iteration)
   (underlay/offset
-   (rectangle 40 80 "solid" "brown")
-   0 -120
-   (weihnachtsbaum_tanne iteration)))
+    (rectangle 40 80 "solid" "brown")
+    0 -120
+    (weihnachtsbaum_tanne iteration)))
 
 ; Ein Pascalsches Dreieck kann auch aussehen wie ein Shirpinski-Dreieck
 (define (pascal k n max string image)
@@ -79,39 +79,39 @@
       (star-polygon 10 7 4 "solid" "gold")
       ; Baum-Rekursion »wuhuu«
       (overlay/offset
-       (sterne (- iteration 1))
-       (random 1000) (random 100)
-       (sterne (- iteration 1)))))
+        (sterne (- iteration 1))
+        (random 1000) (random 100)
+        (sterne (- iteration 1)))))
 
 ; Scenenaufbau
 (place-image
- ; Merry Christmas
- (text "merry christmas!" 50 "gold")
- 1000 450
- 
- (place-image
-  (text "--[ 0nykamp | 2beer | 2thoms ]--" 20 "gold")
-  1100 500
-  
+  ; Merry Christmas
+  (text "merry christmas!" 50 "gold")
+  1000 450
+
   (place-image
-   (above (pascal 0 1 32 "" (text/font "1 " 20 "gold" #f 'symbol 'normal 'bold #f))
-          (text/font "--[ Wacław Sierpiński | Blaise Pascal ]--" 10 "darkgreen" #f 'symbol 'normal 'bold #f))
-   640 340
-   
-   (place-image
-    ; Weihnachtsbaum
-    (weihnachtsbaum 4)
-    300 400
-    
-    ; Sterne
+    (text "--[ 0nykamp | 2beer | 2thoms ]--" 20 "gold")
+    1100 500
+
     (place-image
-     (sterne 9)
-     640 100
-     
-     ; Schnee
-     (place-image
-      (rectangle 1278 198 "solid" "white")
-      640 500
-      ; Neue Scene erstellen
-      (empty-scene 1280 600 "lightblue")))))))
- 
+      (above (pascal 0 1 32 "" (text/font "1 " 20 "gold" #f 'symbol 'normal 'bold #f))
+             (text/font "--[ Wacław Sierpiński | Blaise Pascal ]--" 10 "darkgreen" #f 'symbol 'normal 'bold #f))
+      640 340
+
+      (place-image
+        ; Weihnachtsbaum
+        (weihnachtsbaum 4)
+        300 400
+
+        ; Sterne
+        (place-image
+          (sterne 9)
+          640 100
+
+          ; Schnee
+          (place-image
+            (rectangle 1278 198 "solid" "white")
+            640 500
+            ; Neue Scene erstellen
+            (empty-scene 1280 600 "lightblue")))))))
+
