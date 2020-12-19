@@ -1,4 +1,0 @@
-Kernel IP Routentabelle
-Ziel            Router          Genmask         Flags Metric Ref    Use Iface
-192.168.100.128 0.0.0.0         255.255.255.224 U     0      0        0 eth4
-0.0.0.0         192.168.100.129 0.0.0.0         UG    0      0        0 eth4

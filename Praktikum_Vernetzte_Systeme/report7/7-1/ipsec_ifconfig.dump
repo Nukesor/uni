@@ -1,0 +1,18 @@
+eth4      Link encap:Ethernet  Hardware Adresse 00:50:56:21:23:4B  
+          inet Adresse:192.168.100.194  Bcast:192.168.100.223  Maske:255.255.255.224
+          inet6 Adresse: fe80::250:56ff:fe21:234b/64 Gueltigkeitsbereich: Verbindung
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:1408 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:470 errors:0 dropped:0 overruns:0 carrier:0
+          Kollisionen:0 Sendewarteschlangenlaenge:1000 
+          RX bytes:231325 (225.9 KiB)  TX bytes:79395 (77.5 KiB)
+
+lo        Link encap:Lokale Schleife  
+          inet Adresse:127.0.0.1  Maske:255.0.0.0
+          inet6 Adresse: ::1/128 Gueltigkeitsbereich:Maschine
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:16 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:16 errors:0 dropped:0 overruns:0 carrier:0
+          Kollisionen:0 Sendewarteschlangenlaenge:0 
+          RX bytes:1084 (1.0 KiB)  TX bytes:1084 (1.0 KiB)
+

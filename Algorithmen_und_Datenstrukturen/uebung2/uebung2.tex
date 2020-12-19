@@ -1,0 +1,542 @@
+\documentclass{article}
+\usepackage{amsfonts}
+\usepackage[a4paper]{geometry}
+\usepackage{alltt}
+\usepackage{lmodern}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage{color}
+\usepackage[parfill]{parskip}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel} 
+\usepackage[T1]{fontenc}
+
+\usepackage{tikz}
+
+\title{AD-Übung zum 6. November}
+\author{Arne Beer, MN 6489196\\
+Merve Yilmaz, MN 6414978\\
+Sascha Schulz, MN 6434677}
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}[\bfseries1.]
+    \item
+        \begin{enumerate}
+            \item
+                Ab dem Wurzelknoten gehen von jedem Knoten bis zu k Knoten ab.
+                d.h. in Ebene 1 haben wir k Knoten, in Ebene 2 fogllich $k\cdot k =
+                k^2$, in Ebene 3 dann schon $k\cdot k\cdot k = k^3$ usw. bis zur Ebene
+                $l$ mit maximal $k^l$ Knoten.
+            
+            \item
+                Wie zuvor gezeigt befinden sich auf der Ebene $x$ maximal $k^x$
+                Knoten. Ein voller Baum hat folglich $\sum\limits_{i=0}^l k^i$ Knoten.
+                
+            \item 
+                Der vollstaendige Baum hat $\sum\limits_{i=0}^{l-1} k^i + c | c \in \mathbb{N} :1 \leq c \leq k^l$. Dies laesst sich daraus herleiten, dass der Baum bis in die letzte Ebene voll ist und in der letzten Ebene beliebige Knoten vorhanden sein koennen.
+            \item 
+                Der Baum besitzt $n-1$ Kanten, da zu jedem Knoten jeweils eine Kante fuehrt, mit Ausnahme des Obersten.
+        \end{enumerate}
+
+    \item
+        \begin{enumerate}
+            \item
+                Die Laufzeit kann wie folgt (für OrderX) hergeleitet werden, die Reihenfolge der prints ist nicht relevant.\\
+                \(
+                \begin{array}{lll}
+                        print(v) &\quad & \Theta(1) \\
+                        OrderX(l) &\quad & \mathcal{O}(\frac{k-1}{2}) \\
+                        OrderX(r) &\quad & \mathcal{O}(\frac{k-1}{2})
+                \end{array}
+                \) \\
+                Das Master-Theorem ist nun anwendbar, \\ \\
+                \(T(k)=2T(\big\lceil\frac{ k-1}{2}\big\rceil)+\mathcal{O}(k^0)\) \\
+                Da \(\log_2 2 = 1\) gilt, folgt \(\mathcal{O}(k^1)\)
+                                
+            \item 
+                Die Laufzeiten sind bei gleicher Knotenzahl identische (wie in a) zu sehen, alle Algorithmen haben die gleiche Anzahl an Aufrufen, da nirgends abgebrochen wird, außer wenn keine Kindknoten verfügbar sind.
+
+            \item
+                Binärbaum nach Level-Order:
+                
+                \begin{tikzpicture}[%
+                    every node/.style={draw,circle,inner sep=1pt},
+                    level 1/.style={sibling distance=40mm},
+                    level 2/.style={sibling distance=20mm},
+                    level 3/.style={sibling distance=10mm},
+                    level 4/.style={sibling distance=5mm},
+                    ]
+                  \node{N}
+                    child{node{A}
+                      child{node{O}
+                          child{node{E}
+                              child{node{I}}
+                          }
+                          child{node{F}}
+                      }
+                      child{node{M}
+                          child{node{R}}
+                          child{node{L}}
+                      }
+                    }
+                    child{node{U}
+                      child{node{S}
+                          child{node{G}}
+                          child{node{A}}
+                      }
+                      child{node{R}
+                          child{node{T}}
+                          child{node{H}}
+                      }
+                    };
+                \end{tikzpicture}
+                
+                Nach ORDER1: NAOEIFMRLUSGARTH
+                
+                Nach ORDER2: IEOFARMLNGSAUTRH
+                
+                Nach ORDER3: IEFORLMAGASTHRUN 
+
+            \item 
+                Zugehöriger Binärbaum (LOVELYTREE):
+                
+                 \begin{tikzpicture}[%
+                    every node/.style={draw,circle,inner sep=1pt},
+                    level 1/.style={sibling distance=40mm},
+                    level 2/.style={sibling distance=20mm},
+                    level 3/.style={sibling distance=10mm},
+                    level 4/.style={sibling distance=5mm},
+                    ]
+                  \node{T}
+                    child{node{E}
+                      child{node{O}
+                          child{node{L}
+                          }
+                          child{node{V}}
+                      }
+                      child{node{Y}
+                          child{node{L}}
+                      }
+                    }
+                    child{node{E}
+                      child{node{R}
+                      }
+                      child{node{E}
+                      }
+                    };
+                \end{tikzpicture}
+                
+                In Array-Schreibweise (Level-Order): TEEOYRELVL
+            \item
+                Ternärer Baum zum Array aus Aufgabenteil (c):
+                
+                \begin{tikzpicture}[%
+                    every node/.style={draw,circle,inner sep=1pt},
+                    level 1/.style={sibling distance=30mm},
+                    level 2/.style={sibling distance=7.5mm},
+                    level 3/.style={sibling distance=7.5mm}
+                    ]
+                  \node{N}
+                    child{node{A}
+                      child{node{M}
+                          child{node{T}
+                          }
+                          child{node{H}
+                          }
+                            child{node{I}
+                          }
+                      }
+                      child{node{S}
+                      }
+                      child{node{R}
+                      }
+                    }
+                    child{node{U}
+                      child{node{E}
+                      }
+                      child{node{F}
+                      }
+                      child{node{R}
+                      }
+                    }
+                    child{node{O}
+                      child{node{L}
+                      }
+                      child{node{G}
+                      }
+                      child{node{A}
+                      }
+                    };
+                \end{tikzpicture}
+                
+                Call-Reihenfolge:
+                \begin{enumerate}[1.]
+                    \item rightChild
+                    \item leftChild
+                    \item middleChild
+                    \item PRINT
+                \end{enumerate}
+                    
+                Ausgabe: ALGORITHMS ARE FUN (Leerzeichen nur zur Lesbarkeit)
+        \end{enumerate}
+
+    \item
+        \begin{enumerate}
+            \item
+                $f(x) = x\log_x(n) = x \cdot \frac{\log_e(n)}{\log_e(x)} 
+                        = x \cdot \log_e(n) \cdot log_e^{-1}(x) $
+                \\
+                \\
+                $f(x)' = \frac{\log_e(n)} {\log_e(x)} 
+                    + x \cdot (-1) \cdot \log_e(n) \cdot log_e^{-2}(x) \cdot
+                    \frac{1}{x}$
+                \\
+                \\
+                $f(x)' = \frac{\log_e(n)} {\log_e(x)} 
+                    - \frac{\log_e(n)}{log_e^{2}(x)} $
+                \\
+                \\
+                $f(x)' = \frac{\log_e(n)} {\log_e(x)} \cdot (1 -
+                \frac{1}{log_e(x)}) $
+                \\
+                \\
+                $f(x)' = 0 \quad \Rightarrow \quad 
+                        \frac{\log_e(n)} {\log_e(x)}= 0 \quad \text{oder} 
+                        \quad (1 - \frac{1}{log_e(x)}) = 0$
+                \\
+                \\
+                $0 = \frac{\log_e(n)}{\log_e(x)} 
+                \quad \Leftrightarrow \quad
+                0 = \log_e(n) \quad
+                \text{Ergebnis irrelevant da nicht abhängig von x.}$
+                \\
+                \\
+                $0 = 1 - \frac{1}{log_e(x)}
+                \quad \Leftrightarrow \quad
+                1 = log_e(x) 
+                \quad \Leftrightarrow \quad
+                x = e
+                $
+                            
+                \textcolor{red}{TODO: Nachweisen, dass es sich tatsächlich um
+                das Minima handelt}
+            \item
+                Beste Wahl für Anzahl an Kinderknoten müsste mit $x=e$ aus
+                Aufgabenteil a $k=3$ sein 
+                \\(da $e\approx2,718\ldots$).
+                
+                Für verschiedene Heap-Größen bedeutet dies:
+                
+                $n = 10^1 \quad \Rightarrow \quad 3 \cdot \log_3(10) \approx
+                6,288 \approx 7 \text{ Schritte} $
+                \\ Zum Vergleich: $2 \cdot \log_2(10) \approx 6,644 \approx 7
+                \text{ Schritte}$
+                
+                $n = 10^2 \quad \Rightarrow \quad 3 \cdot \log_3(10^2) \approx
+                12,575 \approx 13 \text{ Schritte} $
+                \\ Zum Vergleich: $2 \cdot \log_2(10^2) \approx 13,288 \approx
+                14 \text{ Schritte}$
+                
+                $n = 10^3 \quad \Rightarrow \quad 3 \cdot \log_3(10^3) \approx
+                18,863 \approx 19 \text{ Schritte} $
+                \\ Zum Vergleich: $2 \cdot \log_2(10^3) \approx 19,932 \approx
+                20 \text{ Schritte}$
+                
+                $n = 10^4 \quad \Rightarrow \quad 3 \cdot \log_3(10^4) \approx
+                25,151 \approx 26 \text{ Schritte} $
+                \\ Zum Vergleich: $2 \cdot \log_2(10^4) \approx 26,575 \approx
+                27 \text{ Schritte}$
+                
+                $n = 10^5 \quad \Rightarrow \quad 3 \cdot \log_3(10^5) \approx
+                31,439 \approx 32 \text{ Schritte} $
+                \\ Zum Vergleich: $2 \cdot \log_2(10^5) \approx 33,219 \approx
+                34 \text{ Schritte}$
+                
+                $n = 10^6 \quad \Rightarrow \quad 3 \cdot \log_3(10^6) \approx
+                37,726 \approx 38 \text{ Schritte} $
+                \\ Zum Vergleich: $2 \cdot \log_2(10^6) \approx 39,883 \approx
+                40 \text{ Schritte}$
+                
+                $n = 10^7 \quad \Rightarrow \quad 3 \cdot \log_3(10^7) \approx
+                44,014 \approx 45 \text{ Schritte} $
+                \\ Zum Vergleich: $2 \cdot \log_2(10^7) \approx 46,507 \approx
+                47 \text{ Schritte}$
+                
+                $n = 10^8 \quad \Rightarrow \quad 3 \cdot \log_3(10^8) \approx
+                50,302 \approx 51 \text{ Schritte} $
+                \\ Zum Vergleich: $2 \cdot \log_2(10^8) \approx 53,151 \approx
+                54 \text{ Schritte}$
+                
+                $n = 10^9 \quad \Rightarrow \quad 3 \cdot \log_3(10^9) \approx
+                56,589 \approx 47 \text{ Schritte} $
+                \\ Zum Vergleich: $2 \cdot \log_2(10^9) \approx 59,795 \approx
+                60 \text{ Schritte}$
+                
+                Wie zu erkennen ist, werden für $k=2$ mehr Schritte als für
+                $k=3$ benötigt, die Differenz scheint mit der Zeit zu steigen.
+            
+            \item
+                In der Praxis könnte der Einsatz von $k=2$ dennoch effektiver
+                sein, da sein 2er-Potenzen durch shiften schneller errechnet
+                werden können und so die Indizes des Beginns einer Ebene
+                schneller errechnet werden können.
+                
+            \item
+                Pro Vertauschen werden k + 1 Schritte benötigt. Ein Schritt wird benötigt, um das Maximum herauszufinden und k Schritte, um den Max-Heap des aktuellen Knoten nach dem Vertauschen wieder zu einem solchen zu machen. Damit werden zwar viele Schritte zum Finden eines Maximums der Kinder eingespart, allerdings an anderer Stelle wieder durch das Aufrufen von Heapify auf den zusätzlichen Max-Heap ausgegeben. Im Endeffekt ergibt sich damit eine Gesamtlaufzeit von $\lceil (k + 1) log k (n) \rceil$.
+            \item
+                Zustand von 3.d nach $\text{DECREASE}(9 \mapsto 1)$:
+                
+                \begin{tikzpicture}[%
+                    every node/.style={draw,circle,inner sep=1pt},
+                    level 1/.style={sibling distance=20mm},
+                    level 2/.style={sibling distance=10mm},
+                    level 3/.style={sibling distance=5mm}
+                    ]
+                  \node{1}
+                    child{node{8}
+                      child{node{7}
+                      }
+                      child{node{3}
+                      }
+                    }
+                    child{node{6}
+                      child{node{5}
+                      }
+                      child{node{2}
+                      }
+                    };
+                \end{tikzpicture}
+                
+                Benötigt 2 Vertauschungen:
+                
+                \begin{tikzpicture}[%
+                    every node/.style={draw,circle,inner sep=1pt},
+                    level 1/.style={sibling distance=20mm},
+                    level 2/.style={sibling distance=10mm},
+                    level 3/.style={sibling distance=5mm}
+                    ]
+                  \node{8}
+                    child{node{1}
+                      child{node{7}
+                      }
+                      child{node{3}
+                      }
+                    }
+                    child{node{6}
+                      child{node{5}
+                      }
+                      child{node{2}
+                      }
+                    };
+                \end{tikzpicture}
+            
+                \begin{tikzpicture}[%
+                    every node/.style={draw,circle,inner sep=1pt},
+                    level 1/.style={sibling distance=20mm},
+                    level 2/.style={sibling distance=10mm},
+                    level 3/.style={sibling distance=5mm}
+                    ]
+                  \node{8}
+                    child{node{7}
+                      child{node{1}
+                      }
+                      child{node{3}
+                      }
+                    }
+                    child{node{6}
+                      child{node{5}
+                      }
+                      child{node{2}
+                      }
+                    };
+                \end{tikzpicture}
+                
+                Zustand von 3.f nach $\text{DECREASE}(9 \mapsto 1)$:
+                
+                \begin{tikzpicture}[%
+                    every node/.style={draw,circle,inner sep=1pt},
+                    level 1/.style={sibling distance=20mm},
+                    level 2/.style={sibling distance=10mm},
+                    level 3/.style={sibling distance=5mm}
+                    ]
+                  \node{1}
+                    child{node{7}
+                      child{node{3}
+                      }
+                      child{node{6}
+                      }
+                      child{node{2}
+                      }
+                    }
+                    child{node{5}
+                    }
+                    child{node{8}
+                    };
+                \end{tikzpicture}
+                
+                Benötigt 1 Vertauschung zu:
+                
+                \begin{tikzpicture}[%
+                    every node/.style={draw,circle,inner sep=1pt},
+                    level 1/.style={sibling distance=20mm},
+                    level 2/.style={sibling distance=10mm},
+                    level 3/.style={sibling distance=5mm}
+                    ]
+                  \node{8}
+                    child{node{7}
+                      child{node{3}
+                      }
+                      child{node{6}
+                      }
+                      child{node{2}
+                      }
+                    }
+                    child{node{5}
+                    }
+                    child{node{1}
+                    };
+                \end{tikzpicture}
+                
+            \item
+                Wie im Einleitungstext der Aufgabe beschrieben benötigt die
+                HEAPIFY-Operation bei einem k-nären Heap mit n Elementen
+                $\lceil k\log_k(n)\rceil$ Schritte.
+                
+                Induktionsanfang:
+                \\$\lceil 3\log_3(1)\rceil = 0 = \lceil 2\log_2(1)\rceil $
+                
+                Induktionsannahme:
+                \\ $\lceil 3\log_3(n)\rceil \leq \lceil 2\log_2(n)\rceil $
+                
+                Induktionsschritt:
+                \\ $\lceil 3\log_3(n+1)\rceil 
+                = \lceil 3 \frac{\log_e(n+1)}{\log_e(3)}\rceil$ 
+                \\$= \lceil \log_e(n+1) \frac{3}{\log_e(3)}\rceil
+                \leq \lceil \log_e(n+1) \frac{2}{\log_e(2)}\rceil$ 
+                \\$= \lceil 2 \frac{\log_e(n+1)}{\log_e(2)}\rceil 
+                = \lceil 2\log_2(n+1)\rceil$
+        
+                Folglich gilt $\lceil 3\log_3(n)\rceil \leq \lceil
+                2\log_2(n)\rceil $ für alle $n \in \mathbb{N}$.
+        \end{enumerate}
+    
+    \item
+        \begin{enumerate}
+            \item 
+                $merge(22579, 1248)$ 
+                \\-> $1 \circ merge(22579, 248)$
+                \\-> $1 \circ (2 \circ merge(2579, 248))$ 
+                \\-> $1 \circ (2 \circ (2 \circ merge(579, 248)))$ 
+                \\-> $1 \circ (2 \circ (2 \circ (2 \circ merge(579, 48))))$ 
+                \\-> $1 \circ (2 \circ (2 \circ (2 \circ (4 \circ 
+                        merge(579, 8)))))$ 
+                \\ -> $1 \circ (2 \circ (2 \circ (2 \circ 
+                        (4 \circ (5 \circ merge(79, 8))))))$
+                \\ -> $1 \circ (2 \circ (2 \circ (2 \circ 
+                        (4 \circ (5 \circ (7 \circ merge(9, 8)))))))$
+                \\ -> $1 \circ (2 \circ (2 \circ (2 \circ 
+                        (4 \circ (5 \circ (7 \circ (8 \circ merge(9, []))))))))$
+                \\ -> $1 \circ (2 \circ (2 \circ (2 \circ 
+                        (4 \circ (5 \circ (7 \circ (8 \circ 9)))))))$
+                \\ -> $1 \circ (2 \circ (2 \circ (2 \circ 
+                        (4 \circ (5 \circ (7 \circ 89))))))$
+                \\ -> $1 \circ (2 \circ (2 \circ (2 \circ (4 \circ (5 \circ 789)))))$
+                \\ -> $1 \circ (2 \circ (2 \circ (2 \circ (4 \circ 5789))))$
+                \\ -> $1 \circ (2 \circ (2 \circ (2 \circ 45789)))$
+                \\ -> $1 \circ (2 \circ (2 \circ 245789))$
+                \\ -> $1 \circ (2 \circ 2245789)$
+                \\ -> $1 \circ 22245789$
+                \\ -> $122245789$
+            
+            \item
+                Erst aufsplitten: \\
+                67834291 \
+                6783|4291 \\
+                67|83 42|91 \\
+                67 83 42 91 \\
+                \\
+                Dann sortieren durch mergen und Gruppen zusammenführen:
+                \\
+                67 38 24 19 \\
+                (67 38) (24 19) \\
+                3678 1249 \\
+                (3678 1249) \\
+                12346789
+                
+            \item 
+                Eine absteigende Reihenfolge wird erreicht, wenn die abgespaltete
+                Ziffer an das Ergebnis des rekursiven Aufrufs konkateniert wird,
+                statt wie bisher anders herum:
+                
+\begin{lstlisting}
+    if x[1] <= y[1]:
+        return merge(x[2...k], y[1...l]) concatWith x[1]
+    else:
+        return merge(x[1...k], y[2...l]) concatWith y[1]
+\end{lstlisting}
+
+        \end{enumerate}
+    
+    \item
+        \begin{enumerate}
+            \item 
+                Die Queue kann mit einem Enqueue- und einem Deqeueue-Stack
+                umgesetzt werden.
+                
+                Auf den Enqueue-Stack wird push() ausgeführt, vom Dequeue-Stack
+                Einträge mit pop() genommen. Wenn der Dequeue-Stack leer ist,
+                werden alle bisher enqueuten Einträge zu dequeuen in den dequeue
+                Stack umgeschichtet.
+                
+                Das Worst-Case-Scenario wäre daher, dass bei leeren
+                Dequeue-Stack nach n-Elementen enqueued das erste mal dequeued
+                werden soll. Dies kostet O(n).
+
+\begin{lstlisting}
+    Declare Stack_Enqueue
+    Declare Stack_Dequeue
+
+    function enqueue(element){
+        Stack_Enqueue.push(element)
+    }
+    
+    function dequeue(){
+        if number_of_elements(Stack_Dequeue) = 0 then
+            while number_of_elements(Stack_Enqueue) > 0 do
+                stack_Dequeue.push(stack_Enqueue.pop())
+        stack_Dequeue.pop()
+    }
+\end{lstlisting}
+            
+            \item
+                $enqueue() = O(1)$
+                \\ $dequeue() = O(1)$ für $numberOfElements(Dequeue_Stack) >
+                0$, sonst
+                \\ $dequeue() = O(n)$ für $numberOfElements(Enqueue_Stack) = n$
+
+                Worst-Case: $ (n-1) \cdot enqueue(\cdot) + dequeue() 
+                = (n-1) \cdot O(1) + O(n) = O(n) $
+                
+                Amortisierte Laufzeit $T_n/n$: $O(n)/n = O(1)$
+                
+                Implementierung siehe Aufgabenteil a.
+                
+                Begründung: Die einzige teure Aufgabe ist das interne
+                Umschichten zwischen den Stacks. Dies ist nur erforderlich, wenn 
+                der Dequeue-Stack leer ist. Sofern sich auf diesem Einträge
+                befinden, sind diese korrekt geordnet und können nach den
+                FIFO-Prinzip korrekt entnommen werden. Alle derweil enqueuten
+                Einträge befinden sich derweil in Enqueue Stack, welches einen
+                an den Deuqueue Stack angeschlossenen Datenabschnitt handelt,
+                jedoch während des Enqueues noch in invertierter Reihenfolge.
+            
+        \end{enumerate}
+    \end{enumerate}
+\end{document}  

@@ -1,0 +1,44 @@
+Arne 2beer, Julius 4jhansen, Marta 2neverma, Daniel 2waller
+
+Wir haben uns für die Aufgabe "15-Puzzle" entschieden und haben bisher folgenden Stand:
+
+Mandatory:
+    - Accept Input ✓
+    - Check if randomly generated game state or input is solvable ✓
+    - Output solution in human readable format ✓
+        - timely manner [In progress]
+Optional:
+    - heftige next-gen game GUI ✓
+    - generate random, but solvable, start configurations ✓
+    - hint button [In progress]
+    - judge users performance [In progress]
+    - more complex puzzles ✕
+    - use pictures instead of numbers ✕ [Backlog]
+
+Die Aufgabe ist komplett in Python(3.x) gelöst und die GUI benutzt als dependency
+pygame.
+
+Dinge über die wir in der Präsentation reden können/wollen:  
+    
+    - Wie repräsentieren wir das Problem
+        - wie sieht unsere Datenstruktur aus (Liste vs. 2-D Array)
+        - was sind unsere States
+    - Wie können wir schnell und billig sicherstellen, dass ein initialer State lösbar ist
+    - Wie sieht der Suchraum aus
+        - Leute im Internet munkeln das Problem sei NP hard
+    - Welche Algorithmen haben wir probiert
+        - Best first (pro/contra)
+        - A* (pro/contra)
+        - IDA*
+    - Welche A* Heuristiken haben wir benutzt/ausprobiert
+        - Manhattan Distance
+        - Linear Conflicts
+    - Benchmark der verschiedenen Algorithmen und Heuristiken mit besonderem Augenmerk auf:
+        - benötigte Zeit
+        - heap größe
+        - Anzahl discovered nodes
+        - optimaler weg (ja/nein)
+    - Bisschen code review von interessanten Stellen
+    - Kurze Vorstellung der Spieloberfläche
+        - ein paar Worte zur implementation
+    - Fragen/Rumspielzeit

@@ -1,4 +1,0 @@
-6db373f210d0036b00ad60f57c1759d0  archlinux-2014.08.01-dual.iso
-16fd730f50ce523d5298cc56dc105dc1  archlinux-bootstrap-2014.08.01-i686.tar.gz
-47bf49d5599bb320cea3ce1ef7c8d86c  archlinux-bootstrap-2014.08.01-x86_64.tar.gz
-

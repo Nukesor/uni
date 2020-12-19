@@ -1,0 +1,15 @@
+$ORIGIN pvsTam10.internal.
+$TTL 86400
+@	IN	SOA	dns.pvsTam10.internal.	hostmaster.pvsTam10.internal. (12 3600 600 86400 3600)
+			
+@	IN	NS	dns.pvsTam10.internal.
+dns	IN	A	192.168.100.34
+pvsrou10-1	IN	A	192.168.100.33
+pvsrou10-1	IN	A	192.168.100.65
+pvsrou10-2	IN	A	192.168.100.67
+pvsrou10-2	IN	A	192.168.100.97
+pvscnt10-hh	IN	A	192.168.100.98
+pvssvr10-hh	IN	A	192.168.100.99
+pvsmid10-hh	IN	A	192.168.100.66
+
+

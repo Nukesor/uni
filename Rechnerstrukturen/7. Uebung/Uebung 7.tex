@@ -1,0 +1,222 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage{amsfonts}
+\usepackage{alltt}
+\usepackage{amsmath,amssymb}        % Mathpack für Formeln jeder Art
+\usepackage[parfill]{parskip}       % Autoamtisch Newline, wenn Zeilenumbruch im Quelltext.
+\usepackage[utf8]{inputenc}         % UTF8 Zeichensatz. 
+\usepackage{xstring}
+\usepackage{tikz}                   %Wichtig für Zeichnungen aller Art
+\input{kvmacros}                    %Kv Diagramme
+\usepackage[siunitx]{circuitikz}    %Diagramme und Schaltungen
+
+\title{RS - Übung 7}
+\author{Arne Beer (MN 6489196), \\
+Rafael Epplee (MN 6269560), \\
+Julian Polatynski (MN 6424884)}
+
+\begin{document}
+\maketitle
+
+\section*{7.1}
+
+  \subsection*{a)}
+
+  \begin{itemize}
+
+  \item Kanonische Disjunktive Normalform:
+
+  $f(x) = (\overline{x_3} \wedge x_2 \wedge x_1 ) \vee ( \overline{x_3} \wedge \overline{x_2} \wedge x_1 ) \vee ( \overline{x_3} \wedge \overline{x_2} \wedge \overline{x_1} ) \vee ( x_3 \wedge x_2 \wedge x_1 )$
+
+  \item Kanonische Konjunktive Normalform:
+
+  $f(x) = ( \overline{x_3} \vee x_2 \vee \overline{x_1}) \wedge ( \overline{x_3} \vee x_2 \vee x_1) \wedge ( \overline{x_3} \vee \overline{x_2} \vee x_1) \wedge (x_3 \vee \overline{x_2} \vee x_1$
+
+  \item Reed Muller Form:
+
+  $(x_3\vee \overline{x_2}\wedge (x_2 \vee \overline{x_1})$
+
+  $\Leftrightarrow (x_3 \oplus x_2 \oplus 1 \oplus x_3 \oplus x_2 x3) \vee (x_2 \oplus x_1 \oplus 1 \oplus x_2 \oplus x_1 x_2$
+
+  $\Leftrightarrow (1 \oplus x_2 \oplus x_2 x_3)\wedge(1 \oplus x_1 \oplus x_1 x_2)$
+
+  \end{itemize}
+
+  \subsection*{b)}
+
+  \begin{itemize}
+
+  \item Kanonische Disjunktive Normalform
+
+  $f(x)= ( \overline{x_3}\wedge x_2 \wedge x_1)\vee ( \overline{x_3} \wedge \overline{x_2} \wedge x_1)\vee (x_3 \wedge \overline{x_2} \wedge \overline{x_1} )\vee (x_3 \wedge x_2 \wedge \overline{x_1}) $
+
+  \item Kanonische Konjunktive Normalform
+
+  $f(x)= ( \overline{x_3} \vee \overline{x_2} \vee \overline{x_1})\wedge (x_3 \vee x_2 \vee x_1)\wedge (x_3 \vee \overline{x_2} \vee x_1)\wedge ( \overline{x_3} \vee x_2 \vee \overline{x_1}) $
+
+  \item Reed Muller Form:
+
+  $\overline{x_3} \oplus \overline{x_1} $
+
+  $\Leftrightarrow x_3 \oplus 1 \oplus x_1 \oplus 1 = x_3 \oplus x_1$
+
+  \end{itemize}
+
+\section*{7.2}
+    \subsection*{a)}
+        \begin{itemize}
+            \item NAND(a, a) ergibt immer 0, falls a = 1. Falls a = 0 ist, ergibt es 0. Dementsprechend ist NOT(a) = NAND(a, a).
+            
+            \item NOT(NAND(a,b)) ergibt immer das Gegenteil von NAND, also AND:
+            NOT(NAND(a,b)) = NAND(NAND(a,b), NAND(a,b)).
+            
+            \item Wenn man die Eingangsvariablen invertiert und dann NAND(a,b) nimmt, erhält man für jeden Wert ausser (0,0) eine 1, was eine OR-Operation repräsentiert.
+            OR(a,b) = NAND(NOT(a), NOT(b))
+            \end{itemize}
+
+
+  \subsection*{b)}
+      \begin{itemize}
+
+      \item$f(x_3,x_2,x_1)=(\overline{x_3}(\overline{x_2}\vee x_1)\wedge (x_1(\overline{x_2 \vee x_1}))$
+
+      $\Leftrightarrow \overline{x_3}\overline{x_2}\vee\overline{x_3}x_1 \wedge x_1\overline{x_2}\vee x_1x_1$
+      
+      $\Leftrightarrow \overline{x_3}\wedge \overline{x_2} \vee x_1$
+
+      $\Leftrightarrow \overline{(\overline{\overline{x_3}\wedge \overline{x_2}}\wedge \overline{x_1})}$
+
+      $\Leftrightarrow \text{NAND}(\text{NAND}(\text{NAND}(x_3,x_3),\text{NAND}(x_2,x_2)), \text{NAND} (x_1,x_1))$
+
+      \end{itemize}
+
+\section*{7.3}
+  \subsection*{a)}
+
+    \begin{tabular}{c c c c c|c }
+     A & $ x_3$ & $x_2$ & $x_1$ & $x_0$ & $f(x_0, x_1, x_2, x_3)$ \\ \hline
+    0&0&0&0&0&1\\
+    1&0&0&0&1&0\\
+    2&0&0&1&0&1\\
+    3&0&0&1&1&1\\
+    4&0&1&0&0&0\\
+    5&0&1&0&1&1\\
+    6&0&1&1&0&1\\
+    7&0&1&1&1&1\\
+    8&1&0&0&0&1\\
+    9&1&0&0&1&1\\
+
+
+    \end{tabular}
+
+    \begin{tabular}{c c c c c|c }
+    B & $ x_3$ & $x_2$ & $x_1$ & $x_0$ & $f(x_0, x_1, x_2, x_3)$ \\ \hline
+    0&0&0&0&0&1\\
+    1&0&0&0&1&1\\
+    2&0&0&1&0&1\\
+    3&0&0&1&1&1\\
+    4&0&1&0&0&1\\
+    5&0&1&0&1&0\\
+    6&0&1&1&0&0\\
+    7&0&1&1&1&1\\
+    8&1&0&0&0&1\\
+    9&1&0&0&1&1\\
+
+    \end{tabular}
+
+    \subsection{b)}
+
+    KV-Diagramm für A:
+
+    \kvnoindex
+    \karnaughmap{4}{$f(a,b,c,d):$}{{$d$}{$b$}{$c$}{$a$}}%
+    {1001111111******}
+    {
+    \put(3,2){\oval(1.9,3.9)[]}
+    \put(2,1){\oval(3.9,1.9)[]}
+    \put(2,2){\oval(1.9,1.9)[]}
+    \put(0.5,4){\oval(0.9,1.9)[br]}%Ecke oben links
+    \put(0,3.5){\oval(1.9,0.9)[rb]}%
+    \put(0,0,5){\oval(1.9,0.9)[tr]}%Ecke unten links
+    \put(0.5,0){\oval(0.9,1.9)[rt]}
+    \put(3.5,4){\oval(0.9,1.9)[bl]}%Ecke oben rechts
+    \put(4,3.5){\oval(1.9,0.9)[lb]}
+    \put(3.5,0){\oval(0.9,1.9)[tl]}%Ecke unten rechts
+    \put(4,0.5){\oval(1.9,0.9)[lt]}
+    }
+
+    Nach den ausgewählten Schleifen ergibt sich für Sektion A:
+
+    \[f(a,b,c,d) = (a \wedge c) \vee (b) \vee (d) \vee (\overline{a} \wedge \overline{c})\]
+
+    KV-Diagramm für B:
+
+    \karnaughmap{4}{$f(a,b,c,d):$}{{$d$}{$b$}{$c$}{$a$ }}%
+    {1110110111******}
+    {
+    \put(2,0){\oval(3.9,1.9)[t]}
+    \put(2,4){\oval(3.9,1.9)[b]}
+    \put(0.5,2){\oval(0.9,3.9)[]}
+    \put(2.5,2){\oval(0.9,3.9)[]}
+    }
+    
+    Hier ergibt sich in der disjunktiven Normalform für Sektion B:
+
+    \[ f(a,b,c,d) = (\overline{c}) \vee (\overline{a} \wedge \overline{b}) \vee (a \wedge b)\]
+
+\section*{7.4}
+  \subsection*{a)}
+
+    Es wird eine 1 angegeben, wenn die Leistungsaufnahme größer als 6 ist.
+
+     \begin{tabular}{c c c c|c }
+    $ x_3$ & $x_2$ & $x_1$ & $x_0$ & $f(x_0, x_1, x_2, x_3)$ \\ \hline
+    0&0&0&0&0\\
+    0&0&0&1&0\\
+    0&0&1&0&0\\
+    0&0&1&1&0\\
+    0&1&0&0&0\\
+    0&1&0&1&1\\
+    0&1&1&0&0\\
+    0&1&1&1&1\\
+    1&0&0&0&0\\
+    1&0&0&1&0\\
+    1&0&1&0&0\\
+    1&0&1&1&0\\
+    1&1&0&0&1\\
+    1&1&0&1&1\\
+    1&1&1&0&1\\
+    1&1&1&1&1\\
+
+    \end{tabular}
+
+  \subsection*{b, c)}
+    KV-Diagramm mit größtmöglichen Schleifen:
+
+    \karnaughmap{4}{f($x_0$,$x_1$,$x_2$,$x_3$):}{{$x_3$}{$x_1$}{$x_2$}{$x_0$}}%
+    {0001000100110011}
+    {
+    \put(2,2){\oval(1.9,1.9)[]}
+    \put(2,1.5){\oval(3.9,0.9)[]}
+    }
+
+    Die Dazugehörige Formel in disjunktiver Form:
+
+    \[ f(x_0, x_1, x_2, x_3)=(x_2 \wedge x_3) \vee (x_0 \wedge x_2)\]
+
+  \subsection*{d)}
+  Im Prinzip sagt die Funktion nichts anderes als "Entweder $x_0$ und $x_1$, oder $x_2$ und $x_3$". Das lässt sich ganz einfach in ein Schaltnetz übertragen.
+  
+    \begin{circuitikz} \draw
+      (0,2) node[and port] (myand) {}
+      (2,1) node[or port] (myor) {}
+      (0,0) node[and port] (myand2) {}
+      (myand.in 1) node[anchor=east] {$x_0$}
+      (myand.in 2) node[anchor=east] {$x_1$}
+      (myand2.in 1) node[anchor=east] {$x_2$}
+      (myand2.in 2) node[anchor=east] {$x_3$}
+      (myand.out) -- (myor.in 1)
+      (myand2.out) -- (myor.in 2)
+    ;\end{circuitikz}
+
+\end{document}

@@ -1,0 +1,141 @@
+\documentclass{article}
+\usepackage{amsfonts}
+\usepackage[a4paper]{geometry}
+\usepackage{alltt}
+\usepackage{lmodern}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage[parfill]{parskip}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel} 
+
+\title{GDB Uebung 1}
+\author{Arne Beer, MN 6489196\\
+        Oliver Heidmann, MN 6420331}
+
+\begin{document}
+\maketitle
+    \begin{enumerate}
+        \item
+            \begin{enumerate}
+                \item Ein Informationssystem sollte in der Lage sein Daten zu schreiben und zu loeschen, sowie diese auszulesen oder in irgendeiner Art zu benutzen und zu modifizieren. 
+
+                \item 
+                    \begin{itemize}
+                        \item logische Datenunabhaengigkeit beschreibt, dass eine strukturelle Aenderung der jeweiligen Datenbank keine grundlegenden Veraenderungen an der Funktionsweise der Anwendung  bewirkt.
+                        \item physische Datenunabhaenigkeit beschreibt, dass eine Umstrukturierung von Daten auf einem physischen Datenspeicher keine Auswirkung auf die Wirkungsweise und Organisation der Datenbank hat. 
+                    \end{itemize}
+
+                \item \begin{itemize}
+                            \item Ein online Browssergame, bei dem verschiedene Accounts und Einheiten innerhalb des Systems miteinander agieren und verwaltet werden muessen. Z.B. Kaempfe, Highscores, 
+                            \item Die Verbrecherkartei der Bundeskriminalpolizei. Bestimmte Eigenschaften der verschieden Individuen muessen persistent gesichert werden.
+                            \item Eine Datenbank fuer ein Ferienhotel. Hier muss die Datenbank verschiedene Daten abspeichern und ueber das Web fuer potentielle Kunden abrufbar sein.
+                       \end{itemize}
+            \end{enumerate} 
+        \item   
+            \begin{enumerate}
+               \item
+                   \begin{itemize}
+                       \item Account
+                            \begin{itemize}
+                                \item Account-iD
+                                \item Name
+                                \item Passwort
+                                \item Rechtegruppe
+                                \item Erstellte Tippgemeinschaften\\
+                                    - Tippgemeinschaft 1\\
+                                    - Tippgemeinschaft 2\\
+                                    - $\cdots$
+                            \end{itemize}
+                        \item Tippgemeinschaften
+                            \begin{itemize}
+                                \item User\\
+                                    -User1\\
+                                        $\text{      }\cdot$ Punktestand
+                                \item Wettbewerb
+                                    \begin{itemize}
+                                         \item Begegnungen
+                                            \begin{itemize}
+                                                \item Begegnung\\
+                                                    - Begegnungs-ID
+                                                \item Ergebnis
+                                                \item User
+                                                \item Tipps\\
+                                                    - Tipp1\\
+                                                    - Tipp2\\
+                                                    - $\cdots$
+                                            \end{itemize}
+                                     \end{itemize}
+                            \end{itemize}
+                        \item Funktionen
+                            \begin{itemize}
+                                \item ErstelleTippGemeinschaft()
+                                \item FuegeBegegnungZuWettbewerbHinzu()
+                                \item AddUser()
+                                \item AddUserToTippgemeinschaft()
+                                \item AddUserToBegegnung
+                                \item AddTipp
+                                \item AddResult
+                            \end{itemize}
+                   \end{itemize}
+               \item Die Datenbank muss persistent und redundanzfrei sein. Einige Daten duerfen nur von bestimmten Gruppen veraendert werden. Daher gibt es verschiedene Rechtegruppen, sodass eine oder mehrere administrative Gruppen existiert. Die verschiedenen User sollen in der Lage sein Daten zu laden und Daten in die Datenbank einzutragen, wobei die Handhaben der Daten moeglichst einfach zu gestalten ist. 
+            \end{enumerate}
+        \item
+            \begin{itemize}
+                \item 
+                \item[In einem \textbf{Dateisystem:}]
+                        \begin{enumerate}
+                                \item[A]
+                                \begin{enumerate}
+                                        \item Die Informationen wurden noch nicht geschrieben: \\
+                                                Die Änderung im Arbeitsspeicher hatte noch keinen Einfluss auf die Daten auf der Platte. \\
+                                        \item Die Informationen wurden bereits geschrieben: \\
+                                                Der Betrag wird von Konto 5 abgezogen, allerdings nicht bei Konto 7 addiert. Dementsprechend verschwindet der ueberwiesene Betrag.
+
+                                \end{enumerate}
+                                \item[B]
+                                \begin{enumerate}
+                                        \item Die Informationen wurden noch nicht geschrieben: \\
+                                                Es wurden keine Aenderungen persistent gemacht, der Print-Befehl wurde jedoch ausgefuehrt, sodass ein Auszug für Konto 7 gedruckt wird, auf dem steht, dass eine Überweisung stattgefunden hat. 
+                                        \item Die Informationen wurden bereits geschrieben: \\
+                                                Die Ueberweisung hat stattgefunden, es wird jedoch nur ein Print-Befehl ausgefuehrt. \\
+                                \end{enumerate}
+                        \end{enumerate}
+                \item[\textbf{Datenbanksystem}]
+                \begin{enumerate}
+                                \item[A]
+                                \begin{enumerate}
+                                        \item Die Informationen wurden noch nicht geschrieben: \\
+                                                Es wurden keine persistenten Aenderungen vollzogen, dementsprechend sind keine Recovery-Maßnahmen notwendig \\
+                                        \item Die Informationen wurden bereits geschrieben: \\
+                                                Es wurden bereits persistente Aenderungen vollzogen, das System erkennt jedoch, dass sie nicht vollstaendig geschrieben wurden und setzt den Zustand der Kontos zurueck. \\
+                                \end{enumerate}
+                                \item[B]
+                                \begin{enumerate}
+                                        \item Die Informationen wurden noch nicht geschrieben: \\
+                                                Es wurden keine persistenten Aenderungen vollzogen, jedoch kann ein Print-Befehl ausgefuhert werden. \\
+                                        \item Die Informationen wurden bereits geschrieben: \\
+                                                Das System erkennt, dass der Print-Befehl nicht ausgefuehrt wurde und dementsprechend werden die Konten auf den vorherigen Stand zurueckgesetzt.\\
+                                \end{enumerate}
+                        \end{enumerate}
+            \end{itemize}
+        \item
+            \begin{enumerate}
+                \item Es wurde eine neue Table angelegt, die die Spalten id, name und passwort besitzt. Id besteht aus einem Int und einem primary key, name aus einem String der Laenge 49 und passwort aus einem String der Laenge 8. Anschliessend wurde ein Eintrag mit id = 1, name = \glqq gdbNutzer\glqq und passwort = \glqq geheim\glqq angelegt.
+                \item Es wurden alle Eintraege der Table ausgegeben, deren name="gdbNutzer". Anschliessend wurde die Table geloescht.
+                \item Die Architekturen sind in einigen Punkten aehnlich. So existieren folgende Equivalenzen: 
+                \begin{itemize}
+                    \item Datenmanipulation : \glqq Pluggable Storage Engines\glqq
+                    \item Optimierung der Anfragen : \glqq Optimizer \glqq
+                    \item Datendefinition: \glqq DDL (Data definition language) \glqq
+                    \item Datenverwertung: \glqq Parser \glqq
+                    \item Datenbank-Katalog: \glqq File System \glqq und \glqq Files \& Logs \glqq
+                \end{itemize}
+            \end{enumerate}
+    \end{enumerate}
+\end{document}

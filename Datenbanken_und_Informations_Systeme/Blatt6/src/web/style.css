@@ -1,0 +1,155 @@
+body {
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: 16px;
+	line-height: 20px;
+	padding-top: 5px;
+	padding-bottom: 30px;
+}
+
+#map {
+	height: 600px;
+	width: 100%;
+}
+
+/* Fix Bootstrap mess with maps */
+#map img {
+	max-width: none;
+}
+
+.container {
+	margin: 0 auto;
+	max-width: 1000px;
+}
+
+.container>hr {
+	margin: 20px 0;
+}
+
+.jumbotron {
+	margin: 40px 0 20px;
+	text-align: center;
+}
+
+.jumbotron h1 {
+	font-size: 80px;
+	line-height: 1;
+}
+
+.jumbotron .lead {
+	font-size: 24px;
+	line-height: 1.25;
+}
+
+.jumbotron .btn {
+	font-size: 18px;
+	padding: 7px 12px;
+}
+
+.marketing {
+	margin: 60px 0;
+}
+
+.marketing p+h4 {
+	margin-top: 28px;
+}
+
+.navbar .navbar-inner {
+	padding: 0;
+}
+
+.navbar .nav {
+	margin: 0;
+	display: table;
+	width: 100%;
+}
+
+.navbar .nav li {
+	display: table-cell;
+	width: 1%;
+	float: none;
+}
+
+.navbar .nav li a {
+	font-weight: bold;
+	text-align: center;
+	border-left: 1px solid rgba(255, 255, 255, .75);
+	border-right: 1px solid rgba(0, 0, 0, .1);
+}
+
+.navbar .nav li:first-child a {
+	border-left: 0;
+	border-radius: 3px 0 0 3px;
+}
+
+.navbar .nav li:last-child a {
+	border-right: 0;
+	border-radius: 0 3px 3px 0;
+}
+
+#search {
+	margin-bottom: 200px;
+}
+
+.triangle-right {
+	color: black;
+	padding: 15px;
+	margin: 1em 0px 3em 0px;
+	position: relative;
+	border-radius: 10px;
+}
+
+.left.triangle-right {
+	margin: 12px 50px;
+	background: -moz-linear-gradient(top, #e1eaf9 0%, #bdd2fd 100%); /* FF3.6+ */
+	background: -webkit-linear-gradient(top, #e1eaf9 0%, #bdd2fd 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #e1eaf9 0%, #bdd2fd 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #e1eaf9 0%, #bdd2fd 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #e1eaf9 0%, #bdd2fd 100%); /* W3C */
+}
+
+.triangle-right::after {
+	left: 50px;
+	width: 0px;
+	bottom: -20px;
+	border-color: #C7D9F9 transparent #C7D9F9 transparent;
+	border: 20px 0 0 20px;
+	border-style: solid;
+	display: block;
+	position: absolute;
+	content: "";
+	display: block;
+	border-style: solid;
+}
+
+.left.triangle-right::after {
+	left: -40px;
+	top: 16px;
+	bottom: auto;
+	border-color: transparent #C7D9F9 transparent #C7D9F9;
+	border-width: 15px 40px 0px 0px;
+}
+
+#table form input, #table form select, #tweets form input, #tweets form select {
+	width: 400px;
+}
+
+#movie-data img  {
+	width: 150px;
+}
+
+#movie-data form {
+	margin-bottom: 0;
+}
+
+#map-controls {
+	margin-top: 12px;
+}
+
+table .comment {
+	margin: 5px 0;
+	padding: 3px;
+}
+
+table .comment:hover {
+	outline: 1px solid #bbb;
+}
